@@ -311,17 +311,18 @@ def kirim_wa(nomor, pesan):
 @app.route("/webhook", methods=["GET", "POST"])
 def webhook():
 
-    print("=" * 50)
+    print("\n")
+    print("=" * 60)
     print("WEBHOOK MASUK")
-    print("METHOD:", request.method)
-    print("HEADERS:", dict(request.headers))
+    print("METHOD :", request.method)
 
-    try:
-        print("JSON:", request.get_json())
-    except Exception as e:
-        print("JSON ERROR:", e)
+    print("FORM :", request.form.to_dict())
 
-    print("=" * 50)
+    print("JSON :", request.get_json(silent=True))
+
+    print("ARGS :", request.args.to_dict())
+
+    print("=" * 60)
 
     return jsonify({
         "status": True
