@@ -311,12 +311,21 @@ def webhook():
 @app.route("/test-wa")
 def test_wa():
 
-    kirim_wa(
-        "6285872362212",
-        "Test WhatsApp dari Railway"
+    response = requests.post(
+        "https://api.fonnte.com/send",
+        headers={
+            "Authorization": FONTE_TOKEN
+        },
+        data={
+            "target": "628xxxxxxxxxx",
+            "message": "Test dari Railway"
+        }
     )
 
-    return "TEST DIKIRIM"
+    return {
+        "status_code": response.status_code,
+        "response": response.text
+    }
 
 @app.route("/debug-token")
 def debug_token():
