@@ -309,24 +309,27 @@ def kirim_wa(nomor, pesan):
 #     })
 
 @app.route("/webhook", methods=["GET", "POST"])
+@app.route("/webhook", methods=["POST"])
 def webhook():
 
-    print("\n")
     print("=" * 60)
-    print("WEBHOOK MASUK")
-    print("METHOD :", request.method)
+    print("POST DITERIMA")
 
-    print("FORM :", request.form.to_dict())
+    print("CONTENT TYPE:")
+    print(request.content_type)
 
-    print("JSON :", request.get_json(silent=True))
+    print("FORM:")
+    print(request.form.to_dict())
 
-    print("ARGS :", request.args.to_dict())
+    print("RAW:")
+    print(request.data.decode("utf-8"))
+
+    print("JSON:")
+    print(request.get_json(silent=True))
 
     print("=" * 60)
 
-    return jsonify({
-        "status": True
-    })
+    return "OK", 200
 
 @app.route("/test-wa")
 def test_wa():
