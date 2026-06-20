@@ -317,7 +317,7 @@ def test_wa():
             "Authorization": FONTE_TOKEN
         },
         data={
-            "target": "628xxxxxxxxxx",
+            "target": "6285872362212",
             "message": "Test dari Railway"
         }
     )
