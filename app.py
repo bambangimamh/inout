@@ -336,11 +336,17 @@ def webhook():
     print("=" * 60)
     print("POST DITERIMA")
 
+    print("METHOD:")
+    print(request.method)
+
     print("CONTENT TYPE:")
     print(request.content_type)
 
     print("FORM:")
     print(request.form.to_dict())
+
+    print("ARGS:")
+    print(request.args.to_dict())
 
     print("RAW:")
     print(request.data.decode("utf-8"))
