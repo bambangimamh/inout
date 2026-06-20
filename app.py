@@ -313,10 +313,13 @@ def webhook():
 
     print("=" * 50)
     print("WEBHOOK MASUK")
-    print(request.method)
+    print("METHOD:", request.method)
+    print("HEADERS:", dict(request.headers))
 
-    if request.is_json:
-        print(request.json)
+    try:
+        print("JSON:", request.get_json())
+    except Exception as e:
+        print("JSON ERROR:", e)
 
     print("=" * 50)
 
