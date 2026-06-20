@@ -24,32 +24,36 @@ with app.app_context():
 # ==================================
 # DASHBOARD
 # ==================================
+# @app.route("/")
+# def index():
+
+#     data = Transaksi.query.order_by(
+#         Transaksi.tanggal.desc()
+#     ).all()
+
+#     total_masuk = sum(
+#         x.nominal for x in data
+#         if x.tipe == "MASUK"
+#     )
+
+#     total_keluar = sum(
+#         x.nominal for x in data
+#         if x.tipe == "KELUAR"
+#     )
+
+#     saldo = total_masuk - total_keluar
+
+#     return render_template(
+#         "index.html",
+#         data=data,
+#         saldo=saldo,
+#         total_masuk=total_masuk,
+#         total_keluar=total_keluar
+#     )
+
 @app.route("/")
 def index():
-
-    data = Transaksi.query.order_by(
-        Transaksi.tanggal.desc()
-    ).all()
-
-    total_masuk = sum(
-        x.nominal for x in data
-        if x.tipe == "MASUK"
-    )
-
-    total_keluar = sum(
-        x.nominal for x in data
-        if x.tipe == "KELUAR"
-    )
-
-    saldo = total_masuk - total_keluar
-
-    return render_template(
-        "index.html",
-        data=data,
-        saldo=saldo,
-        total_masuk=total_masuk,
-        total_keluar=total_keluar
-    )
+    return "Railway OK"
 
 
 # ==================================
