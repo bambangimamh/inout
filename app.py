@@ -57,7 +57,7 @@ def index():
 # def index():
 #     return "Railway OK"
 
-FONTE_TOKEN = os.getenv("UmbHUrGrpZtTXyCg7Upj")
+FONTE_TOKEN = os.getenv("FONTE_TOKEN")
 
 def kirim_wa(nomor, pesan):
 
