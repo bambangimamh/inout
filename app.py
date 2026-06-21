@@ -12,7 +12,15 @@ app = Flask(__name__)
 # CONFIG DB
 # =========================
 # app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///kas.db"
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+# ambil DATABASE_URL dari Railway
+database_url = os.getenv("DATABASE_URL")
+
+# FIX untuk Railway (postgres:// -> postgresql://)
+if database_url and database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
+
+# ❗ INI WAJIB ADA
+app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
 
