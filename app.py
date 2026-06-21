@@ -11,15 +11,11 @@ app = Flask(__name__)
 # =========================
 # CONFIG DB
 # =========================
-# app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///kas.db"
-# ambil DATABASE_URL dari Railway
 database_url = os.getenv("DATABASE_URL")
 
-# FIX untuk Railway (postgres:// -> postgresql://)
 if database_url and database_url.startswith("postgres://"):
     database_url = database_url.replace("postgres://", "postgresql://", 1)
 
-# ❗ INI WAJIB ADA
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db.init_app(app)
@@ -28,18 +24,26 @@ with app.app_context():
     db.create_all()
 
 # =========================
-# GLOBAL ANTI DUPLICATE
+# ENV CONFIG
+# =========================
+FONTE_TOKEN = os.getenv("FONTE_TOKEN")
+BOT_NUMBER = os.getenv("BOT_NUMBER", "")  # nomor WA bot sendiri (opsional)
+
+# =========================
+# ANTI DUPLICATE MEMORY
 # =========================
 PROCESSED = {}
 
 def is_duplicate(msg_id):
-    """Simple in-memory anti duplicate"""
     now = time.time()
 
-    # bersihkan cache lama (10 menit)
+    # cleanup cache lama (10 menit)
     expired = [k for k, v in PROCESSED.items() if now - v > 600]
     for k in expired:
         del PROCESSED[k]
+
+    if not msg_id:
+        return False
 
     if msg_id in PROCESSED:
         return True
@@ -49,42 +53,8 @@ def is_duplicate(msg_id):
 
 
 # =========================
-# LOG REQUEST
+# FONNTE SENDER
 # =========================
-@app.before_request
-def log_all():
-    print("=" * 80)
-    print("PATH :", request.path)
-    print("METHOD :", request.method)
-    print("CONTENT TYPE :", request.content_type)
-    print("=" * 80)
-
-
-# =========================
-# DASHBOARD
-# =========================
-@app.route("/")
-def index():
-    data = Transaksi.query.order_by(Transaksi.tanggal.desc()).all()
-
-    total_masuk = sum(x.nominal for x in data if x.tipe == "MASUK")
-    total_keluar = sum(x.nominal for x in data if x.tipe == "KELUAR")
-    saldo = total_masuk - total_keluar
-
-    return render_template(
-        "index.html",
-        data=data,
-        saldo=saldo,
-        total_masuk=total_masuk,
-        total_keluar=total_keluar
-    )
-
-
-# =========================
-# FONNTE SEND MESSAGE
-# =========================
-FONTE_TOKEN = os.getenv("FONTE_TOKEN")
-
 def kirim_wa(nomor, pesan):
     try:
         response = requests.post(
@@ -97,13 +67,11 @@ def kirim_wa(nomor, pesan):
             timeout=30
         )
 
-        print("========== FONNTE ==========")
-        print("STATUS :", response.status_code)
-        print("BODY :", response.text)
-        print("============================")
+        print("FONNTE STATUS:", response.status_code)
+        print("FONNTE BODY:", response.text)
 
     except Exception as e:
-        print("ERROR FONNTE :", str(e))
+        print("FONNTE ERROR:", str(e))
 
 
 # =========================
@@ -115,67 +83,65 @@ def webhook():
     payload = request.get_json(silent=True) or {}
 
     print("=" * 80)
-    print("WEBHOOK MASUK")
+    print("WEBHOOK INCOMING")
     print(payload)
     print("=" * 80)
 
     # =========================
-    # IGNORE DEVICE STATUS
+    # IGNORE STATUS / DELIVERY EVENT
     # =========================
-    if "state" in payload or "status" in payload:
+    if payload.get("status") or payload.get("state") or payload.get("event") in [
+        "sent", "delivered", "read"
+    ]:
         return jsonify({"status": True})
 
     # =========================
-    # AMBIL DATA PESAN
+    # EXTRACT DATA
     # =========================
-    sender = str(
-        payload.get("sender")
-        or payload.get("pengirim")
-        or ""
-    ).strip()
+    sender = str(payload.get("sender") or payload.get("from") or "").strip()
+    message = str(payload.get("message") or payload.get("text") or "").strip()
 
-    message = str(
-        payload.get("message")
-        or payload.get("pesan")
-        or ""
-    ).strip()
+    msg_id = payload.get("id") or payload.get("inboxid")
 
-    msg_id = str(
-        payload.get("id")
-        or payload.get("inboxid")
-        or message
-    ).strip()
+    # fallback safe ID (jangan pakai message saja)
+    if not msg_id:
+        msg_id = f"{sender}-{message}-{int(time.time())}"
 
-    print("SENDER :", sender)
-    print("MESSAGE :", message)
-    print("MSG_ID :", msg_id)
+    print("SENDER:", sender)
+    print("MESSAGE:", message)
+    print("MSG_ID:", msg_id)
 
     # =========================
-    # VALIDASI DASAR
+    # VALIDATION
     # =========================
     if not sender or not message:
         return jsonify({"status": True})
 
     # =========================
-    # ANTI LOOP / DUPLICATE
+    # ANTI BOT LOOP (SELF MESSAGE)
     # =========================
-    if is_duplicate(msg_id):
-        print("DUPLICATE MESSAGE IGNORED")
+    if BOT_NUMBER and sender == BOT_NUMBER:
         return jsonify({"status": True})
 
     # =========================
-    # ANTI BOT ECHO
+    # ANTI DUPLICATE
+    # =========================
+    if is_duplicate(msg_id):
+        print("DUPLICATE IGNORED")
+        return jsonify({"status": True})
+
+    # =========================
+    # ANTI ECHO FROM FONNTE
     # =========================
     lower_msg = message.lower()
 
     if "sent via fonnte" in lower_msg:
         return jsonify({"status": True})
 
-    if message.startswith("📌 Perintah yang tersedia"):
+    if message.startswith("[BOT]"):
         return jsonify({"status": True})
 
     cmd = lower_msg.strip()
-    print("CMD :", cmd)
 
     # =========================
     # SALDO
@@ -192,10 +158,7 @@ def webhook():
 
         kirim_wa(
             sender,
-            f"💰 SALDO SAAT INI\n\n"
-            f"Masuk : Rp {masuk:,.0f}\n"
-            f"Keluar : Rp {keluar:,.0f}\n"
-            f"Saldo : Rp {saldo:,.0f}"
+            f"💰 SALDO\n\nMasuk: Rp {masuk:,.0f}\nKeluar: Rp {keluar:,.0f}\nSaldo: Rp {saldo:,.0f}"
         )
 
         return jsonify({"status": True})
@@ -203,12 +166,12 @@ def webhook():
     # =========================
     # MASUK
     # =========================
-    elif cmd.startswith("masuk"):
+    if cmd.startswith("masuk"):
 
         try:
             parts = message.split()
             nominal = int(parts[1])
-            keterangan = " ".join(parts[2:])
+            keterangan = " ".join(parts[2:]) if len(parts) > 2 else "-"
 
             trx = Transaksi(
                 tanggal=datetime.now(),
@@ -223,30 +186,24 @@ def webhook():
 
             kirim_wa(
                 sender,
-                f"✅ Pemasukan tersimpan\n\n"
-                f"Nominal : Rp {nominal:,.0f}\n"
-                f"Keterangan : {keterangan}"
+                f"[BOT] ✅ MASUK tersimpan\nRp {nominal:,.0f}\n{keterangan}"
             )
 
         except Exception as e:
-            print("ERROR MASUK :", str(e))
-
-            kirim_wa(
-                sender,
-                "Format salah\ncontoh:\nmasuk 100000 gaji"
-            )
+            print("ERROR MASUK:", str(e))
+            kirim_wa(sender, "Format: masuk 100000 gaji")
 
         return jsonify({"status": True})
 
     # =========================
     # KELUAR
     # =========================
-    elif cmd.startswith("keluar"):
+    if cmd.startswith("keluar"):
 
         try:
             parts = message.split()
             nominal = int(parts[1])
-            keterangan = " ".join(parts[2:])
+            keterangan = " ".join(parts[2:]) if len(parts) > 2 else "-"
 
             trx = Transaksi(
                 tanggal=datetime.now(),
@@ -261,25 +218,19 @@ def webhook():
 
             kirim_wa(
                 sender,
-                f"✅ Pengeluaran tersimpan\n\n"
-                f"Nominal : Rp {nominal:,.0f}\n"
-                f"Keterangan : {keterangan}"
+                f"[BOT] ✅ KELUAR tersimpan\nRp {nominal:,.0f}\n{keterangan}"
             )
 
         except Exception as e:
-            print("ERROR KELUAR :", str(e))
-
-            kirim_wa(
-                sender,
-                "Format salah\ncontoh:\nkeluar 25000 makan"
-            )
+            print("ERROR KELUAR:", str(e))
+            kirim_wa(sender, "Format: keluar 25000 makan")
 
         return jsonify({"status": True})
 
     # =========================
     # HARI INI
     # =========================
-    elif cmd == "hariini":
+    if cmd == "hariini":
 
         today = datetime.now().date()
 
@@ -291,34 +242,28 @@ def webhook():
 
         kirim_wa(
             sender,
-            f"📅 TRANSAKSI HARI INI\n\n"
-            f"Jumlah : {len(data)}\n"
-            f"Total : Rp {total:,.0f}"
+            f"📅 HARI INI\nTransaksi: {len(data)}\nTotal: Rp {total:,.0f}"
         )
 
         return jsonify({"status": True})
 
     # =========================
-    # HELP
+    # DEFAULT HELP
     # =========================
     kirim_wa(
         sender,
-        "📌 Perintah:\n\n"
-        "masuk 100000 gaji\n"
-        "keluar 25000 makan\n"
-        "saldo\n"
-        "hariini"
+        "📌 MENU:\nmasuk 100000 gaji\nkeluar 25000 makan\nsaldo\nhariini"
     )
 
     return jsonify({"status": True})
 
 
 # =========================
-# TEST
+# TEST ENDPOINT
 # =========================
 @app.route("/test-wa")
 def test_wa():
-    kirim_wa("6285872362212", "Test dari Railway berhasil")
+    kirim_wa("628xxxxxxx", "[BOT] test sukses")
     return {"status": True}
 
 
