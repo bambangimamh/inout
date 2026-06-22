@@ -316,7 +316,7 @@ def webhook():
 # =========================
 @app.route("/test-wa")
 def test_wa():
-    kirim_wa("6285872362212", "Test dari Railway berhasil")
+    kirim_wa("6285871264448", "Test dari Railway berhasil")
     return {"status": True}
 
 
