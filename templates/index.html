@@ -310,7 +310,38 @@
             </div>
 
         </div>
+        <form method="GET" class="row g-3 mb-3">
 
+            <div class="col-md-3">
+                <label class="form-label">Tanggal Mulai</label>
+                <input type="date" name="start_date" class="form-control" value="{{ start_date }}">
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Tanggal Akhir</label>
+                <input type="date" name="end_date" class="form-control" value="{{ end_date }}">
+            </div>
+
+            <div class="col-md-2">
+                <button class="btn btn-primary w-100">
+                    Filter
+                </button>
+            </div>
+
+            <div class="col-md-2">
+                <a href="/" class="btn btn-secondary w-100">
+                    Reset
+                </a>
+            </div>
+
+            <div class="col-md-2">
+                <a href="/export-excel?start_date={{ start_date }}&end_date={{ end_date }}"
+                    class="btn btn-success w-100">
+                    Export Excel
+                </a>
+            </div>
+
+        </form>
         <!-- TABLE -->
         <div class="content-card">
 
@@ -397,7 +428,8 @@
 
                         {% if data_paginated.has_prev %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ data_paginated.prev_num }}">
+                            <a class="page-link"
+                                href="?page={{ data_paginated.prev_num }}&start_date={{ start_date }}&end_date={{ end_date }}">
                                 ‹
                             </a>
                         </li>
@@ -420,7 +452,8 @@
                         </li>
                         {% else %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ page_num }}">
+                            <a class="page-link"
+                                href="?page={{ page_num }}&start_date={{ start_date }}&end_date={{ end_date }}">
                                 {{ page_num }}
                             </a>
                         </li>
@@ -432,7 +465,8 @@
 
                         {% if data_paginated.has_next %}
                         <li class="page-item">
-                            <a class="page-link" href="?page={{ data_paginated.next_num }}">
+                            <a class="page-link"
+                                href="?page={{ data_paginated.next_num }}&start_date={{ start_date }}&end_date={{ end_date }}">
                                 ›
                             </a>
                         </li>

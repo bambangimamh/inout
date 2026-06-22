@@ -1,10 +1,12 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, send_file
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from models import db, Transaksi
 import requests
 import os
 import time
+import pandas as pd
+import io
 
 app = Flask(__name__)
 
@@ -60,39 +62,49 @@ def log_all():
     print("=" * 80)
 
 
-# =========================
-# DASHBOARD
-# =========================
-# @app.route("/")
-# def index():
-#     data = Transaksi.query.order_by(Transaksi.tanggal.desc()).all()
-
-#     total_masuk = sum(x.nominal for x in data if x.tipe == "MASUK")
-#     total_keluar = sum(x.nominal for x in data if x.tipe == "KELUAR")
-#     saldo = total_masuk - total_keluar
-
-#     return render_template(
-#         "index.html",
-#         data=data,
-#         saldo=saldo,
-#         total_masuk=total_masuk,
-#         total_keluar=total_keluar
-#     )
-
 @app.route("/")
 def index():
 
     page = request.args.get("page", 1, type=int)
     per_page = 10
 
-    data_paginated = Transaksi.query.order_by(
+    start_date = request.args.get("start_date", "")
+    end_date = request.args.get("end_date", "")
+
+    query = Transaksi.query
+
+    if start_date:
+        query = query.filter(
+            db.func.date(Transaksi.tanggal) >= start_date
+        )
+
+    if end_date:
+        query = query.filter(
+            db.func.date(Transaksi.tanggal) <= end_date
+        )
+
+    data_paginated = query.order_by(
         Transaksi.tanggal.desc()
-    ).paginate(page=page, per_page=per_page)
+    ).paginate(
+        page=page,
+        per_page=per_page,
+        error_out=False
+    )
 
-    all_data = Transaksi.query.all()
+    all_data = query.order_by(
+        Transaksi.tanggal.desc()
+    ).all()
 
-    total_masuk = sum(x.nominal for x in all_data if x.tipe == "MASUK")
-    total_keluar = sum(x.nominal for x in all_data if x.tipe == "KELUAR")
+    total_masuk = sum(
+        x.nominal for x in all_data
+        if x.tipe == "MASUK"
+    )
+
+    total_keluar = sum(
+        x.nominal for x in all_data
+        if x.tipe == "KELUAR"
+    )
+
     saldo = total_masuk - total_keluar
 
     return render_template(
@@ -101,7 +113,86 @@ def index():
         data_paginated=data_paginated,
         total_masuk=total_masuk,
         total_keluar=total_keluar,
-        saldo=saldo
+        saldo=saldo,
+        start_date=start_date,
+        end_date=end_date
+    )
+
+@app.route("/export-excel")
+def export_excel():
+
+    start_date = request.args.get("start_date", "")
+    end_date = request.args.get("end_date", "")
+
+    query = Transaksi.query
+
+    if start_date:
+        query = query.filter(
+            db.func.date(Transaksi.tanggal) >= start_date
+        )
+
+    if end_date:
+        query = query.filter(
+            db.func.date(Transaksi.tanggal) <= end_date
+        )
+
+    data = query.order_by(
+        Transaksi.tanggal.desc()
+    ).all()
+
+    rows = []
+
+    for row in data:
+
+        rows.append({
+            "Tanggal": row.tanggal.strftime("%Y-%m-%d %H:%M"),
+            "Tipe": row.tipe,
+            "Nominal": row.nominal,
+            "Keterangan": row.keterangan,
+            "Nomor WA": row.nomor_wa
+        })
+
+    df = pd.DataFrame(rows)
+
+    output = io.BytesIO()
+
+    with pd.ExcelWriter(
+        output,
+        engine="openpyxl"
+    ) as writer:
+
+        df.to_excel(
+            writer,
+            index=False,
+            sheet_name="Kas WhatsApp"
+        )
+
+        worksheet = writer.sheets["Kas WhatsApp"]
+
+        for column in worksheet.columns:
+            max_length = 0
+            column_letter = column[0].column_letter
+
+            for cell in column:
+                try:
+                    if len(str(cell.value)) > max_length:
+                        max_length = len(str(cell.value))
+                except:
+                    pass
+
+            worksheet.column_dimensions[
+                column_letter
+            ].width = max_length + 3
+
+    output.seek(0)
+
+    filename = f"Kas_WhatsApp_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+
+    return send_file(
+        output,
+        as_attachment=True,
+        download_name=filename,
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
 # =========================

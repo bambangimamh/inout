@@ -4,3 +4,5 @@ Flask-Migrate==4.0.7
 gunicorn==23.0.0
 requests==2.32.3
 psycopg2-binary==2.9.10
+pandas
+openpyxl>=3.1.0
