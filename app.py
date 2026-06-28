@@ -1122,13 +1122,13 @@ def webhook():
                     sender,
                     f"""❌ Kategori tidak tersedia.
 
-    Kategori:
+                    Kategori:
 
-    {daftar}
+                    {daftar}
 
-    Contoh:
-    budget makanan 1500000
-    """
+                    Contoh:
+                    budget makanan 1500000
+                    """
                 )
 
                 return jsonify({"status":True})
@@ -1172,22 +1172,22 @@ def webhook():
                 sender,
                 f"""🎯 *Budget {status}*
 
-    ━━━━━━━━━━━━━━
+                ━━━━━━━━━━━━━━
 
-    📂 Kategori
-    {kategori.title()}
+                📂 Kategori
+                {kategori.title()}
 
-    💰 Budget
-    Rp {nominal:,.0f}
+                💰 Budget
+                Rp {nominal:,.0f}
 
-    📅 Periode
-    {periode}
+                📅 Periode
+                {periode}
 
-    ━━━━━━━━━━━━━━
+                ━━━━━━━━━━━━━━
 
-    Ketik *budget*
-    untuk melihat semua budget.
-    """
+                Ketik *budget*
+                untuk melihat semua budget.
+                """
             )
 
         except Exception as e:
