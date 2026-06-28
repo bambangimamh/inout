@@ -511,8 +511,8 @@
         </div>
         <style>
             /* ===========================
-   SUMMARY
-=========================== */
+            SUMMARY
+            =========================== */
 
             .summary-wrapper {
                 background: #fff;
@@ -639,8 +639,8 @@
             }
 
             /* ===========================
-   MOBILE UI
-=========================== */
+            MOBILE UI
+            =========================== */
 
             @media (max-width:768px) {
 
@@ -813,45 +813,251 @@
 
             }
         </style>
-        <div class="filter-toolbar">
-            <form method="GET" class="row g-3 align-items-end mb-4">
+        <!-- FILTER -->
+        <div class="filter-panel mb-4">
+
+            <form method="GET">
+
                 <input type="hidden" name="token" value="{{ token }}">
 
-                <div class="col-lg-3 col-md-6">
-                    <label class="form-label fw-semibold">
-                        Tanggal Mulai
-                    </label>
-                    <input type="date" name="start_date" class="form-control" value="{{ start_date }}">
+                <div class="filter-header">
+
+                    <div>
+                        <div class="filter-title">
+                            <i class="bi bi-funnel"></i>
+                            Filter Transaksi
+                        </div>
+
+                        <div class="filter-subtitle">
+                            Pilih rentang tanggal untuk melihat histori transaksi.
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="col-lg-3 col-md-6">
-                    <label class="form-label fw-semibold">
-                        Tanggal Akhir
-                    </label>
-                    <input type="date" name="end_date" class="form-control" value="{{ end_date }}">
-                </div>
+                <div class="filter-body">
 
-                <div class="col-lg-2 col-md-4 d-grid">
-                    <button type="submit" class="btn btn-primary">
+                    <div class="filter-item">
+
+                        <label>
+                            Mulai
+                        </label>
+
+                        <input type="date" name="start_date" class="form-control" value="{{ start_date }}">
+
+                    </div>
+
+                    <div class="filter-item">
+
+                        <label>
+                            Sampai
+                        </label>
+
+                        <input type="date" name="end_date" class="form-control" value="{{ end_date }}">
+
+                    </div>
+
+                    <button class="btn btn-primary">
+
+                        <i class="bi bi-search"></i>
+
                         Filter
+
                     </button>
-                </div>
 
-                <div class="col-lg-2 col-md-4 d-grid">
-                    <a href="/?token={{ token }}" class="btn btn-secondary">
+                    <a href="/?token={{ token }}" class="btn btn-light">
+
+                        <i class="bi bi-arrow-clockwise"></i>
+
                         Reset
-                    </a>
-                </div>
 
-                <div class="col-lg-2 col-md-4 d-grid">
+                    </a>
+
                     <a href="/export-excel?token={{ token }}&start_date={{ start_date }}&end_date={{ end_date }}"
                         class="btn btn-success">
-                        Export Excel
+
+                        <i class="bi bi-file-earmark-excel"></i>
+
+                        Export
+
                     </a>
+
                 </div>
 
             </form>
+
         </div>
+        <style>
+            /* ===========================
+FILTER
+=========================== */
+
+            .filter-panel {
+
+                background: #fff;
+                border-radius: 18px;
+                padding: 18px 20px;
+
+                border: 1px solid #edf2f7;
+
+                box-shadow: 0 10px 25px rgba(15, 23, 42, .05);
+
+            }
+
+            .filter-header {
+
+                display: flex;
+
+                justify-content: space-between;
+
+                align-items: center;
+
+                margin-bottom: 18px;
+
+            }
+
+            .filter-title {
+
+                font-size: 15px;
+
+                font-weight: 700;
+
+                display: flex;
+
+                align-items: center;
+
+                gap: 8px;
+
+            }
+
+            .filter-title i {
+
+                color: #2563eb;
+
+            }
+
+            .filter-subtitle {
+
+                margin-top: 2px;
+
+                font-size: 12px;
+
+                color: #6b7280;
+
+            }
+
+            .filter-body {
+
+                display: flex;
+
+                gap: 12px;
+
+                align-items: end;
+
+                flex-wrap: wrap;
+
+            }
+
+            .filter-item {
+
+                min-width: 180px;
+
+                flex: 1;
+
+            }
+
+            .filter-item label {
+
+                font-size: 12px;
+
+                font-weight: 600;
+
+                color: #6b7280;
+
+                margin-bottom: 6px;
+
+            }
+
+            .filter-item .form-control {
+
+                border-radius: 12px;
+
+                height: 44px;
+
+                border: 1px solid #e5e7eb;
+
+            }
+
+            .filter-body .btn {
+
+                height: 44px;
+
+                padding: 0 18px;
+
+                border-radius: 12px;
+
+                font-weight: 600;
+
+                display: flex;
+
+                align-items: center;
+
+                gap: 8px;
+
+            }
+
+            .btn-light {
+
+                background: #f8fafc;
+
+                border: 1px solid #e5e7eb;
+
+            }
+
+            .btn-light:hover {
+
+                background: #eef2ff;
+
+            }
+
+            @media(max-width:768px) {
+
+                .filter-panel {
+
+                    padding: 14px;
+
+                }
+
+                .filter-body {
+
+                    display: flex;
+
+                    flex-direction: column;
+
+                    align-items: stretch;
+
+                    gap: 10px;
+
+                }
+
+                .filter-item {
+
+                    width: 100%;
+
+                    min-width: 100%;
+
+                }
+
+                .filter-body .btn {
+
+                    width: 100%;
+
+                    justify-content: center;
+
+                }
+
+            }
+        </style>
         <!-- TABLE -->
         <div class="content-card">
 
