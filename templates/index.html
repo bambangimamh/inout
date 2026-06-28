@@ -1059,89 +1059,66 @@ FILTER
             }
         </style>
         <!-- TABLE -->
-        <div class="content-card">
+        <div class="content-card compact-ledger">
 
             <div class="card-header-modern">
-                <h5 class="card-title-modern">
-                    Riwayat Transaksi
-                </h5>
+                <h5 class="card-title-modern">Riwayat Transaksi</h5>
             </div>
 
-            <div class="table-responsive">
+            <!-- LIST MODE (linear compact) -->
+            <div class="ledger-list">
 
-                <table class="table table-hover">
+                {% for row in data_paginated.items %}
+                <div class="ledger-item">
 
-                    <thead>
-                        <tr>
-                            <th>Tanggal</th>
-                            <th>Tipe</th>
-                            <th>Nominal</th>
-                            <th>Keterangan</th>
-                        </tr>
-                    </thead>
+                    <div class="ledger-left">
 
-                    <tbody>
+                        <div class="ledger-date">
+                            {{ row.tanggal }}
+                        </div>
 
-                        {% for row in data_paginated.items %}
-                        <tr>
+                        <div class="ledger-meta">
+                            {% if row.tipe == 'MASUK' %}
+                            <span class="pill pill-success">MASUK</span>
+                            {% else %}
+                            <span class="pill pill-danger">KELUAR</span>
+                            {% endif %}
 
-                            <td>{{ row.tanggal }}</td>
+                            <span class="ledger-desc">
+                                {{ row.keterangan }}
+                            </span>
+                        </div>
 
-                            <td>
-                                {% if row.tipe == 'MASUK' %}
-                                <span class="badge bg-success">
-                                    MASUK
-                                </span>
-                                {% else %}
-                                <span class="badge bg-danger">
-                                    KELUAR
-                                </span>
-                                {% endif %}
-                            </td>
+                    </div>
 
-                            <td class="amount">
-                                Rp {{ "{:,.0f}".format(row.nominal) }}
-                            </td>
+                    <div class="ledger-right">
+                        <div class="ledger-amount">
+                            Rp {{ "{:,.0f}".format(row.nominal) }}
+                        </div>
+                    </div>
 
-                            <td>{{ row.keterangan }}</td>
-
-                        </tr>
-                        {% endfor %}
-
-                    </tbody>
-
-                </table>
+                </div>
+                {% endfor %}
 
             </div>
 
-            <div class="pagination-wrapper">
+            <!-- PAGINATION -->
+            <div class="pagination-wrapper compact">
 
                 <div class="pagination-info">
-
                     Menampilkan
-
                     {{ ((data_paginated.page - 1) * data_paginated.per_page) + 1 }}
-
                     -
-
                     {% if data_paginated.page * data_paginated.per_page > data_paginated.total %}
                     {{ data_paginated.total }}
                     {% else %}
                     {{ data_paginated.page * data_paginated.per_page }}
                     {% endif %}
-
-                    dari
-
-                    {{ data_paginated.total }}
-
-                    transaksi
-
+                    dari {{ data_paginated.total }} transaksi
                 </div>
 
                 <nav>
-
                     <ul class="pagination">
-
                         {% if data_paginated.has_prev %}
                         <li class="page-item">
                             <a class="page-link"
@@ -1159,12 +1136,9 @@ FILTER
                         ) %}
 
                         {% if page_num %}
-
                         {% if page_num == data_paginated.page %}
                         <li class="page-item active">
-                            <span class="page-link">
-                                {{ page_num }}
-                            </span>
+                            <span class="page-link">{{ page_num }}</span>
                         </li>
                         {% else %}
                         <li class="page-item">
@@ -1174,7 +1148,6 @@ FILTER
                             </a>
                         </li>
                         {% endif %}
-
                         {% endif %}
 
                         {% endfor %}
@@ -1187,14 +1160,113 @@ FILTER
                             </a>
                         </li>
                         {% endif %}
-
                     </ul>
-
                 </nav>
 
             </div>
 
         </div>
+        <style>
+            .compact-ledger {
+                border-radius: 14px;
+                background: #fff;
+                padding: 14px;
+            }
+
+            /* LIST */
+            .ledger-list {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+                margin-top: 10px;
+            }
+
+            /* ITEM */
+            .ledger-item {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 12px;
+                border-radius: 12px;
+                background: #f7f8fb;
+                transition: 0.2s;
+            }
+
+            .ledger-item:hover {
+                background: #eef3ff;
+                transform: translateY(-1px);
+            }
+
+            /* LEFT */
+            .ledger-left {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
+
+            .ledger-date {
+                font-size: 11px;
+                color: #888;
+            }
+
+            .ledger-meta {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .ledger-desc {
+                font-size: 12px;
+                color: #444;
+            }
+
+            /* RIGHT */
+            .ledger-amount {
+                font-weight: 600;
+                font-size: 13px;
+                color: #222;
+            }
+
+            /* PILL BADGE */
+            .pill {
+                font-size: 10px;
+                padding: 3px 8px;
+                border-radius: 999px;
+                font-weight: 600;
+            }
+
+            .pill-success {
+                background: #e7f8ee;
+                color: #1a9c55;
+            }
+
+            .pill-danger {
+                background: #ffe8e8;
+                color: #e14b4b;
+            }
+
+            /* PAGINATION COMPACT */
+            .pagination-wrapper.compact {
+                margin-top: 12px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .pagination-info {
+                font-size: 11px;
+                color: #777;
+            }
+
+            .pagination .page-link {
+                font-size: 12px;
+                padding: 4px 8px;
+                border-radius: 8px;
+            }
+        </style>
 
     </div>
 
