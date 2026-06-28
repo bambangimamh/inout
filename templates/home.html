@@ -14,108 +14,133 @@
 
     <style>
         :root {
-            --primary: #2563eb;
-            --success: #16a34a;
+            --primary: #3b82f6;
             --bg: #f5f7fb;
+            --card: #ffffff;
+            --border: #e9edf5;
             --text: #1f2937;
             --muted: #6b7280;
         }
 
         body {
+            margin: 0;
             background: var(--bg);
-            min-height: 100vh;
+            font-family: Inter, system-ui, sans-serif;
+            color: var(--text);
             display: flex;
             justify-content: center;
-            align-items: center;
-            font-family: system-ui;
+            padding: 20px;
         }
 
         .card-home {
             width: 100%;
-            max-width: 560px;
-            border: none;
-            border-radius: 22px;
+            max-width: 430px;
             background: #fff;
-            box-shadow: 0 12px 35px rgba(0, 0, 0, .08);
+            border-radius: 22px;
+            border: 1px solid var(--border);
             overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, .05);
         }
 
-        .header {
-            background: linear-gradient(135deg, #2563eb, #3b82f6);
-            color: white;
-            padding: 45px 30px;
+        .hero {
+            padding: 28px 24px;
             text-align: center;
         }
 
-        .logo {
-            width: 82px;
-            height: 82px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, .15);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: auto;
-            margin-bottom: 18px;
-            font-size: 36px;
-        }
-
-        .title {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 6px;
-        }
-
-        .subtitle {
-            opacity: .9;
-        }
-
-        .body-card {
-            padding: 35px;
-        }
-
-        .feature {
-            display: flex;
-            gap: 15px;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
-
-        .icon {
-            width: 46px;
-            height: 46px;
-            border-radius: 12px;
+        .hero-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
             background: #eef4ff;
             color: var(--primary);
             display: flex;
-            justify-content: center;
             align-items: center;
-            font-size: 20px;
-            flex-shrink: 0;
+            justify-content: center;
+            font-size: 32px;
+            margin: auto;
+            margin-bottom: 14px;
         }
 
-        .feature-title {
-            font-weight: 600;
+        .hero h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0;
         }
 
-        .feature-desc {
+        .hero p {
             color: var(--muted);
+            margin-top: 6px;
             font-size: 14px;
         }
 
-        .info-box {
+        .section {
+            padding: 0 18px 18px;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px;
+            background: #fbfcfe;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            margin-bottom: 10px;
+        }
+
+        .item-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #eef4ff;
+            color: #2563eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .item-title {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .item-desc {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .guide {
+            margin-top: 8px;
+            padding: 16px;
             background: #f8fafc;
-            border: 1px solid #e5e7eb;
-            border-radius: 14px;
-            padding: 18px;
-            margin-top: 25px;
+            border: 1px dashed #dbe4f0;
+            border-radius: 16px;
+        }
+
+        .guide-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .command {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 8px;
+            border: 1px solid var(--border);
+            font-family: monospace;
+            font-size: 13px;
         }
 
         .footer {
             text-align: center;
+            padding: 18px;
             color: #94a3b8;
-            font-size: 13px;
-            margin-top: 25px;
+            font-size: 12px;
         }
     </style>
 
@@ -125,120 +150,118 @@
 
     <div class="card-home">
 
-        <div class="header">
+        <div class="hero">
 
-            <div class="logo">
+            <div class="hero-icon">
                 <i class="bi bi-wallet2"></i>
             </div>
 
-            <div class="title">
-                Finance Assistant
-            </div>
+            <h3>Finance Assistant</h3>
 
-            <div class="subtitle">
-                Personal WhatsApp Finance Dashboard
-            </div>
+            <p>
+                Kelola keuangan langsung dari WhatsApp.
+            </p>
 
         </div>
 
-        <div class="body-card">
+        <div class="section">
 
-            <div class="feature">
+            <div class="item">
 
-                <div class="icon">
+                <div class="item-icon">
                     <i class="bi bi-whatsapp"></i>
                 </div>
 
                 <div>
 
-                    <div class="feature-title">
-                        Kelola Keuangan via WhatsApp
+                    <div class="item-title">
+                        WhatsApp Finance
                     </div>
 
-                    <div class="feature-desc">
-                        Catat pemasukan, pengeluaran, cek saldo dan laporan harian langsung dari WhatsApp.
+                    <div class="item-desc">
+                        Catat pemasukan, pengeluaran, saldo dan laporan secara instan.
                     </div>
 
                 </div>
 
             </div>
 
-            <div class="feature">
+            <div class="item">
 
-                <div class="icon">
-                    <i class="bi bi-shield-check"></i>
+                <div class="item-icon">
+                    <i class="bi bi-graph-up"></i>
                 </div>
 
                 <div>
 
-                    <div class="feature-title">
-                        Dashboard Aman
+                    <div class="item-title">
+                        Dashboard Real-time
                     </div>
 
-                    <div class="feature-desc">
-                        Dashboard hanya dapat diakses menggunakan tautan aman yang dikirim melalui WhatsApp.
+                    <div class="item-desc">
+                        Pantau grafik, transaksi dan budget secara otomatis.
                     </div>
 
                 </div>
 
             </div>
 
-            <div class="feature">
+            <div class="item">
 
-                <div class="icon">
-                    <i class="bi bi-graph-up-arrow"></i>
+                <div class="item-icon">
+                    <i class="bi bi-shield-lock"></i>
                 </div>
 
                 <div>
 
-                    <div class="feature-title">
-                        Monitoring Real-time
+                    <div class="item-title">
+                        Aman & Privat
                     </div>
 
-                    <div class="feature-desc">
-                        Lihat saldo, grafik transaksi dan riwayat keuangan secara otomatis.
+                    <div class="item-desc">
+                        Dashboard hanya dapat diakses menggunakan link pribadi.
                     </div>
 
                 </div>
 
             </div>
 
-            <div class="info-box">
+            <div class="guide">
 
-                <div class="fw-semibold mb-2">
-                    <i class="bi bi-info-circle"></i>
-                    Cara Mengakses Dashboard
+                <div class="guide-title">
+                    🚀 Cara Memulai
                 </div>
 
-                <div class="text-secondary">
-
-                    Dashboard tidak dapat dibuka secara langsung.
-
-                    <br><br>
-
-                    Silakan kirim salah satu perintah berikut melalui WhatsApp:
-
-                    <ul class="mt-3 mb-0">
-                        <li><strong>saldo</strong></li>
-                        <li><strong>hariini</strong></li>
-                        <li><strong>masuk 100000 gaji</strong></li>
-                        <li><strong>keluar 25000 makan</strong></li>
-                    </ul>
-
-                    <br>
-
-                    Bot akan mengirimkan tautan dashboard pribadi Anda secara otomatis.
-
+                <div class="command">
+                    <span>saldo</span>
+                    <i class="bi bi-arrow-right"></i>
                 </div>
+
+                <div class="command">
+                    <span>hariini</span>
+                    <i class="bi bi-arrow-right"></i>
+                </div>
+
+                <div class="command">
+                    <span>masuk 100000 gaji</span>
+                    <i class="bi bi-arrow-right"></i>
+                </div>
+
+                <div class="command">
+                    <span>keluar 25000 makan</span>
+                    <i class="bi bi-arrow-right"></i>
+                </div>
+
+                <small class="text-secondary">
+                    Bot akan mengirimkan dashboard pribadi secara otomatis.
+                </small>
 
             </div>
 
-            <div class="footer">
+        </div>
 
-                Finance Assistant © {{ current_year if current_year else 2026 }}
-
-            </div>
-
+        <div class="footer">
+            Finance Assistant © {{ current_year if current_year else 2026 }}
         </div>
 
     </div>
