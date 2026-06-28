@@ -7,8 +7,13 @@ import os
 import time
 import pandas as pd
 import io
+import pytz
+from zoneinfo import ZoneInfo
 
 app = Flask(__name__)
+
+def sekarang():
+    return datetime.now(ZoneInfo("Asia/Jakarta"))
 
 # =========================
 # CONFIG DB
@@ -185,7 +190,7 @@ def export_excel():
 
     output.seek(0)
 
-    filename = f"Kas_WhatsApp_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+    filename = f"Kas_WhatsApp_{sekarang().strftime('%Y%m%d_%H%M%S')}.xlsx"
 
     return send_file(
         output,
@@ -374,7 +379,7 @@ def webhook():
             )
 
             trx = Transaksi(
-                tanggal=datetime.now(),
+                tanggal=sekarang(),
                 tipe="MASUK",
                 nominal=nominal,
                 keterangan=keterangan,
@@ -394,8 +399,8 @@ def webhook():
             📝 Keterangan
             {keterangan}
 
-            📅 {datetime.now().strftime("%d %B %Y")}
-            🕒 {datetime.now().strftime("%H:%M")}
+            📅 {sekarang().strftime("%d %B %Y")}
+            🕒 {sekarang().strftime("%H:%M")}
             """
             )
 
@@ -426,7 +431,7 @@ def webhook():
             )
 
             trx = Transaksi(
-                tanggal=datetime.now(),
+                tanggal=sekarang(),
                 tipe="KELUAR",
                 nominal=nominal,
                 keterangan=keterangan,
@@ -446,8 +451,8 @@ def webhook():
             📝 Keterangan
             {keterangan}
 
-            📅 {datetime.now().strftime("%d %B %Y")}
-            🕒 {datetime.now().strftime("%H:%M")}
+            📅 {sekarang().strftime("%d %B %Y")}
+            🕒 {sekarang().strftime("%H:%M")}
             """
             )
 
@@ -465,7 +470,7 @@ def webhook():
     # =========================
     if cmd == "hariini":
 
-        today = datetime.now().date()
+        today = sekarang().date()
 
         data = Transaksi.query.filter(
             db.func.date(Transaksi.tanggal) == today
