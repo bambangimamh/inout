@@ -220,18 +220,27 @@ def home():
 #         end_date=end_date
 #     )
 
-@app.route("/export-excel/<token>")
+# =========================
+# EXPORT EXCEL
+# =========================
+@app.route("/export-excel")
 def export_excel():
 
-    start_date = request.args.get("start_date", "")
-    end_date = request.args.get("end_date", "")
-
+    # =========================
+    # VERIFIKASI TOKEN
+    # =========================
     token = request.args.get("token")
 
     nomor = verify_token(token)
 
     if not nomor:
         return "Unauthorized", 403
+
+    # =========================
+    # FILTER TANGGAL
+    # =========================
+    start_date = request.args.get("start_date", "")
+    end_date = request.args.get("end_date", "")
 
     query = Transaksi.query.filter(
         Transaksi.nomor_wa == nomor
@@ -247,6 +256,9 @@ def export_excel():
             db.func.date(Transaksi.tanggal) <= end_date
         )
 
+    # =========================
+    # AMBIL DATA
+    # =========================
     data = query.order_by(
         Transaksi.tanggal.desc()
     ).all()
@@ -256,7 +268,7 @@ def export_excel():
     for row in data:
 
         rows.append({
-            "Tanggal": row.tanggal.strftime("%Y-%m-%d %H:%M"),
+            "Tanggal": row.tanggal.strftime("%d-%m-%Y %H:%M"),
             "Tipe": row.tipe,
             "Nominal": row.nominal,
             "Keterangan": row.keterangan,
@@ -281,14 +293,17 @@ def export_excel():
         worksheet = writer.sheets["Kas WhatsApp"]
 
         for column in worksheet.columns:
+
             max_length = 0
+
             column_letter = column[0].column_letter
 
             for cell in column:
+
                 try:
                     if len(str(cell.value)) > max_length:
                         max_length = len(str(cell.value))
-                except:
+                except Exception:
                     pass
 
             worksheet.column_dimensions[
@@ -297,7 +312,10 @@ def export_excel():
 
     output.seek(0)
 
-    filename = f"Kas_WhatsApp_{sekarang().strftime('%Y%m%d_%H%M%S')}.xlsx"
+    filename = (
+        f"Kas_WhatsApp_"
+        f"{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx"
+    )
 
     return send_file(
         output,
