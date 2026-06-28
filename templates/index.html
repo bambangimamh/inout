@@ -838,49 +838,31 @@
                 <div class="filter-body">
 
                     <div class="filter-item">
-
-                        <label>
-                            Mulai
-                        </label>
-
+                        <label>Mulai</label>
                         <input type="date" name="start_date" class="form-control" value="{{ start_date }}">
-
                     </div>
 
                     <div class="filter-item">
-
-                        <label>
-                            Sampai
-                        </label>
-
+                        <label>Sampai</label>
                         <input type="date" name="end_date" class="form-control" value="{{ end_date }}">
-
                     </div>
 
-                    <button class="btn btn-primary">
+                    <div class="filter-actions">
 
-                        <i class="bi bi-search"></i>
+                        <button class="btn btn-primary btn-sm">
+                            <i class="bi bi-search"></i> Filter
+                        </button>
 
-                        Filter
+                        <a href="/?token={{ token }}" class="btn btn-light btn-sm">
+                            <i class="bi bi-arrow-clockwise"></i> Reset
+                        </a>
 
-                    </button>
+                        <a href="/export-excel?token={{ token }}&start_date={{ start_date }}&end_date={{ end_date }}"
+                            class="btn btn-success btn-sm">
+                            <i class="bi bi-file-earmark-excel"></i> Export
+                        </a>
 
-                    <a href="/?token={{ token }}" class="btn btn-light">
-
-                        <i class="bi bi-arrow-clockwise"></i>
-
-                        Reset
-
-                    </a>
-
-                    <a href="/export-excel?token={{ token }}&start_date={{ start_date }}&end_date={{ end_date }}"
-                        class="btn btn-success">
-
-                        <i class="bi bi-file-earmark-excel"></i>
-
-                        Export
-
-                    </a>
+                    </div>
 
                 </div>
 
@@ -888,174 +870,58 @@
 
         </div>
         <style>
-            /* ===========================
-FILTER
-=========================== */
-
             .filter-panel {
-
                 background: #fff;
-                border-radius: 18px;
-                padding: 18px 20px;
-
-                border: 1px solid #edf2f7;
-
-                box-shadow: 0 10px 25px rgba(15, 23, 42, .05);
-
+                border-radius: 14px;
+                padding: 14px;
+                border: 1px solid #eef0f4;
             }
 
             .filter-header {
-
-                display: flex;
-
-                justify-content: space-between;
-
-                align-items: center;
-
-                margin-bottom: 18px;
-
+                margin-bottom: 10px;
             }
 
             .filter-title {
-
-                font-size: 15px;
-
-                font-weight: 700;
-
-                display: flex;
-
-                align-items: center;
-
-                gap: 8px;
-
-            }
-
-            .filter-title i {
-
-                color: #2563eb;
-
+                font-weight: 600;
+                font-size: 14px;
             }
 
             .filter-subtitle {
-
-                margin-top: 2px;
-
-                font-size: 12px;
-
-                color: #6b7280;
-
+                font-size: 11px;
+                color: #888;
             }
 
+            /* 🔥 INI KUNCI FIX LAYOUT */
             .filter-body {
-
                 display: flex;
-
-                gap: 12px;
-
-                align-items: end;
-
                 flex-wrap: wrap;
-
+                gap: 12px;
+                align-items: flex-end;
             }
 
             .filter-item {
-
-                min-width: 180px;
-
-                flex: 1;
-
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                min-width: 160px;
             }
 
             .filter-item label {
-
-                font-size: 12px;
-
-                font-weight: 600;
-
-                color: #6b7280;
-
-                margin-bottom: 6px;
-
+                font-size: 11px;
+                color: #777;
             }
 
-            .filter-item .form-control {
-
-                border-radius: 12px;
-
-                height: 44px;
-
-                border: 1px solid #e5e7eb;
-
-            }
-
-            .filter-body .btn {
-
-                height: 44px;
-
-                padding: 0 18px;
-
-                border-radius: 12px;
-
-                font-weight: 600;
-
+            /* tombol group */
+            .filter-actions {
                 display: flex;
-
-                align-items: center;
-
                 gap: 8px;
-
+                flex-wrap: wrap;
             }
 
-            .btn-light {
-
-                background: #f8fafc;
-
-                border: 1px solid #e5e7eb;
-
-            }
-
-            .btn-light:hover {
-
-                background: #eef2ff;
-
-            }
-
-            @media(max-width:768px) {
-
-                .filter-panel {
-
-                    padding: 14px;
-
-                }
-
-                .filter-body {
-
-                    display: flex;
-
-                    flex-direction: column;
-
-                    align-items: stretch;
-
-                    gap: 10px;
-
-                }
-
-                .filter-item {
-
-                    width: 100%;
-
-                    min-width: 100%;
-
-                }
-
-                .filter-body .btn {
-
-                    width: 100%;
-
-                    justify-content: center;
-
-                }
-
+            /* optional biar cute */
+            .form-control {
+                border-radius: 10px;
+                font-size: 12px;
             }
         </style>
         <!-- TABLE -->
