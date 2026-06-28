@@ -425,6 +425,7 @@ def webhook():
         or cmd == "hariini"
         or cmd.startswith("masuk")
         or cmd.startswith("keluar")
+        or cmd.startswith("budget")
     )
 
     if not valid_command:
@@ -706,7 +707,7 @@ def webhook():
     # =========================
     # BUDGET
     # =========================
-    if cmd == "budget":
+    if cmd.startswith("budget"):
         try:
             parts = message.split()
             if len(parts) < 3:
