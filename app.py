@@ -8,8 +8,47 @@ import time
 import pandas as pd
 import io
 from zoneinfo import ZoneInfo
+from itsdangerous import URLSafeTimedSerializer
+from itsdangerous import BadSignature
+from itsdangerous import SignatureExpired
 
 app = Flask(__name__)
+
+secret = os.getenv("SECRET_KEY")
+
+if not secret:
+    raise RuntimeError("SECRET_KEY belum diset.")
+
+app.config["SECRET_KEY"] = secret
+
+serializer = URLSafeTimedSerializer(
+    app.config["SECRET_KEY"]
+)
+
+BASE_URL = "https://inout-production-88e5.up.railway.app"
+
+
+def generate_dashboard_link(nomor_wa):
+
+    token = serializer.dumps(nomor_wa)
+
+    return f"{BASE_URL}/dashboard/{token}"
+
+
+def verify_token(token):
+
+    try:
+
+        nomor = serializer.loads(
+            token,
+            max_age=60 * 60 * 24  # 1 hari
+        )
+
+        return nomor
+
+    except (BadSignature, SignatureExpired):
+
+        return None
 
 # =========================
 # CONFIG DB
@@ -53,38 +92,21 @@ def is_duplicate(msg_id):
     PROCESSED[msg_id] = now
     return False
 
-# =========================
-# LOG REQUEST
-# =========================
-@app.before_request
-def log_all():
-    print("=" * 80)
-    print("PATH :", request.path)
-    print("METHOD :", request.method)
-    print("CONTENT TYPE :", request.content_type)
-    print("=" * 80)
+@app.route("/dashboard/<token>")
+def dashboard(token):
 
+    nomor = verify_token(token)
 
-@app.route("/")
-def index():
+    if not nomor:
+        return "Link sudah tidak berlaku.", 403
 
     page = request.args.get("page", 1, type=int)
+
     per_page = 10
 
-    start_date = request.args.get("start_date", "")
-    end_date = request.args.get("end_date", "")
-
-    query = Transaksi.query
-
-    if start_date:
-        query = query.filter(
-            db.func.date(Transaksi.tanggal) >= start_date
-        )
-
-    if end_date:
-        query = query.filter(
-            db.func.date(Transaksi.tanggal) <= end_date
-        )
+    query = Transaksi.query.filter(
+        Transaksi.nomor_wa == nomor
+    )
 
     data_paginated = query.order_by(
         Transaksi.tanggal.desc()
@@ -99,12 +121,14 @@ def index():
     ).all()
 
     total_masuk = sum(
-        x.nominal for x in all_data
+        x.nominal
+        for x in all_data
         if x.tipe == "MASUK"
     )
 
     total_keluar = sum(
-        x.nominal for x in all_data
+        x.nominal
+        for x in all_data
         if x.tipe == "KELUAR"
     )
 
@@ -117,17 +141,102 @@ def index():
         total_masuk=total_masuk,
         total_keluar=total_keluar,
         saldo=saldo,
-        start_date=start_date,
-        end_date=end_date
+        start_date="",
+        end_date="",
+        token=token
     )
 
-@app.route("/export-excel")
+# =========================
+# LOG REQUEST
+# =========================
+@app.before_request
+def log_all():
+    print("=" * 80)
+    print("PATH :", request.path)
+    print("METHOD :", request.method)
+    print("CONTENT TYPE :", request.content_type)
+    print("=" * 80)
+
+@app.route("/")
+def home():
+    return """
+    <h2>Finance Assistant</h2>
+
+    Silakan buka dashboard melalui link WhatsApp.
+    """
+# @app.route("/")
+# def index():
+
+#     page = request.args.get("page", 1, type=int)
+#     per_page = 10
+
+#     start_date = request.args.get("start_date", "")
+#     end_date = request.args.get("end_date", "")
+
+#     query = Transaksi.query
+
+#     if start_date:
+#         query = query.filter(
+#             db.func.date(Transaksi.tanggal) >= start_date
+#         )
+
+#     if end_date:
+#         query = query.filter(
+#             db.func.date(Transaksi.tanggal) <= end_date
+#         )
+
+#     data_paginated = query.order_by(
+#         Transaksi.tanggal.desc()
+#     ).paginate(
+#         page=page,
+#         per_page=per_page,
+#         error_out=False
+#     )
+
+#     all_data = query.order_by(
+#         Transaksi.tanggal.desc()
+#     ).all()
+
+#     total_masuk = sum(
+#         x.nominal for x in all_data
+#         if x.tipe == "MASUK"
+#     )
+
+#     total_keluar = sum(
+#         x.nominal for x in all_data
+#         if x.tipe == "KELUAR"
+#     )
+
+#     saldo = total_masuk - total_keluar
+
+#     return render_template(
+#         "index.html",
+#         data=all_data,
+#         data_paginated=data_paginated,
+#         total_masuk=total_masuk,
+#         total_keluar=total_keluar,
+#         saldo=saldo,
+#         start_date=start_date,
+#         end_date=end_date
+#     )
+
+@app.route("/export-excel/<token>")
 def export_excel():
 
     start_date = request.args.get("start_date", "")
     end_date = request.args.get("end_date", "")
 
-    query = Transaksi.query
+    token = request.args.get("token")
+
+    nomor = verify_token(token)
+
+    if not nomor:
+        return "Unauthorized", 403
+
+    query = Transaksi.query.filter(
+        Transaksi.nomor_wa == nomor
+    )
+)
 
     if start_date:
         query = query.filter(
@@ -342,6 +451,8 @@ def webhook():
 
         saldo = masuk - keluar
 
+        link = generate_dashboard_link(sender)
+
         kirim_wa(
             sender,
             f"""💰 *Saldo Keuangan*
@@ -359,6 +470,10 @@ def webhook():
         💳 *Saldo Saat Ini*
 
         *Rp {saldo:,.0f}*
+
+        📊 *Dashboard*
+        {link}
+        🔒 Link berlaku 24 jam.
         """
         )
 
@@ -380,6 +495,8 @@ def webhook():
                 if len(parts) > 2
                 else "-"
             )
+
+            link = generate_dashboard_link(sender)
 
             trx = Transaksi(
                 tanggal=sekarang(),
@@ -404,6 +521,10 @@ def webhook():
 
             📅 {sekarang().strftime("%d %B %Y")}
             🕒 {sekarang().strftime("%H:%M")}
+
+            📊 *Dashboard*
+            {link}
+            🔒 Link berlaku 24 jam.
             """
             )
 
@@ -432,7 +553,7 @@ def webhook():
                 if len(parts) > 2
                 else "-"
             )
-
+            link = generate_dashboard_link(sender)
             trx = Transaksi(
                 tanggal=sekarang(),
                 tipe="KELUAR",
@@ -456,6 +577,10 @@ def webhook():
 
             📅 {sekarang().strftime("%d %B %Y")}
             🕒 {sekarang().strftime("%H:%M")}
+
+            📊 *Dashboard*
+            {link}
+            🔒 Link berlaku 24 jam.
             """
             )
 
@@ -480,7 +605,7 @@ def webhook():
         ).all()
 
         total = sum(x.nominal for x in data)
-
+        link = generate_dashboard_link(sender)
         kirim_wa(
             sender,
             f"""📊 *Ringkasan Hari Ini*
@@ -490,6 +615,10 @@ def webhook():
 
         Total Nominal
         *Rp {total:,.0f}*
+
+        📊 *Dashboard*
+            {link}
+            🔒 Link berlaku 24 jam.
         """
         )
 
