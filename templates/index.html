@@ -223,19 +223,199 @@
     <div class="container py-4">
 
         <!-- HEADER -->
-        <div class="page-header">
+        <div class="hero-header">
 
-            <div>
-                <div class="page-title">
-                    Kas WhatsApp Dashboard
+            <div class="hero-left">
+
+                <div class="hero-icon">
+                    <i class="bi bi-wallet2"></i>
                 </div>
 
-                <div class="page-subtitle">
-                    Monitoring pemasukan, pengeluaran dan saldo otomatis
+                <div>
+
+                    <div class="hero-title">
+                        Finance Assistant
+                    </div>
+
+                    <div class="hero-subtitle">
+                        Kelola pemasukan, pengeluaran, saldo, dan laporan keuangan secara otomatis melalui WhatsApp.
+                    </div>
+
                 </div>
+
+            </div>
+
+            <div class="hero-right">
+
+                <span class="hero-badge">
+                    <i class="bi bi-whatsapp"></i>
+                    WhatsApp Connected
+                </span>
+
             </div>
 
         </div>
+        <style>
+            /* ===========================
+HERO HEADER
+=========================== */
+
+            .hero-header {
+
+                background: linear-gradient(135deg, #2563eb, #3b82f6);
+
+                border-radius: 22px;
+
+                padding: 28px 32px;
+
+                color: #fff;
+
+                display: flex;
+
+                justify-content: space-between;
+
+                align-items: center;
+
+                margin-bottom: 28px;
+
+                box-shadow: 0 15px 35px rgba(37, 99, 235, .18);
+
+            }
+
+            .hero-left {
+
+                display: flex;
+
+                align-items: center;
+
+                gap: 20px;
+
+            }
+
+            .hero-icon {
+
+                width: 68px;
+
+                height: 68px;
+
+                border-radius: 18px;
+
+                background: rgba(255, 255, 255, .18);
+
+                display: flex;
+
+                align-items: center;
+
+                justify-content: center;
+
+                font-size: 30px;
+
+                backdrop-filter: blur(10px);
+
+            }
+
+            .hero-title {
+
+                font-size: 30px;
+
+                font-weight: 800;
+
+                line-height: 1.1;
+
+                letter-spacing: -.5px;
+
+            }
+
+            .hero-subtitle {
+
+                margin-top: 6px;
+
+                color: rgba(255, 255, 255, .88);
+
+                font-size: 14px;
+
+                max-width: 620px;
+
+            }
+
+            .hero-badge {
+
+                display: inline-flex;
+
+                align-items: center;
+
+                gap: 8px;
+
+                padding: 10px 18px;
+
+                border-radius: 999px;
+
+                background: rgba(255, 255, 255, .15);
+
+                border: 1px solid rgba(255, 255, 255, .25);
+
+                font-size: 13px;
+
+                font-weight: 600;
+
+                backdrop-filter: blur(8px);
+
+            }
+
+            .hero-badge i {
+
+                font-size: 16px;
+
+                color: #22c55e;
+
+            }
+
+            /* Mobile */
+
+            @media(max-width:768px) {
+
+                .hero-header {
+
+                    flex-direction: column;
+
+                    align-items: flex-start;
+
+                    gap: 18px;
+
+                    padding: 22px;
+
+                }
+
+                .hero-left {
+
+                    align-items: flex-start;
+
+                }
+
+                .hero-title {
+
+                    font-size: 24px;
+
+                }
+
+                .hero-icon {
+
+                    width: 56px;
+
+                    height: 56px;
+
+                    font-size: 24px;
+
+                }
+
+                .hero-subtitle {
+
+                    font-size: 13px;
+
+                }
+
+            }
+        </style>
 
         <!-- METRICS -->
         <div class="row g-3 mb-4">
