@@ -560,6 +560,8 @@ def webhook():
         or cmd.startswith("masuk")
         or cmd.startswith("keluar")
         or cmd.startswith("budget")
+        or cmd.startswith("reminder")
+        or cmd.startswith("hapusreminder")
     )
 
     if not valid_command:
@@ -1402,6 +1404,216 @@ def webhook():
         return jsonify({"status": True})
 
     # =========================
+    # REMINDER
+    # =========================
+    if cmd.startswith("reminder"):
+
+        try:
+
+            parts = message.lower().split()
+
+            # =========================
+            # LIHAT REMINDER
+            # =========================
+            if len(parts) == 1:
+
+                reminders = Reminder.query.filter_by(
+                    nomor_wa=sender,
+                    aktif=True
+                ).order_by(
+                    Reminder.tanggal.asc()
+                ).all()
+
+                if not reminders:
+
+                    kirim_wa(
+                        sender,
+                        "📭 Belum ada reminder.\n\n"
+                        "Contoh:\n"
+                        "reminder listrik 20 500000"
+                    )
+
+                    return jsonify({"status": True})
+
+                pesan = "🔔 *Reminder Tagihan*\n"
+                pesan += "━━━━━━━━━━━━━━\n\n"
+
+                total = 0
+
+                for r in reminders:
+
+                    total += r.nominal
+
+                    pesan += (
+                        f"📄 {r.nama.title()}\n"
+                        f"📅 Tanggal : {r.tanggal}\n"
+                        f"💰 Rp {r.nominal:,.0f}\n\n"
+                    )
+
+                pesan += "━━━━━━━━━━━━━━\n"
+                pesan += f"💵 Total Tagihan\nRp {total:,.0f}"
+
+                kirim_wa(sender, pesan)
+
+                return jsonify({"status": True})
+
+            # =========================
+            # FORMAT
+            # =========================
+            if len(parts) < 4:
+
+                kirim_wa(
+                    sender,
+                    "Format:\n"
+                    "reminder listrik 20 500000"
+                )
+
+                return jsonify({"status": True})
+
+            nama = parts[1]
+
+            tanggal = int(parts[2])
+
+            nominal = int(
+                parts[3]
+                .replace(".", "")
+                .replace(",", "")
+            )
+
+            if tanggal < 1 or tanggal > 31:
+
+                kirim_wa(
+                    sender,
+                    "Tanggal harus antara 1-31."
+                )
+
+                return jsonify({"status": True})
+
+            reminder = Reminder.query.filter_by(
+                nomor_wa=sender,
+                nama=nama
+            ).first()
+
+            if reminder:
+
+                reminder.tanggal = tanggal
+                reminder.nominal = nominal
+                reminder.aktif = True
+
+                status = "Diperbarui"
+
+            else:
+
+                reminder = Reminder(
+
+                    nomor_wa=sender,
+
+                    nama=nama,
+
+                    tanggal=tanggal,
+
+                    nominal=nominal
+
+                )
+
+                db.session.add(reminder)
+
+                status = "Dibuat"
+
+            db.session.commit()
+
+            kirim_wa(
+                sender,
+                f"""🔔 *Reminder {status}*
+
+    ━━━━━━━━━━━━━━
+
+    📄 Tagihan
+    {nama.title()}
+
+    📅 Jatuh Tempo
+    Tanggal {tanggal}
+
+    💰 Estimasi
+    Rp {nominal:,.0f}
+
+    ━━━━━━━━━━━━━━
+
+    Ketik *reminder*
+    untuk melihat seluruh reminder.
+    """
+            )
+
+        except Exception as e:
+
+            print(e)
+
+            kirim_wa(
+                sender,
+                str(e)
+            )
+
+        return jsonify({"status": True})
+
+    # =========================
+    # HAPUS REMINDER
+    # =========================
+    if cmd.startswith("hapusreminder"):
+
+        try:
+
+            parts = message.lower().split()
+
+            if len(parts) < 2:
+
+                kirim_wa(
+                    sender,
+                    "Format:\n"
+                    "hapusreminder listrik"
+                )
+
+                return jsonify({"status": True})
+
+            nama = parts[1]
+
+            reminder = Reminder.query.filter_by(
+                nomor_wa=sender,
+                nama=nama
+            ).first()
+
+            if not reminder:
+
+                kirim_wa(
+                    sender,
+                    "Reminder tidak ditemukan."
+                )
+
+                return jsonify({"status": True})
+
+            db.session.delete(reminder)
+
+            db.session.commit()
+
+            kirim_wa(
+                sender,
+                f"""🗑️ Reminder berhasil dihapus
+
+    📄 {nama.title()}
+    """
+            )
+
+        except Exception as e:
+
+            print(e)
+
+            kirim_wa(
+                sender,
+                str(e)
+            )
+
+        return jsonify({"status": True})
+
+    # =========================
     # DEFAULT
     # =========================
     return jsonify({
@@ -1469,6 +1681,8 @@ def ai_insight(sender):
         )
 
     return "\n".join(insight)
+
+
 # =========================
 # TEST
 # =========================

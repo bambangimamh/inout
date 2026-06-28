@@ -50,3 +50,43 @@ class Budget(db.Model):
             name="uq_budget"
         ),
     )
+
+class Reminder(db.Model):
+
+    __tablename__ = "reminder"
+
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
+
+    nomor_wa = db.Column(
+        db.String(30),
+        nullable=False,
+        index=True
+    )
+
+    nama = db.Column(
+        db.String(100),
+        nullable=False
+    )
+
+    nominal = db.Column(
+        db.Integer,
+        default=0
+    )
+
+    tanggal = db.Column(
+        db.Integer,
+        nullable=False
+    )
+
+    aktif = db.Column(
+        db.Boolean,
+        default=True
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow
+    )
