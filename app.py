@@ -703,39 +703,7 @@ def webhook():
 
         return jsonify({"status": True})
 
-    # =========================
-    # DEFAULT
-    # =========================
-    return jsonify({
-        "status": True
-    })
-
-# =========================
-# TEST
-# =========================
-@app.route("/test-wa")
-def test_wa():
-    kirim_wa("6285871264448", "Test dari Railway berhasil")
-    return {"status": True}
-
-
-@app.route("/debug-token")
-def debug_token():
-    token = os.getenv("FONTE_TOKEN")
-    return {
-        "exists": bool(token),
-        "length": len(token) if token else 0
-    }
-
-
-def periode_sekarang():
-    return datetime.now().strftime("%Y-%m")
-
-    # =========================
-# BUDGET
-# =========================
-
-if cmd.startswith("budget"):
+    if cmd.startswith("budget"):
 
     try:
 
@@ -811,6 +779,34 @@ if cmd.startswith("budget"):
         )
 
     return jsonify({"status": True})
+
+    # =========================
+    # DEFAULT
+    # =========================
+    return jsonify({
+        "status": True
+    })
+
+# =========================
+# TEST
+# =========================
+@app.route("/test-wa")
+def test_wa():
+    kirim_wa("6285871264448", "Test dari Railway berhasil")
+    return {"status": True}
+
+
+@app.route("/debug-token")
+def debug_token():
+    token = os.getenv("FONTE_TOKEN")
+    return {
+        "exists": bool(token),
+        "length": len(token) if token else 0
+    }
+
+
+def periode_sekarang():
+    return datetime.now().strftime("%Y-%m")
 
 
 if __name__ == "__main__":
