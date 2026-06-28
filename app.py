@@ -14,22 +14,6 @@ from itsdangerous import SignatureExpired
 
 app = Flask(__name__)
 
-KATEGORI_BUDGET = [
-    "makanan",
-    "minuman",
-    "transport",
-    "belanja",
-    "tagihan",
-    "hiburan",
-    "kesehatan",
-    "pendidikan",
-    "rumah",
-    "keluarga",
-    "investasi",
-    "tabungan",
-    "lainnya"
-]
-
 KATEGORI = {
 
     "makanan": [
@@ -153,9 +137,9 @@ def cari_kategori(keterangan):
 
     teks = keterangan.lower()
 
-    for kategori, subkategori in KATEGORI.items():
+    for kategori, daftar in KATEGORI.items():
 
-        for sub in subkategori:
+        for sub in daftar:
 
             if sub in teks:
 
@@ -733,11 +717,20 @@ def webhook():
                 if len(parts) > 2
                 else "-"
             )
+
+            kategori, subkategori = cari_kategori(keterangan)
+
+            print(kategori)
+            print(subkategori)
+
             link = generate_dashboard_link(sender)
+
             trx = Transaksi(
                 tanggal=sekarang(),
                 tipe="KELUAR",
                 nominal=nominal,
+                kategori=kategori,
+                subkategori=subkategori,
                 keterangan=keterangan,
                 nomor_wa=sender
             )
@@ -773,6 +766,12 @@ def webhook():
 
             📅 *Waktu*
             {sekarang().strftime("%d %b %Y • %H:%M")}
+
+            🏷️ Kategori
+            {kategori.title()}
+
+            📌 Subkategori
+            {subkategori.title()}
 
             ━━━━━━━━━━━━━━
 
