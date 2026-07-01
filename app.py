@@ -562,10 +562,28 @@ def transaksi_user(sender):
 # VALIDASI USER
 # =========================
 def user_terdaftar(nomor):
+    nomor = normalize_wa(nomor)
     return User.query.filter_by(
         nomor_wa=nomor,
         aktif=True
     ).first()
+
+# =========================
+# VALIDASI FORMAT PENOMORAN
+# =========================
+def normalize_wa(nomor):
+
+    nomor = str(nomor).strip()
+
+    nomor = nomor.replace("@s.whatsapp.net", "")
+    nomor = nomor.replace("+", "")
+    nomor = nomor.replace(" ", "")
+    nomor = nomor.replace("-", "")
+
+    if nomor.startswith("08"):
+        nomor = "62" + nomor[1:]
+
+    return nomor
 
 # =========================
 # WEBHOOK
@@ -592,8 +610,12 @@ def webhook():
     # =========================
     # EXTRACT DATA (SAFE)
     # =========================
-    sender = str(payload.get("sender") or payload.get("from") or "").strip()
+    # sender = str(payload.get("sender") or payload.get("from") or "").strip()
+    sender = normalize_wa(
+        payload.get("sender") or payload.get("from") or ""
+    )
     message = str(payload.get("message") or payload.get("text") or "").strip()
+    print("Sender :", sender)
 
     msg_id = payload.get("id") or payload.get("inboxid")
 
@@ -605,6 +627,7 @@ def webhook():
     # =========================
 
     user = user_terdaftar(sender)
+    print("User :", user)
 
     if not user:
 
