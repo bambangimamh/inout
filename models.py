@@ -1,9 +1,32 @@
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-db = SQLAlchemy()
 
 db = SQLAlchemy()
 
+class User(db.Model):
+
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    nama = db.Column(db.String(100), nullable=False)
+
+    nomor_wa = db.Column(
+        db.String(30),
+        unique=True,
+        nullable=False,
+        index=True
+    )
+
+    aktif = db.Column(
+        db.Boolean,
+        default=True
+    )
+
+    created_at = db.Column(
+        db.DateTime,
+        default=datetime.utcnow
+    )
 
 class Transaksi(db.Model):
 

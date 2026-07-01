@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template, send_file
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
-from models import db, Transaksi, Budget, Reminder
+from models import db, Transaksi, Budget, Reminder, User
 import requests
 import os
 import time
@@ -224,6 +224,86 @@ def is_duplicate(msg_id):
 
     PROCESSED[msg_id] = now
     return False
+
+@app.route("/admin/users")
+def admin_users():
+
+    search = request.args.get("search","")
+
+    page = request.args.get(
+        "page",
+        1,
+        type=int
+    )
+
+    query = User.query
+
+    if search:
+
+        query = query.filter(
+            User.nomor_wa.contains(search)
+        )
+
+    users = query.order_by(
+        User.created_at.desc()
+    ).paginate(
+        page=page,
+        per_page=15
+    )
+
+    return render_template(
+        "admin_users.html",
+        users=users,
+        search=search
+    )
+
+@app.route("/admin/users/add",methods=["POST"])
+def add_user():
+
+    nama=request.form["nama"]
+
+    nomor=request.form["nomor"]
+
+    if User.query.filter_by(
+        nomor_wa=nomor
+    ).first():
+
+        return redirect("/admin/users")
+
+    db.session.add(
+
+        User(
+            nama=nama,
+            nomor_wa=nomor
+        )
+
+    )
+
+    db.session.commit()
+
+    return redirect("/admin/users")
+
+@app.route("/admin/users/toggle/<int:id>")
+def toggle_user(id):
+
+    user=User.query.get_or_404(id)
+
+    user.aktif=not user.aktif
+
+    db.session.commit()
+
+    return redirect("/admin/users")
+
+@app.route("/admin/users/delete/<int:id>")
+def delete_user(id):
+
+    user=User.query.get_or_404(id)
+
+    db.session.delete(user)
+
+    db.session.commit()
+
+    return redirect("/admin/users")
 
 @app.route("/dashboard/<token>")
 def dashboard(token):
