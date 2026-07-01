@@ -1016,12 +1016,25 @@ def webhook():
 
                     total_budget += b.nominal
 
+                    now = datetime.now()
+
+                    awal_bulan = now.replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+
+                    if now.month == 12:
+                        akhir_bulan = now.replace(year=now.year + 1, month=1, day=1,
+                                                hour=0, minute=0, second=0, microsecond=0)
+                    else:
+                        akhir_bulan = now.replace(month=now.month + 1, day=1,
+                                                hour=0, minute=0, second=0, microsecond=0)
+
                     # =============================
-                    # TOTAL PENGELUARAN KATEGORI
+                    # TOTAL PENGELUARAN KATEGORI BULAN INI
                     # =============================
                     terpakai = transaksi_user(sender).filter(
                         Transaksi.tipe == "KELUAR",
-                        Transaksi.kategori == b.kategori
+                        Transaksi.kategori == b.kategori,
+                        Transaksi.tanggal >= awal_bulan,
+                        Transaksi.tanggal < akhir_bulan
                     ).with_entities(
                         db.func.sum(Transaksi.nominal)
                     ).scalar() or 0
