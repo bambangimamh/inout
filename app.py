@@ -559,6 +559,15 @@ def transaksi_user(sender):
     )
 
 # =========================
+# VALIDASI USER
+# =========================
+def user_terdaftar(nomor):
+    return User.query.filter_by(
+        nomor_wa=nomor,
+        aktif=True
+    ).first()
+
+# =========================
 # WEBHOOK
 # =========================
 @app.route("/webhook", methods=["POST"])
@@ -590,6 +599,31 @@ def webhook():
 
     if not sender or not message:
         return jsonify({"status": True})
+
+    # =========================
+    # CEK USER TERDAFTAR
+    # =========================
+
+    user = user_terdaftar(sender)
+
+    if not user:
+
+        kirim_wa(
+            sender,
+            """🚫 *Nomor Belum Terdaftar*
+
+    Maaf, nomor WhatsApp Anda belum terdaftar pada sistem *ChatSaku Finance*.
+
+    Silakan hubungi Admin untuk mengaktifkan akun Anda.
+
+    💚 ChatSaku Finance Assistant
+    """
+        )
+
+        return jsonify({
+            "status": True,
+            "registered": False
+        })
 
     # =========================
     # ANTI LOOP INTELLIGENT FILTER
