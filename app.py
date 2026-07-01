@@ -778,34 +778,61 @@ def webhook():
 
             if budget:
 
+                # awal & akhir bulan
+                now = sekarang()
+
+                awal_bulan = now.replace(
+                    day=1,
+                    hour=0,
+                    minute=0,
+                    second=0,
+                    microsecond=0
+                )
+
+                if now.month == 12:
+                    akhir_bulan = now.replace(
+                        year=now.year + 1,
+                        month=1,
+                        day=1,
+                        hour=0,
+                        minute=0,
+                        second=0,
+                        microsecond=0
+                    )
+                else:
+                    akhir_bulan = now.replace(
+                        month=now.month + 1,
+                        day=1,
+                        hour=0,
+                        minute=0,
+                        second=0,
+                        microsecond=0
+                    )
+
                 total_keluar = transaksi_user(sender).filter(
                     Transaksi.tipe == "KELUAR",
-                    Transaksi.kategori == kategori
+                    Transaksi.kategori == kategori,
+                    Transaksi.tanggal >= awal_bulan,
+                    Transaksi.tanggal < akhir_bulan
                 ).with_entities(
                     db.func.sum(Transaksi.nominal)
                 ).scalar() or 0
 
                 persen = (
-                    total_keluar /
-                    budget.nominal
-                ) * 100
+                    (total_keluar / budget.nominal) * 100
+                    if budget.nominal > 0 else 0
+                )
 
                 sisa = budget.nominal - total_keluar
 
-                # progress bar
                 blok = min(10, int(persen / 10))
+                bar = "🟩" * blok + "⬜" * (10 - blok)
 
-                bar = (
-                    "🟩" * blok +
-                    "⬜" * (10 - blok)
-                )
-
-                # status
                 if persen <= 50:
-                    status = "🟢 Aman"
+                    status = "🟢 Budget Aman"
 
                 elif persen <= 80:
-                    status = "🟡 Waspada"
+                    status = "🟡 Perlu Perhatian"
 
                 elif persen <= 100:
                     status = "🟠 Hampir Habis"
@@ -815,29 +842,29 @@ def webhook():
 
                 budget_text = f"""
 
-                ──────────────────
+            ──────────────────
 
-                🏦 *Status Budget*
+            🏦 *Budget Bulan Ini*
 
-                🏷️ Kategori
-                {kategori.title()}
+            🏷️ Kategori
+            {kategori.title()}
 
-                💰 Budget
-                Rp {budget.nominal:,.0f}
+            💰 Budget
+            Rp {budget.nominal:,.0f}
 
-                💸 Terpakai
-                Rp {total_keluar:,.0f}
+            💸 Terpakai
+            Rp {total_keluar:,.0f}
 
-                💳 Sisa Budget
-                Rp {max(sisa,0):,.0f}
+            💳 Sisa Budget
+            Rp {max(sisa,0):,.0f}
 
-                📊 Progress
-                {persen:.1f}%
+            📊 Progress
+            {persen:.1f}%
 
-                {bar}
+            {bar}
 
-                {status}
-                """
+            {status}
+            """
 
                 if persen > 100:
 
@@ -845,21 +872,23 @@ def webhook():
 
                     budget_text += f"""
 
-                ⚠️ Over Budget
-                Rp {over:,.0f}
-                """
+            ⚠️ Melebihi Budget
+            Rp {over:,.0f}
+            """
 
-                else:
+            else:
 
-                    budget_text = """
+                budget_text = """
 
-                ──────────────────
+            ──────────────────
 
-                ℹ️ Budget belum tersedia.
+            🏦 *Budget Bulan Ini*
 
-                Contoh:
-                budget transport 1000000
-                """
+            ℹ️ Belum ada budget untuk kategori ini.
+
+            Contoh:
+            budget transport 1000000
+            """
 
             kirim_wa(
                 sender,
