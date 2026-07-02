@@ -431,6 +431,17 @@ def dashboard(token):
 
         })
 
+    # ==========================================
+    # REMINDER TAGIHAN
+    # ==========================================
+
+    reminders = Reminder.query.filter_by(
+        nomor_wa=nomor,
+        aktif=True
+    ).order_by(
+        Reminder.tanggal.asc()
+    ).all()
+
     # =========================
     # RENDER
     # =========================
@@ -445,7 +456,9 @@ def dashboard(token):
         start_date=start_date,
         end_date=end_date,
         token=token,
-        budget_data=budget_data
+        budget_data=budget_data,
+        reminders=reminders,
+        now=datetime.now()
     )
 
 # =========================

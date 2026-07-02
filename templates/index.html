@@ -1216,6 +1216,241 @@
 
             }
         </style>
+        <!-- ========================================= -->
+        <!-- REMINDER TAGIHAN -->
+        <!-- ========================================= -->
+
+        <div class="reminder-wrapper mb-4">
+
+            <div class="reminder-header">
+
+                <div>
+
+                    <div class="reminder-title">
+                        <i class="bi bi-bell-fill"></i>
+                        Reminder Tagihan
+                    </div>
+
+                    <div class="reminder-subtitle">
+                        Tagihan yang perlu dibayar setiap bulan.
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% if reminders %}
+
+            <div class="row g-3">
+
+                {% for item in reminders %}
+
+                {% set hari_ini = now.day %}
+                {% set selisih = item.tanggal - hari_ini %}
+
+                <div class="col-lg-6">
+
+                    <div class="reminder-card">
+
+                        <div class="reminder-top">
+
+                            <div>
+
+                                <div class="reminder-name">
+
+                                    <i class="bi bi-receipt"></i>
+
+                                    {{ item.nama }}
+
+                                </div>
+
+                                <div class="reminder-date">
+
+                                    Tanggal {{ item.tanggal }}
+
+                                </div>
+
+                            </div>
+
+                            <div class="reminder-nominal">
+
+                                Rp {{ "{:,.0f}".format(item.nominal) }}
+
+                            </div>
+
+                        </div>
+
+                        <div class="reminder-status">
+
+                            {% if selisih > 0 %}
+
+                            <span class="badge bg-success">
+
+                                {{ selisih }} hari lagi
+
+                            </span>
+
+                            {% elif selisih == 0 %}
+
+                            <span class="badge bg-warning text-dark">
+
+                                Hari ini
+
+                            </span>
+
+                            {% else %}
+
+                            <span class="badge bg-danger">
+
+                                Terlambat {{ selisih|abs }} hari
+
+                            </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="reminder-empty">
+
+                <i class="bi bi-bell-slash"></i>
+
+                <div>
+
+                    <h6>Tidak ada reminder</h6>
+
+                    <small>
+                        Belum ada tagihan yang dibuat.
+                    </small>
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+        <style>
+            .reminder-wrapper {
+
+                background: #fff;
+                border: 1px solid var(--border);
+                border-radius: 22px;
+                padding: 20px;
+                box-shadow: 0 8px 24px rgba(7, 94, 84, .06);
+
+            }
+
+            .reminder-header {
+
+                margin-bottom: 18px;
+
+            }
+
+            .reminder-title {
+
+                font-family: 'Baloo 2', sans-serif;
+                font-size: 16px;
+                font-weight: 700;
+                color: var(--primary-deep);
+
+            }
+
+            .reminder-title i {
+
+                color: #25D366;
+                margin-right: 6px;
+
+            }
+
+            .reminder-subtitle {
+
+                font-size: 12px;
+                color: #777;
+
+            }
+
+            .reminder-card {
+
+                background: #f9fffb;
+                border: 1px solid var(--border);
+                border-radius: 18px;
+                padding: 16px;
+                transition: .25s;
+
+            }
+
+            .reminder-card:hover {
+
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(37, 211, 102, .10);
+
+            }
+
+            .reminder-top {
+
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+            }
+
+            .reminder-name {
+
+                font-weight: 700;
+                color: var(--primary-deep);
+
+            }
+
+            .reminder-date {
+
+                color: #888;
+                font-size: 12px;
+
+            }
+
+            .reminder-nominal {
+
+                font-family: 'Baloo 2', sans-serif;
+                font-size: 18px;
+                font-weight: 700;
+                color: var(--primary-dark);
+
+            }
+
+            .reminder-status {
+
+                margin-top: 12px;
+
+            }
+
+            .reminder-empty {
+
+                display: flex;
+                gap: 15px;
+                align-items: center;
+                border: 1px dashed #ccefdc;
+                border-radius: 18px;
+                padding: 25px;
+
+            }
+
+            .reminder-empty i {
+
+                font-size: 42px;
+                color: #25D366;
+
+            }
+        </style>
         <!-- FILTER -->
         <div class="filter-panel mb-4">
 
