@@ -442,6 +442,109 @@ def dashboard(token):
         Reminder.tanggal.asc()
     ).all()
 
+    # ==========================================
+    # AI FINANCE INSIGHT
+    # ==========================================
+
+    insight = []
+
+    # Kondisi saldo
+
+    if saldo > 0:
+
+        insight.append(
+            f"👍 Saldo Anda masih positif sebesar Rp {saldo:,.0f}."
+        )
+
+    else:
+
+        insight.append(
+            "⚠ Pengeluaran lebih besar daripada pemasukan."
+        )
+
+    # Persentase pengeluaran
+
+    if total_masuk > 0:
+
+        rasio = (total_keluar / total_masuk) * 100
+
+        if rasio >= 90:
+
+            insight.append(
+                "Pengeluaran sudah mencapai lebih dari 90% dari pemasukan."
+            )
+
+        elif rasio >= 70:
+
+            insight.append(
+                "Pengeluaran sudah melewati 70% dari pemasukan."
+            )
+
+        else:
+
+            insight.append(
+                "Arus kas masih cukup sehat."
+            )
+
+    # Budget
+
+    for item in budget_data:
+
+        if item["persen"] >= 100:
+
+            insight.append(
+                f"Budget kategori {item['kategori']} telah terlampaui."
+            )
+
+        elif item["persen"] >= 90:
+
+            insight.append(
+                f"Budget kategori {item['kategori']} hampir habis."
+            )
+
+    # Reminder
+
+    hari_ini = datetime.now().day
+
+    for r in reminders:
+
+        selisih = r.tanggal - hari_ini
+
+        if selisih == 0:
+
+            insight.append(
+                f"Hari ini jatuh tempo pembayaran {r.nama}."
+            )
+
+        elif selisih <= 3 and selisih > 0:
+
+            insight.append(
+                f"{r.nama} jatuh tempo dalam {selisih} hari."
+            )
+
+    # Pengeluaran terbesar
+
+    kategori = {}
+
+    for trx in all_data:
+
+        if trx.tipe == "KELUAR":
+
+            kategori.setdefault(trx.kategori, 0)
+
+            kategori[trx.kategori] += trx.nominal
+
+    if kategori:
+
+        terbesar = max(kategori, key=kategori.get)
+
+        insight.append(
+
+            f"Kategori pengeluaran terbesar bulan ini adalah "
+            f"{terbesar} sebesar Rp {kategori[terbesar]:,.0f}."
+
+        )
+
     # =========================
     # RENDER
     # =========================
@@ -458,7 +561,8 @@ def dashboard(token):
         token=token,
         budget_data=budget_data,
         reminders=reminders,
-        now=datetime.now()
+        now=datetime.now(),
+        insight=insight
     )
 
 # =========================

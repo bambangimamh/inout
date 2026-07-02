@@ -906,6 +906,125 @@
 
             }
         </style>
+
+        <div class="ai-wrapper mb-4">
+
+            <div class="ai-header">
+
+                <div class="ai-title">
+
+                    🤖 AI Finance Insight
+
+                </div>
+
+                <div class="ai-subtitle">
+
+                    Analisis otomatis kondisi keuangan Anda.
+
+                </div>
+
+            </div>
+
+            {% for text in insight %}
+
+            <div class="ai-item">
+
+                <div class="ai-icon">
+
+                    <i class="bi bi-stars"></i>
+
+                </div>
+
+                <div>
+
+                    {{ text }}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+        <style>
+            .ai-wrapper {
+
+                background: linear-gradient(135deg, #0f766e, #14b8a6);
+
+                color: white;
+
+                border-radius: 22px;
+
+                padding: 22px;
+
+                margin-bottom: 20px;
+
+                box-shadow: 0 15px 30px rgba(20, 184, 166, .25);
+
+            }
+
+            .ai-title {
+
+                font-family: 'Baloo 2';
+
+                font-size: 18px;
+
+                font-weight: 700;
+
+            }
+
+            .ai-subtitle {
+
+                opacity: .85;
+
+                margin-bottom: 18px;
+
+                font-size: 13px;
+
+            }
+
+            .ai-item {
+
+                display: flex;
+
+                gap: 14px;
+
+                padding: 14px;
+
+                background: rgba(255, 255, 255, .08);
+
+                border-radius: 14px;
+
+                margin-bottom: 10px;
+
+                align-items: flex-start;
+
+            }
+
+            .ai-icon {
+
+                width: 38px;
+
+                height: 38px;
+
+                border-radius: 50%;
+
+                background: white;
+
+                color: #0f766e;
+
+                display: flex;
+
+                justify-content: center;
+
+                align-items: center;
+
+                font-size: 18px;
+
+                flex-shrink: 0;
+
+            }
+        </style>
         <!-- ========================================= -->
         <!-- BUDGET BULAN INI -->
         <!-- ========================================= -->
