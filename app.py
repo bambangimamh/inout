@@ -770,22 +770,21 @@ https://www.chatsaku.com
         kirim_wa(
             sender,
             f"""💳 *Saldo Keuangan*
+┌────────────────┐
+📥 Masuk   : Rp {masuk:,.0f}
+📤 Keluar  : Rp {keluar:,.0f}
+ ─────────────────
+💰 Saldo   : *Rp {saldo:,.0f}*
+└────────────────┘
 
-            ┌────────────────┐
-            📥 Masuk   : Rp {masuk:,.0f}
-            📤 Keluar  : Rp {keluar:,.0f}
-            ─────────────────
-            💰 Saldo   : *Rp {saldo:,.0f}*
-            └────────────────┘
+📊 Dashboard
+{link}
 
-            📊 Dashboard
-            {link}
+🕒 Berlaku 24 jam
 
-            🕒 Berlaku 24 jam
-
-            🤖 ChatSaku Finance Assistant
-            💚 Kelola keuangan langsung dari WhatsApp
-            """
+🤖 ChatSaku Finance Assistant
+💚 Kelola keuangan langsung dari WhatsApp
+"""
         )
 
         return jsonify({"status": True})
@@ -837,30 +836,29 @@ https://www.chatsaku.com
             kirim_wa(
                 sender,
                 f"""✅ *Transaksi Berhasil*
+┌────────────────────
+💰 *KREDIT MASUK*
 
-                    ┌────────────────────
-                    💰 *KREDIT MASUK*
+💵 Nominal
+Rp {nominal:,.0f}
 
-                    💵 Nominal
-                    Rp {nominal:,.0f}
+📝 Keterangan
+{keterangan}
 
-                    📝 Keterangan
-                    {keterangan}
+🕒 {sekarang().strftime("%d %b %Y • %H:%M")}
+└────────────────────
 
-                    🕒 {sekarang().strftime("%d %b %Y • %H:%M")}
-                    └────────────────────
+💳 *Saldo Saat Ini*
+Rp {saldo:,.0f}
 
-                    💳 *Saldo Saat Ini*
-                    Rp {saldo:,.0f}
+📊 Dashboard
+{link}
 
-                    📊 Dashboard
-                    {link}
+⏳ Link aktif 24 jam
 
-                    ⏳ Link aktif 24 jam
-
-                    ━━━━━━━━━━━━━━━━━━
-                    🤖 ChatSaku Finance Assistant
-                """
+━━━━━━━━━━━━━━━━━━
+🤖 ChatSaku Finance Assistant
+"""
             )
 
         except Exception:
@@ -1016,30 +1014,28 @@ https://www.chatsaku.com
                     status = "🔴 Budget Terlampaui"
 
                 budget_text = f"""
+──────────────────
+🏦 *Budget Bulan Ini*
 
-            ──────────────────
+🏷️ Kategori
+{kategori.title()}
 
-            🏦 *Budget Bulan Ini*
+💰 Budget
+Rp {budget.nominal:,.0f}
 
-            🏷️ Kategori
-            {kategori.title()}
+💸 Terpakai
+Rp {total_keluar:,.0f}
 
-            💰 Budget
-            Rp {budget.nominal:,.0f}
+💳 Sisa Budget
+Rp {max(sisa,0):,.0f}
 
-            💸 Terpakai
-            Rp {total_keluar:,.0f}
+📊 Progress
+{persen:.1f}%
 
-            💳 Sisa Budget
-            Rp {max(sisa,0):,.0f}
+{bar}
 
-            📊 Progress
-            {persen:.1f}%
-
-            {bar}
-
-            {status}
-            """
+{status}
+"""
 
                 if persen > 100:
 
@@ -1047,60 +1043,57 @@ https://www.chatsaku.com
 
                     budget_text += f"""
 
-            ⚠️ Melebihi Budget
-            Rp {over:,.0f}
-            """
+⚠️ Melebihi Budget
+Rp {over:,.0f}
+"""
 
             else:
 
                 budget_text = """
+ ──────────────────
 
-            ──────────────────
+🏦 *Budget Bulan Ini*
 
-            🏦 *Budget Bulan Ini*
+ℹ️ Belum ada budget untuk kategori ini.
 
-            ℹ️ Belum ada budget untuk kategori ini.
-
-            Contoh:
-            budget transport 1000000
-            """
+Contoh:
+budget transport 1000000
+"""
 
             kirim_wa(
                 sender,
                 f"""🏦 *Notifikasi Transaksi*
+──────────────────
 
-                ──────────────────
+✅ *Debit Berhasil*
+💸 - Rp {nominal:,.0f}
 
-                ✅ *Debit Berhasil*
+🏷️ Kategori
+{kategori.title()}
 
-                💸 - Rp {nominal:,.0f}
+📂 Subkategori
+{subkategori.title()}
 
-                🏷️ Kategori
-                {kategori.title()}
+📝 Keterangan
+{keterangan}
 
-                📂 Subkategori
-                {subkategori.title()}
+🕒 {sekarang().strftime("%d %b %Y • %H:%M")}
 
-                📝 Keterangan
-                {keterangan}
+{budget_text}
 
-                🕒 {sekarang().strftime("%d %b %Y • %H:%M")}
+──────────────────
 
-                {budget_text}
+💳 Saldo Tersedia
+*Rp {saldo:,.0f}*
 
-                ──────────────────
+📈 Dashboard
+{link}
 
-                💳 Saldo Tersedia
-                *Rp {saldo:,.0f}*
+⏳ Link aktif 24 jam
 
-                📈 Dashboard
-                {link}
-
-                ⏳ Link aktif 24 jam
-
-                ──────────────────
-                🤖 ChatSaku Finance Assistant
-                """
+──────────────────
+🤖 ChatSaku Finance Assistant
+"""
             )
 
         except Exception as e:
@@ -1111,12 +1104,11 @@ https://www.chatsaku.com
                 sender,
                 f"""❌ Terjadi kesalahan
 
-    {e}
+{e}
 
-    Format:
-
-    keluar 25000 grab
-    """
+Format:
+keluar 25000 grab
+"""
             )
 
         return jsonify({"status": True})
@@ -1147,31 +1139,30 @@ https://www.chatsaku.com
         kirim_wa(
             sender,
             f"""📊 *Ringkasan Hari Ini*
+━━━━━━━━━━━━━━
 
-            ━━━━━━━━━━━━━━
+🧾 *Jumlah Transaksi*
+{len(data)}
 
-            🧾 *Jumlah Transaksi*
-            {len(data)}
+📥 *Pemasukan*
+Rp {masuk_hari_ini:,.0f}
 
-            📥 *Pemasukan*
-            Rp {masuk_hari_ini:,.0f}
+📤 *Pengeluaran*
+Rp {keluar_hari_ini:,.0f}
 
-            📤 *Pengeluaran*
-            Rp {keluar_hari_ini:,.0f}
+━━━━━━━━━━━━━━
 
-            ━━━━━━━━━━━━━━
+💰 *Total Aktivitas*
+Rp {total:,.0f}
 
-            💰 *Total Aktivitas*
-            Rp {total:,.0f}
+📊 *Dashboard*
+{link}
 
-            📊 *Dashboard*
-            {link}
+🔒 Link berlaku selama *24 jam*.
 
-            🔒 Link berlaku selama *24 jam*.
-
-            ━━━━━━━━━━━━━━
-            🤖 *Finance Assistant*
-            """
+━━━━━━━━━━━━━━
+🤖 *Finance Assistant*
+"""
         )
 
         return jsonify({"status": True})
@@ -1337,13 +1328,13 @@ https://www.chatsaku.com
                     sender,
                     f"""❌ Kategori tidak tersedia.
 
-                    Kategori:
+Kategori:
 
-                    {daftar}
+{daftar}
 
-                    Contoh:
-                    budget makanan 1500000
-                    """
+Contoh:
+budget makanan 1500000
+"""
                 )
 
                 return jsonify({"status":True})
@@ -1386,23 +1377,22 @@ https://www.chatsaku.com
             kirim_wa(
                 sender,
                 f"""🎯 *Budget {status}*
+━━━━━━━━━━━━━━
 
-                ━━━━━━━━━━━━━━
+📂 Kategori
+{kategori.title()}
 
-                📂 Kategori
-                {kategori.title()}
+💰 Budget
+Rp {nominal:,.0f}
 
-                💰 Budget
-                Rp {nominal:,.0f}
+📅 Periode
+{periode}
 
-                📅 Periode
-                {periode}
+━━━━━━━━━━━━━━
 
-                ━━━━━━━━━━━━━━
-
-                Ketik *budget*
-                untuk melihat semua budget.
-                """
+Ketik *budget*
+untuk melihat semua budget.
+"""
             )
 
         except Exception as e:
@@ -1488,17 +1478,17 @@ https://www.chatsaku.com
 
                 budget_info = f"""
 
-                🎯 Budget {kategori_terbesar.title()}
-                Rp {budget.nominal:,.0f}
+🎯 Budget {kategori_terbesar.title()}
+Rp {budget.nominal:,.0f}
 
-                📉 Terpakai
-                Rp {nominal_terbesar:,.0f}
+📉 Terpakai
+Rp {nominal_terbesar:,.0f}
 
-                💵 Sisa
-                Rp {max(sisa,0):,.0f}
+💵 Sisa
+Rp {max(sisa,0):,.0f}
 
-                📊 {persen_budget:.1f}%
-                """
+📊 {persen_budget:.1f}%
+"""
 
             # =====================================
             # FINANCE SCORE
@@ -1568,44 +1558,43 @@ https://www.chatsaku.com
             kirim_wa(
                 sender,
                 f"""🏦 *AI Finance Insight*
+──────────────────
 
-                ──────────────────
+📊 Analisis Pengeluaran
 
-                📊 Analisis Pengeluaran
+💸 Total Debit
+Rp {total:,.0f}
 
-                💸 Total Debit
-                Rp {total:,.0f}
+🏷️ Kategori Terbesar
+{kategori_terbesar.title()}
 
-                🏷️ Kategori Terbesar
-                {kategori_terbesar.title()}
+💰 Nominal
+Rp {nominal_terbesar:,.0f}
 
-                💰 Nominal
-                Rp {nominal_terbesar:,.0f}
+📈 Kontribusi
+{persen:.1f}% dari total
 
-                📈 Kontribusi
-                {persen:.1f}% dari total
+{budget_info}
 
-                {budget_info}
+──────────────────
 
-                ──────────────────
+💳 *Finance Score*
 
-                💳 *Finance Score*
+✨ {score}/100
 
-                ✨ {score}/100
+{status}
 
-                {status}
+──────────────────
 
-                ──────────────────
+🧠 *Rekomendasi AI*
 
-                🧠 *Rekomendasi AI*
+{chr(10).join(rekomendasi)}
 
-                {chr(10).join(rekomendasi)}
+──────────────────
 
-                ──────────────────
-
-                🤖 ChatSaku Finance Assistant
-                💚 AI Powered • WhatsApp Finance
-                """
+🤖 ChatSaku Finance Assistant
+💚 AI Powered • WhatsApp Finance
+"""
             )
 
         except Exception as e:
@@ -1741,23 +1730,22 @@ https://www.chatsaku.com
             kirim_wa(
                 sender,
                 f"""🔔 *Reminder {status}*
+━━━━━━━━━━━━━━
 
-                ━━━━━━━━━━━━━━
+📄 Tagihan
+{nama.title()}
 
-                📄 Tagihan
-                {nama.title()}
+📅 Jatuh Tempo
+Tanggal {tanggal}
 
-                📅 Jatuh Tempo
-                Tanggal {tanggal}
+💰 Estimasi
+Rp {nominal:,.0f}
 
-                💰 Estimasi
-                Rp {nominal:,.0f}
+━━━━━━━━━━━━━━
 
-                ━━━━━━━━━━━━━━
-
-                Ketik *reminder*
-                untuk melihat seluruh reminder.
-                """
+Ketik *reminder*
+untuk melihat seluruh reminder.
+"""
             )
 
         except Exception as e:
