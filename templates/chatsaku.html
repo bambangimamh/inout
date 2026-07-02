@@ -1,0 +1,7905 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>ChatSaku | WhatsApp Finance Assistant</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+
+            --wa: #25D366;
+            --wa-dark: #128C7E;
+            --wa-deep: #075E54;
+
+            --green: #4ADE80;
+
+            --bg: #f3fff7;
+            --bg2: #ecfff4;
+
+            --text: #17342c;
+            --muted: #6b7280;
+
+            --card: #ffffff;
+            --border: #dff3e7;
+
+            --shadow: 0 20px 60px rgba(7, 94, 84, .10);
+
+        }
+
+        /* ========================= */
+
+        * {
+
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
+        }
+
+        html {
+
+            scroll-behavior: smooth;
+
+        }
+
+        body {
+
+            font-family: 'Inter', sans-serif;
+
+            background:
+
+                radial-gradient(circle at top left, #d8ffea 0%, transparent 35%),
+
+                radial-gradient(circle at bottom right, #dff7ff 0%, transparent 35%),
+
+                linear-gradient(180deg, #f7fff9, #eefcf4);
+
+            color: var(--text);
+
+            overflow-x: hidden;
+
+            position: relative;
+
+        }
+
+        /* ========================= */
+        /* FLOATING SHAPES */
+        /* ========================= */
+
+        body::before {
+
+            content: "";
+
+            position: fixed;
+
+            width: 520px;
+            height: 520px;
+
+            border-radius: 50%;
+
+            background: rgba(37, 211, 102, .10);
+
+            top: -250px;
+            left: -180px;
+
+            filter: blur(60px);
+
+            z-index: -5;
+
+        }
+
+        body::after {
+
+            content: "";
+
+            position: fixed;
+
+            width: 420px;
+            height: 420px;
+
+            border-radius: 50%;
+
+            background: rgba(18, 140, 126, .10);
+
+            right: -150px;
+            bottom: -180px;
+
+            filter: blur(60px);
+
+            z-index: -5;
+
+        }
+
+        /* Bubble */
+
+        .bubble-bg {
+
+            position: absolute;
+
+            border-radius: 50%;
+
+            background: rgba(37, 211, 102, .08);
+
+            animation: float 7s ease-in-out infinite;
+
+        }
+
+        .b1 {
+
+            width: 70px;
+            height: 70px;
+
+            left: 8%;
+            top: 170px;
+
+        }
+
+        .b2 {
+
+            width: 110px;
+            height: 110px;
+
+            right: 10%;
+            top: 280px;
+
+            animation-delay: 2s;
+
+        }
+
+        .b3 {
+
+            width: 40px;
+            height: 40px;
+
+            left: 20%;
+            bottom: 100px;
+
+            animation-delay: 4s;
+
+        }
+
+        @keyframes float {
+
+            0% {
+
+                transform: translateY(0);
+
+            }
+
+            50% {
+
+                transform: translateY(-18px);
+
+            }
+
+            100% {
+
+                transform: translateY(0);
+
+            }
+
+        }
+
+        /* ========================= */
+        /* NAVBAR */
+        /* ========================= */
+
+        .navbar {
+
+            padding: 18px 0;
+
+            background: rgba(255, 255, 255, .82);
+
+            backdrop-filter: blur(18px);
+
+            border-bottom: 1px solid rgba(255, 255, 255, .6);
+
+            box-shadow: 0 5px 20px rgba(0, 0, 0, .03);
+
+        }
+
+        .navbar-brand {
+
+            font-family: 'Baloo 2', sans-serif;
+
+            font-size: 34px;
+
+            font-weight: 800;
+
+            color: var(--wa-deep) !important;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+        }
+
+        .logo-circle {
+
+            width: 46px;
+            height: 46px;
+
+            border-radius: 16px;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            background: linear-gradient(135deg, var(--wa), var(--wa-dark));
+
+            color: white;
+
+            font-size: 22px;
+
+            box-shadow: 0 12px 25px rgba(37, 211, 102, .30);
+
+        }
+
+        .navbar-brand span {
+
+            color: var(--wa);
+
+        }
+
+        .nav-link {
+
+            font-weight: 600;
+
+            margin-left: 20px;
+
+            color: #5b6a63 !important;
+
+            transition: .25s;
+
+            position: relative;
+
+        }
+
+        .nav-link:hover {
+
+            color: var(--wa) !important;
+
+        }
+
+        .nav-link::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            bottom: -6px;
+
+            width: 0;
+
+            height: 3px;
+
+            border-radius: 99px;
+
+            background: var(--wa);
+
+            transition: .3s;
+
+        }
+
+        .nav-link:hover::after {
+
+            width: 100%;
+
+        }
+
+        .btn-login {
+
+            padding: 11px 22px;
+
+            border-radius: 99px;
+
+            border: 2px solid var(--wa);
+
+            color: var(--wa);
+
+            font-weight: 700;
+
+            transition: .25s;
+
+        }
+
+        .btn-login:hover {
+
+            background: var(--wa);
+
+            color: white;
+
+        }
+
+        .btn-start {
+
+            padding: 12px 28px;
+
+            border-radius: 999px;
+
+            font-weight: 700;
+
+            color: white;
+
+            background: linear-gradient(135deg, #25D366, #1bbf5d);
+
+            box-shadow: 0 15px 35px rgba(37, 211, 102, .25);
+
+            transition: .25s;
+
+        }
+
+        .btn-start:hover {
+
+            transform: translateY(-3px);
+
+            color: white;
+
+        }
+
+        /* ========================= */
+        /* HERO */
+        /* ========================= */
+
+        .hero {
+
+            padding: 95px 0 80px;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .hero-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            background: white;
+
+            padding: 12px 22px;
+
+            border-radius: 999px;
+
+            font-weight: 700;
+
+            font-size: 14px;
+
+            color: var(--wa-dark);
+
+            border: 1px solid var(--border);
+
+            box-shadow: 0 12px 30px rgba(0, 0, 0, .05);
+
+            margin-bottom: 25px;
+
+        }
+
+        .hero-badge i {
+
+            font-size: 18px;
+
+            color: var(--wa);
+
+        }
+
+        .hero h1 {
+
+            font-family: 'Baloo 2', sans-serif;
+
+            font-size: 68px;
+
+            font-weight: 800;
+
+            line-height: 1.08;
+
+            margin-bottom: 22px;
+
+        }
+
+        .hero h1 span {
+
+            color: var(--wa);
+
+        }
+
+        .hero p {
+
+            font-size: 18px;
+
+            line-height: 1.9;
+
+            color: #64748b;
+
+            max-width: 560px;
+
+            margin-bottom: 34px;
+
+        }
+
+        .hero-buttons {
+
+            display: flex;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+
+        }
+
+        .btn-demo {
+
+            padding: 12px 26px;
+
+            border-radius: 999px;
+
+            background: white;
+
+            border: 1px solid var(--border);
+
+            font-weight: 700;
+
+            color: #425466;
+
+            transition: .25s;
+
+        }
+
+        .btn-demo:hover {
+
+            background: #f4fff8;
+
+            transform: translateY(-2px);
+
+        }
+
+        .hero-list {
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 18px;
+
+            margin-top: 45px;
+
+        }
+
+        .hero-item {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            font-weight: 700;
+
+            background: white;
+
+            padding: 14px 18px;
+
+            border-radius: 18px;
+
+            border: 1px solid var(--border);
+
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .04);
+
+        }
+
+        .hero-item i {
+
+            width: 34px;
+            height: 34px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 12px;
+
+            background: linear-gradient(135deg, #25D366, #128C7E);
+
+            color: white;
+
+            font-size: 16px;
+
+            box-shadow: 0 8px 18px rgba(37, 211, 102, .25);
+
+        }
+
+        /* ========================= */
+        /* PHONE */
+        /* ========================= */
+
+        .phone {
+
+            max-width: 395px;
+
+            margin: auto;
+
+            background: #1d1f21;
+
+            padding: 14px;
+
+            border-radius: 42px;
+
+            box-shadow:
+
+                0 45px 80px rgba(0, 0, 0, .18),
+
+                0 15px 30px rgba(0, 0, 0, .08);
+
+            position: relative;
+
+        }
+
+        .phone::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: 10px;
+
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            width: 130px;
+
+            height: 8px;
+
+            border-radius: 20px;
+
+            background: #444;
+
+        }
+
+        .phone-screen {
+
+            background: #efeae2;
+
+            border-radius: 30px;
+
+            overflow: hidden;
+
+            min-height: 650px;
+
+            position: relative;
+
+            background-image:
+
+                radial-gradient(circle at center, rgba(255, 255, 255, .20) 0%, transparent 60%);
+
+        }
+
+        .phone-header {
+
+            background: linear-gradient(135deg, #128C7E, #25D366);
+
+            padding: 16px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            color: white;
+
+            font-weight: 700;
+
+        }
+
+        .avatar {
+
+            width: 46px;
+            height: 46px;
+
+            border-radius: 50%;
+
+            background: white;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            color: #25D366;
+
+            font-size: 22px;
+
+            font-weight: 700;
+
+            box-shadow: 0 5px 15px rgba(255, 255, 255, .20);
+
+        }
+
+        .phone-name {
+
+            font-weight: 700;
+
+            font-size: 15px;
+
+        }
+
+        .phone-status {
+
+            font-size: 12px;
+
+            opacity: .9;
+
+        }
+
+        .chat-area {
+
+            padding: 18px;
+
+        }
+    </style>
+
+<body>
+    <!-- Floating Background -->
+    <div class="bubble-bg b1"></div>
+    <div class="bubble-bg b2"></div>
+    <div class="bubble-bg b3"></div>
+    <!--===========================NAVBAR===========================-->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container"><a class="navbar-brand" href="#">
+                <div class="logo-circle"><i class="bi bi-chat-heart-fill"></i></div>Chat<span>Saku</span>
+            </a><button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu"><span
+                    class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+                    <li class="nav-item"><a class="nav-link" href="#">🏠 Home </a></li>
+                    <!-- <li class="nav-item"><a class="nav-link" href="#">✨ Features </a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">💬 How It Works </a></li> -->
+                    <li class="nav-item"><a class="nav-link" href="pricing.html">💎 Pricing </a></li>
+                    <li class="nav-item ms-lg-3"><a href="#" class="btn btn-login"><i
+                                class="bi bi-box-arrow-in-right"></i>Login </a></li>
+                    <li class="nav-item ms-lg-2"><a href="#" class="btn btn-start"><i class="bi bi-whatsapp"></i>Try
+                            Free </a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <!--===========================HERO===========================-->
+    <section class="hero">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-6">
+                    <div class="hero-badge"><i class="bi bi-patch-check-fill"></i>100% WhatsApp • AI Powered
+                    </div>
+                    <h1>Finance Assistant yang Serasa <span>Chat dengan Teman.</span></h1>
+                    <p>💚 ChatSaku membantu mencatat pemasukan,
+                        pengeluaran,
+                        budget bulanan,
+                        reminder tagihan,
+                        hingga AI Insight hanya melalui WhatsApp. Tidak perlu install aplikasi,
+                        cukup kirim chat seperti biasa. </p>
+                    <div class="hero-buttons"><a href="#" class="btn btn-start"><i class="bi bi-whatsapp"></i>Mulai
+                            Chat </a><a href="#" class="btn btn-demo"><i class="bi bi-play-circle-fill"></i>Lihat
+                            Demo </a></div>
+                    <div class="hero-list">
+                        <div class="hero-item"><i class="bi bi-chat-dots-fill"></i>100% WhatsApp </div>
+                        <div class="hero-item"><i class="bi bi-speedometer2"></i>Realtime Dashboard </div>
+                        <div class="hero-item"><i class="bi bi-pie-chart-fill"></i>Budget Tracker </div>
+                        <div class="hero-item"><i class="bi bi-stars"></i>AI Insight </div>
+                        <div class="hero-item"><i class="bi bi-bell-fill"></i>Reminder </div>
+                        <div class="hero-item"><i class="bi bi-shield-lock-fill"></i>Private & Secure </div>
+                    </div>
+                </div>
+                <!-- PHONE -->
+                <div class="col-lg-6">
+                    <div class="phone">
+                        <div class="phone-screen">
+                            <div class="phone-header">
+                                <div class="avatar">🤖 </div>
+                                <div>
+                                    <div class="phone-name">ChatSaku Assistant </div>
+                                    <div class="phone-status">🟢 online sekarang </div>
+                                </div>
+                            </div>
+                            <div class="chat-area">
+                                <div class="chat user">
+                                    <div class="bubble">💰 masuk 5000000 gaji </div>
+                                </div>
+                                <div class="chat bot">
+                                    <div class="bubble">🎉 <b>Yeay !</b><br><br>Pemasukan berhasil
+                                        dicatat. <br><b style="color:#16a34a;">+Rp5.000.000 </b></div>
+                                </div>
+                                <div class="chat user">
+                                    <div class="bubble">📊 saldo </div>
+                                </div>
+                                <div class="chat bot">
+                                    <div class="bubble">💰 Saldo Anda <br><br><b
+                                            style="font-size:22px;color:#16a34a;">Rp12.450.000
+                                        </b><br><br>📈 Cashflow sehat 🎯 Budget 92% 🤖 AI Insight
+                                        tersedia </div>
+                                </div>
+                                <div class="chat user">
+                                    <div class="bubble">🤖 insight </div>
+                                </div>
+                                <div class="chat bot">
+                                    <div class="bubble">✨ AI Finance Insight
+                                        <hr class="my-2">📈 Pengeluaran makan naik 18% <br>🎯 Budget
+                                        masih aman <br>💳 Tagihan Internet 2 hari lagi <br>💚 Cashflow
+                                        tetap sehat
+                                    </div>
+                                </div>
+                                <div class="dashboard-card">
+                                    <h6>📊 Dashboard Hari Ini </h6>
+                                    <div class="balance">Rp12.450.000 </div>
+                                    <div class="row mt-3 g-3">
+                                        <div class="col-4">
+                                            <div class="small-box">
+                                                <div style="font-size:26px">💸 </div>
+                                                <h5>18 </h5>
+                                                <p>Transaksi </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="small-box">
+                                                <div style="font-size:26px">🎯 </div>
+                                                <h5>92% </h5>
+                                                <p>Budget </p>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="small-box">
+                                                <div style="font-size:26px">🤖 </div>
+                                                <h5>A+</h5>
+                                                <p>AI Score </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+    <!--==========================================================SECTION 2A ABOUT CHATSAKU (Cute WhatsApp Premium)===========================================================-->
+    <section class="about-section py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <div class="cute-badge">💚 Tentang ChatSaku </div>
+                <h2 class="section-title mt-4">Finance Assistant yang <span>Semudah Chat WhatsApp</span>
+                </h2>
+                <p class="section-desc">ChatSaku membantu Anda mencatat pemasukan,
+                    pengeluaran,
+                    budget bulanan,
+                    reminder tagihan,
+                    hingga AI Insight langsung dari WhatsApp tanpa perlu menginstall aplikasi. </p>
+            </div>
+            <div class="row g-4 align-items-stretch">
+                <!-- LEFT -->
+                <div class="col-lg-6">
+                    <div class="cute-card h-100">
+                        <div class="card-top">
+                            <div class="cute-icon"><i class="bi bi-whatsapp"></i></div>
+                            <div>
+                                <div class="mini-title">100% WhatsApp Native </div>
+                                <div class="mini-subtitle">Chat seperti biasa 😊 </div>
+                            </div>
+                        </div>
+                        <h3>Semua Aktivitas dari Satu Chat 💬 </h3>
+                        <p>Tidak perlu download aplikasi. Tidak perlu login. Tidak perlu belajar
+                            menggunakan aplikasi baru. Semua transaksi dilakukan cukup melalui
+                            WhatsApp seperti sedang mengobrol dengan teman. </p>
+                        <div class="feature-grid">
+                            <div class="feature-chip">⚡ Instant Response </div>
+                            <div class="feature-chip">📱 Semua HP </div>
+                            <div class="feature-chip">☁ Cloud Sync </div>
+                            <div class="feature-chip">🟢 Realtime </div>
+                            <div class="feature-chip">🔒 Aman </div>
+                            <div class="feature-chip">❤️ Mudah Digunakan </div>
+                        </div>
+                        <div class="chat-preview">
+                            <div class="chat-row user">
+                                <div class="msg">💰 masuk 500000 gaji </div>
+                            </div>
+                            <div class="chat-row bot">
+                                <div class="msg">✅ Pemasukan berhasil disimpan <br><br>💵+Rp500.000
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- RIGHT -->
+                <div class="col-lg-6">
+                    <div class="cute-card h-100">
+                        <div class="card-top">
+                            <div class="cute-icon ai">🤖 </div>
+                            <div>
+                                <div class="mini-title">AI Finance Insight </div>
+                                <div class="mini-subtitle">Analisis Otomatis </div>
+                            </div>
+                        </div>
+                        <h3>AI Membantu Anda Mengelola Keuangan ✨ </h3>
+                        <p>ChatSaku menganalisis seluruh transaksi untuk memberikan insight yang
+                            mudah dipahami,
+                            menemukan pola pengeluaran,
+                            serta memberikan rekomendasi penghematan. </p>
+                        <div class="ai-box">
+                            <div class="ai-header">🤖 AI Insight Hari Ini </div>
+                            <div class="ai-card">🍜 Pengeluaran terbesar <b>Makanan (38%)</b>
+                            </div>
+                            <div class="ai-card">💡 Potensi hemat <b>Rp850.000</b>bulan ini
+                            </div>
+                            <div class="ai-card">📈 Cashflow naik <b>12%</b>dibanding bulan lalu
+                            </div>
+                            <div class="ai-card">🎯 Budget Makanan <b>92%</b>hampir penuh </div>
+                            <div class="ai-card">🔔 Internet jatuh tempo <b>2 hari lagi</b>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+    <!--==========================================================STATISTIC===========================================================-->
+    <section class="stat-section pb-5">
+        <div class="container">
+            <div class="stat-card">
+                <div class="row g-4 text-center">
+                    <div class="col-lg-3 col-6">
+                        <div class="stat-box">
+                            <div class="stat-icon">💬 </div>
+                            <h2>100% </h2>
+                            <p>WhatsApp </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="stat-box">
+                            <div class="stat-icon">⚡ </div>
+                            <h2>24 Jam </h2>
+                            <p>Dashboard </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="stat-box">
+                            <div class="stat-icon">🤖 </div>
+                            <h2>AI </h2>
+                            <p>Insight </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-6">
+                        <div class="stat-box">
+                            <div class="stat-icon">☁ </div>
+                            <h2>Realtime </h2>
+                            <p>Cloud Sync </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--==========================================================SECTION 2B WHY CHOOSE
+        CHATSAKU===========================================================-->
+    <section class="why-section py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <div class="cute-badge">✨ Kenapa ChatSaku? </div>
+                <h2 class="section-title mt-4">Lebih Praktis Dibanding <span>Aplikasi Finance
+                        Biasa</span></h2>
+                <p class="section-desc">Tidak perlu install aplikasi,
+                    tidak perlu login berulang,
+                    cukup kirim pesan WhatsApp seperti sedang chatting. </p>
+            </div>
+            <div class="row g-4">
+                <div class="col-lg-4">
+                    <div class="why-card">
+                        <div class="why-top">
+                            <div class="why-icon">💬 </div><span class="why-badge">WhatsApp
+                            </span>
+                        </div>
+                        <h4>Tanpa Install Aplikasi </h4>
+                        <p>Seluruh aktivitas mulai dari mencatat transaksi,
+                            melihat saldo,
+                            budget hingga laporan dilakukan langsung dari WhatsApp. </p>
+                        <ul class="why-list">
+                            <li><i class="bi bi-check-circle-fill"></i>Tidak perlu download
+                                aplikasi </li>
+                            <li><i class="bi bi-check-circle-fill"></i>Tidak memenuhi memori HP
+                            </li>
+                            <li><i class="bi bi-check-circle-fill"></i>Bisa dipakai di semua
+                                perangkat </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="why-card">
+                        <div class="why-top">
+                            <div class="why-icon">⚡ </div><span class="why-badge">Realtime
+                            </span>
+                        </div>
+                        <h4>Super Cepat </h4>
+                        <p>Cukup kirim pesan seperti chatting biasa,
+                            transaksi langsung diproses dan dashboard otomatis diperbarui. </p>
+                        <ul class="why-list">
+                            <li><i class="bi bi-check-circle-fill"></i>Respon instan </li>
+                            <li><i class="bi bi-check-circle-fill"></i>Dashboard realtime </li>
+                            <li><i class="bi bi-check-circle-fill"></i>Sinkronisasi otomatis
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="why-card">
+                        <div class="why-top">
+                            <div class="why-icon">🔒 </div><span class="why-badge">Secure
+                            </span>
+                        </div>
+                        <h4>Privasi Terjamin </h4>
+                        <p>Dashboard menggunakan link pribadi yang aktif selama 24 jam sehingga
+                            data keuangan tetap aman. </p>
+                        <ul class="why-list">
+                            <li><i class="bi bi-check-circle-fill"></i>Token unik </li>
+                            <li><i class="bi bi-check-circle-fill"></i>Masa aktif 24 jam </li>
+                            <li><i class="bi bi-check-circle-fill"></i>Data tersimpan aman </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--==========================================================TRUSTED
+        PLATFORM===========================================================-->
+    <section class="trusted-section pb-5">
+        <div class="container">
+            <div class="trusted-card">
+                <div class="row align-items-center">
+                    <div class="col-lg-4 mb-4 mb-lg-0">
+                        <div class="cute-badge mb-3">❤️ Didukung Teknologi Modern </div>
+                        <h3 class="fw-bold mb-3">Terintegrasi Dengan Platform Terbaik </h3>
+                        <p class="text-secondary mb-0">ChatSaku dibangun menggunakan
+                            teknologi modern agar pengalaman mencatat keuangan menjadi
+                            cepat,
+                            aman dan menyenangkan. </p>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="row g-4">
+                            <div class="col-6 col-md-3">
+                                <div class="partner-card">
+                                    <div class="partner-icon"><i class="bi bi-whatsapp"></i>
+                                    </div>
+                                    <h6>WhatsApp </h6><small>Native Chat </small>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="partner-card">
+                                    <div class="partner-icon">🤖 </div>
+                                    <h6>AI Insight </h6><small>Smart Analysis </small>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="partner-card">
+                                    <div class="partner-icon">📊 </div>
+                                    <h6>Analytics </h6><small>Realtime </small>
+                                </div>
+                            </div>
+                            <div class="col-6 col-md-3">
+                                <div class="partner-card">
+                                    <div class="partner-icon">☁️ </div>
+                                    <h6>Cloud Sync </h6><small>Always Online </small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4 g-3">
+                            <div class="col-md-4">
+                                <div class="mini-status">
+                                    <div>🟢 </div>
+                                    <div><b>99.9%</b><br><small>Uptime</small></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mini-status">
+                                    <div>⚡ </div>
+                                    <div><b>
+                                            < 3 Detik</b><br><small>Respon Bot</small></div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mini-status">
+                                    <div>🔐 </div>
+                                    <div><b>24 Jam</b><br><small>Dashboard Aktif</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <style>
+        /* ==========================================================
+    SECTION 2C
+    CUTE WHATSAPP PREMIUM STYLE
+    ========================================================== */
+        .about-section {
+
+            position: relative;
+
+            padding-top: 90px;
+
+            padding-bottom: 90px;
+
+            overflow: hidden;
+
+        }
+
+        .about-section::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 420px;
+            height: 420px;
+
+            background: rgba(37, 211, 102, .07);
+
+            border-radius: 50%;
+
+            top: -180px;
+            right: -120px;
+
+            filter: blur(40px);
+
+            z-index: -1;
+
+        }
+
+        .about-section::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 280px;
+            height: 280px;
+
+            background: rgba(18, 140, 126, .06);
+
+            border-radius: 50%;
+
+            left: -100px;
+            bottom: -100px;
+
+            filter: blur(30px);
+
+            z-index: -1;
+
+        }
+
+        /* =========================== */
+
+        .cute-badge {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 8px;
+
+            padding: 12px 24px;
+
+            border-radius: 999px;
+
+            background: linear-gradient(135deg, #ffffff, #f4fff8);
+
+            border: 1px solid #dff3e7;
+
+            box-shadow: 0 12px 28px rgba(0, 0, 0, .05);
+
+            font-weight: 700;
+
+            color: #128C7E;
+
+        }
+
+        .section-title {
+
+            font-family: 'Baloo 2', sans-serif;
+
+            font-size: 52px;
+
+            font-weight: 800;
+
+            line-height: 1.15;
+
+            color: #17342c;
+
+        }
+
+        .section-title span {
+
+            color: #25D366;
+
+        }
+
+        .section-desc {
+
+            max-width: 760px;
+
+            margin: auto;
+
+            margin-top: 18px;
+
+            font-size: 18px;
+
+            line-height: 1.9;
+
+            color: #64748b;
+
+        }
+
+        /* =========================== */
+
+        .cute-card {
+
+            background: linear-gradient(180deg, #ffffff, #fbfffc);
+
+            border-radius: 34px;
+
+            padding: 36px;
+
+            border: 1px solid #e6f5eb;
+
+            box-shadow: 0 22px 60px rgba(0, 0, 0, .05);
+
+            transition: .35s;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .cute-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 170px;
+            height: 170px;
+
+            border-radius: 50%;
+
+            background: rgba(37, 211, 102, .05);
+
+            right: -60px;
+            top: -60px;
+
+        }
+
+        .cute-card:hover {
+
+            transform: translateY(-8px);
+
+            box-shadow: 0 35px 80px rgba(0, 0, 0, .08);
+
+        }
+
+        /* =========================== */
+
+        .card-top {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+
+        }
+
+        .cute-icon {
+
+            width: 72px;
+            height: 72px;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 22px;
+
+            background: linear-gradient(135deg, #25D366, #16a34a);
+
+            font-size: 34px;
+
+            color: white;
+
+            box-shadow: 0 16px 35px rgba(37, 211, 102, .28);
+
+        }
+
+        .cute-icon.ai {
+
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+
+        }
+
+        .mini-title {
+
+            font-weight: 700;
+
+            font-size: 20px;
+
+        }
+
+        .mini-subtitle {
+
+            font-size: 14px;
+
+            color: #64748b;
+
+        }
+
+        .cute-card h3 {
+
+            font-family: 'Baloo 2', sans-serif;
+
+            font-size: 34px;
+
+            font-weight: 800;
+
+            margin-bottom: 18px;
+
+        }
+
+        .cute-card p {
+
+            font-size: 16px;
+
+            line-height: 1.9;
+
+            color: #64748b;
+
+        }
+
+        /* =========================== */
+
+        .feature-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 14px;
+
+            margin-top: 30px;
+
+        }
+
+        .feature-chip {
+
+            background: #f6fffa;
+
+            padding: 14px;
+
+            border-radius: 16px;
+
+            font-weight: 700;
+
+            text-align: center;
+
+            border: 1px solid #dff3e7;
+
+            transition: .25s;
+
+        }
+
+        .feature-chip:hover {
+
+            background: #25D366;
+
+            color: white;
+
+            transform: translateY(-3px);
+
+        }
+
+        /* =========================== */
+
+        .chat-preview {
+
+            margin-top: 35px;
+
+            background: #efeae2;
+
+            padding: 20px;
+
+            border-radius: 26px;
+
+        }
+
+        .chat-row {
+
+            display: flex;
+
+            margin-bottom: 15px;
+
+        }
+
+        .chat-row.user {
+
+            justify-content: flex-end;
+
+        }
+
+        .chat-row.bot {
+
+            justify-content: flex-start;
+
+        }
+
+        .msg {
+
+            max-width: 80%;
+
+            padding: 14px 18px;
+
+            border-radius: 20px;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            box-shadow: 0 10px 20px rgba(0, 0, 0, .05);
+
+        }
+
+        .chat-row.user .msg {
+
+            background: #25D366;
+
+            color: white;
+
+            border-bottom-right-radius: 6px;
+
+        }
+
+        .chat-row.bot .msg {
+
+            background: white;
+
+            border-bottom-left-radius: 6px;
+
+        }
+
+        /* =========================== */
+
+        .ai-box {
+
+            margin-top: 28px;
+
+            background: #f6fff9;
+
+            padding: 24px;
+
+            border-radius: 24px;
+
+        }
+
+        .ai-header {
+
+            font-weight: 700;
+
+            font-size: 18px;
+
+            margin-bottom: 18px;
+
+            color: #128C7E;
+
+        }
+
+        .ai-card {
+
+            background: white;
+
+            padding: 16px;
+
+            border-radius: 18px;
+
+            margin-bottom: 12px;
+
+            border: 1px solid #e8f4ec;
+
+            transition: .25s;
+
+        }
+
+        .ai-card:hover {
+
+            transform: translateX(6px);
+
+            border-color: #25D366;
+
+        }
+
+        /* =========================== */
+
+        .stat-section {
+
+            padding-bottom: 90px;
+
+        }
+
+        .stat-card {
+
+            background: linear-gradient(135deg, #25D366, #16a34a);
+
+            border-radius: 36px;
+
+            padding: 45px;
+
+            box-shadow: 0 35px 80px rgba(37, 211, 102, .25);
+
+        }
+
+        .stat-box {
+
+            padding: 20px;
+
+            color: white;
+
+        }
+
+        .stat-icon {
+
+            font-size: 40px;
+
+            margin-bottom: 15px;
+
+        }
+
+        .stat-box h2 {
+
+            font-size: 48px;
+
+            font-weight: 800;
+
+            margin-bottom: 8px;
+
+        }
+
+        .stat-box p {
+
+            opacity: .92;
+
+            margin: 0;
+
+        }
+
+        /* =========================== */
+
+        .why-section {
+
+            padding: 90px 0;
+
+        }
+
+        .why-card {
+
+            background: white;
+
+            border-radius: 32px;
+
+            padding: 35px;
+
+            border: 1px solid #e8f4ec;
+
+            box-shadow: 0 20px 45px rgba(0, 0, 0, .05);
+
+            transition: .35s;
+
+            height: 100%;
+
+        }
+
+        .why-card:hover {
+
+            transform: translateY(-8px);
+
+        }
+
+        .why-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+
+        }
+
+        .why-icon {
+
+            width: 72px;
+            height: 72px;
+
+            border-radius: 22px;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            font-size: 34px;
+
+            background: linear-gradient(135deg, #25D366, #16a34a);
+
+            color: white;
+
+        }
+
+        .why-badge {
+
+            padding: 8px 18px;
+
+            background: #ecfff4;
+
+            border-radius: 999px;
+
+            font-weight: 700;
+
+            color: #16a34a;
+
+        }
+
+        .why-card h4 {
+
+            font-family: 'Baloo 2', sans-serif;
+
+            font-weight: 800;
+
+            margin-bottom: 15px;
+
+        }
+
+        .why-card p {
+
+            line-height: 1.9;
+
+            color: #64748b;
+
+        }
+
+        .why-list {
+
+            list-style: none;
+
+            padding: 0;
+
+            margin-top: 22px;
+
+        }
+
+        .why-list li {
+
+            margin-bottom: 12px;
+
+            font-weight: 600;
+
+        }
+
+        .why-list i {
+
+            color: #25D366;
+
+            margin-right: 8px;
+
+        }
+
+        /* =========================== */
+
+        .trusted-card {
+
+            background: white;
+
+            border-radius: 34px;
+
+            padding: 45px;
+
+            border: 1px solid #e8f4ec;
+
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .05);
+
+        }
+
+        .partner-card {
+
+            background: #f8fffb;
+
+            padding: 28px 15px;
+
+            border-radius: 24px;
+
+            text-align: center;
+
+            transition: .3s;
+
+            height: 100%;
+
+            border: 1px solid #e8f4ec;
+
+        }
+
+        .partner-card:hover {
+
+            transform: translateY(-6px);
+
+            background: white;
+
+        }
+
+        .partner-icon {
+
+            width: 70px;
+            height: 70px;
+
+            margin: auto;
+
+            margin-bottom: 18px;
+
+            border-radius: 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            background: linear-gradient(135deg, #25D366, #16a34a);
+
+            color: white;
+
+            font-size: 34px;
+
+        }
+
+        .partner-card h6 {
+
+            font-weight: 700;
+
+            margin-bottom: 6px;
+
+        }
+
+        .partner-card small {
+
+            color: #64748b;
+
+        }
+
+        .mini-status {
+
+            background: #f8fffb;
+
+            border-radius: 20px;
+
+            padding: 18px;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+
+            border: 1px solid #e8f4ec;
+
+            font-size: 28px;
+
+        }
+
+        .mini-status b {
+
+            font-size: 18px;
+
+            color: #17342c;
+
+        }
+
+        .mini-status small {
+
+            color: #64748b;
+
+        }
+
+        /* =========================== */
+
+        @media(max-width:991px) {
+
+            .section-title {
+
+                font-size: 38px;
+
+            }
+
+            .feature-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .stat-card {
+
+                padding: 30px;
+
+            }
+
+            .trusted-card {
+
+                padding: 28px;
+
+            }
+
+            .partner-card {
+
+                margin-bottom: 15px;
+
+            }
+
+        }
+    </style>
+    <!--==========================================================SECTION 4A FEATURES PREMIUM - CUTE
+        WHATSAPP==========================================================-->
+    <section class="feature-section py-5" id="features">
+        <div class="container">
+            <div class="text-center mb-5">
+                <div class="cute-badge">✨ Fitur Unggulan ChatSaku </div>
+                <h2 class="section-title mt-4">Semua Kebutuhan Keuangan <span>Dalam Satu
+                        Chat WhatsApp</span></h2>
+                <p class="section-desc">Tidak perlu install aplikasi tambahan. Cukup
+                    kirim pesan seperti sedang chatting,
+                    ChatSaku akan mencatat transaksi,
+                    mengelola budget,
+                    memberikan AI Insight,
+                    hingga mengingatkan tagihan Anda. </p>
+            </div>
+            <div class="row g-4">
+                <!--======================-->
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-premium">
+                        <div class="feature-header">
+                            <div class="feature-icon">💬 </div>
+                            <div class="feature-badge">WhatsApp </div>
+                        </div>
+                        <h4>WhatsApp Finance </h4>
+                        <p>Catat pemasukan,
+                            pengeluaran,
+                            cek saldo,
+                            histori transaksi,
+                            hingga laporan keuangan langsung dari WhatsApp. </p>
+                        <div class="feature-list">
+                            <div>✅ Chat seperti biasa </div>
+                            <div>✅ Tidak perlu install </div>
+                            <div>✅ Respon instan </div>
+                        </div>
+                    </div>
+                </div>
+                <!--======================-->
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-premium">
+                        <div class="feature-header">
+                            <div class="feature-icon">📊 </div>
+                            <div class="feature-badge">Realtime </div>
+                        </div>
+                        <h4>Dashboard Live </h4>
+                        <p>Dashboard diperbarui otomatis setiap transaksi dengan
+                            grafik,
+                            saldo,
+                            cashflow,
+                            dan histori lengkap. </p>
+                        <div class="feature-list">
+                            <div>📈 Grafik Harian </div>
+                            <div>💰 Saldo </div>
+                            <div>📅 Histori </div>
+                        </div>
+                    </div>
+                </div>
+                <!--======================-->
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-premium">
+                        <div class="feature-header">
+                            <div class="feature-icon">💵 </div>
+                            <div class="feature-badge">Budget </div>
+                        </div>
+                        <h4>Budget Bulanan </h4>
+                        <p>Tetapkan budget untuk setiap kategori dan pantau
+                            penggunaannya secara otomatis. </p>
+                        <div class="feature-list">
+                            <div>🎯 Progress Budget </div>
+                            <div>📉 Sisa Budget </div>
+                            <div>🚨 Over Budget Alert </div>
+                        </div>
+                    </div>
+                </div>
+                <!--======================-->
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-premium">
+                        <div class="feature-header">
+                            <div class="feature-icon">🤖 </div>
+                            <div class="feature-badge">AI </div>
+                        </div>
+                        <h4>AI Finance Insight </h4>
+                        <p>AI menganalisis pola pengeluaran,
+                            kategori terbesar,
+                            hingga rekomendasi penghematan otomatis.
+                        </p>
+                        <div class="feature-list">
+                            <div>📊 Analisis Cashflow </div>
+                            <div>💡 Tips Hemat </div>
+                            <div>📈 Trend Bulanan </div>
+                        </div>
+                    </div>
+                </div>
+                <!--======================-->
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-premium">
+                        <div class="feature-header">
+                            <div class="feature-icon">🔔 </div>
+                            <div class="feature-badge">Reminder
+                            </div>
+                        </div>
+                        <h4>Reminder Tagihan </h4>
+                        <p>Simpan jadwal pembayaran internet,
+                            BPJS,
+                            cicilan,
+                            listrik,
+                            air,
+                            hingga langganan digital. </p>
+                        <div class="feature-list">
+                            <div>📅 Pengingat Otomatis </div>
+                            <div>⏰ Tepat Waktu </div>
+                            <div>💚 Tidak Lupa Bayar </div>
+                        </div>
+                    </div>
+                </div>
+                <!--======================-->
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-premium">
+                        <div class="feature-header">
+                            <div class="feature-icon">🔐 </div>
+                            <div class="feature-badge">Secure
+                            </div>
+                        </div>
+                        <h4>Aman & Privat </h4>
+                        <p>Dashboard menggunakan link pribadi
+                            yang aktif selama 24 jam agar data
+                            keuangan tetap aman. </p>
+                        <div class="feature-list">
+                            <div>🔒 Private Token </div>
+                            <div>🛡 Data Aman </div>
+                            <div>☁ Cloud Backup </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--==============================-->
+            <div class="row mt-5">
+                <div class="col-lg-12">
+                    <div class="feature-banner">
+                        <div class="row align-items-center">
+                            <div class="col-lg-8">
+                                <div class="feature-banner-title">🚀 Semua Fitur
+                                    Premium Tanpa Install Aplikasi </div>
+                                <p>Nikmati pengalaman mengelola keuangan langsung
+                                    dari WhatsApp dengan AI,
+                                    Dashboard,
+                                    Budget,
+                                    Reminder,
+                                    dan laporan otomatis. </p>
+                            </div>
+                            <div class="col-lg-4 text-lg-end text-center"><a href="#" class="btn btn-start">💬
+                                    Mulai Gratis
+                                </a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <style>
+        /* ==========================================================
+    SECTION 4B
+    FEATURES PREMIUM STYLE
+    ========================================================== */
+
+        .feature-section {
+
+            padding-top: 90px;
+            padding-bottom: 90px;
+
+            background:
+                linear-gradient(180deg, #f8fffb 0%, #ffffff 100%);
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .feature-section::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 350px;
+            height: 350px;
+
+            background: rgba(37, 211, 102, .06);
+
+            border-radius: 50%;
+
+            top: -120px;
+            right: -120px;
+
+            filter: blur(30px);
+
+        }
+
+        .feature-section::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 280px;
+            height: 280px;
+
+            background: rgba(18, 140, 126, .05);
+
+            border-radius: 50%;
+
+            left: -80px;
+            bottom: -80px;
+
+            filter: blur(30px);
+
+        }
+
+        /* ========================= */
+
+        .feature-premium {
+
+            background: white;
+
+            border-radius: 32px;
+
+            padding: 34px;
+
+            border: 1px solid #e8f4ec;
+
+            height: 100%;
+
+            position: relative;
+
+            overflow: hidden;
+
+            transition: .35s;
+
+            box-shadow:
+
+                0 15px 40px rgba(0, 0, 0, .05);
+
+        }
+
+        .feature-premium::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 170px;
+            height: 170px;
+
+            border-radius: 50%;
+
+            background: rgba(37, 211, 102, .05);
+
+            right: -70px;
+            top: -70px;
+
+        }
+
+        .feature-premium:hover {
+
+            transform: translateY(-10px);
+
+            box-shadow:
+
+                0 28px 60px rgba(37, 211, 102, .12);
+
+        }
+
+        /* ========================= */
+
+        .feature-header {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 25px;
+
+        }
+
+        .feature-icon {
+
+            width: 72px;
+            height: 72px;
+
+            border-radius: 22px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 34px;
+
+            background:
+
+                linear-gradient(135deg, #25D366, #16a34a);
+
+            color: white;
+
+            box-shadow:
+
+                0 15px 35px rgba(37, 211, 102, .25);
+
+        }
+
+        .feature-badge {
+
+            padding: 8px 18px;
+
+            border-radius: 999px;
+
+            background: #ecfff4;
+
+            color: #16a34a;
+
+            font-weight: 700;
+
+            font-size: 13px;
+
+            border: 1px solid #d8f4e2;
+
+        }
+
+        /* ========================= */
+
+        .feature-premium h4 {
+
+            font-family: 'Baloo 2', sans-serif;
+
+            font-size: 30px;
+
+            font-weight: 800;
+
+            margin-bottom: 14px;
+
+            color: #17342c;
+
+        }
+
+        .feature-premium p {
+
+            font-size: 15px;
+
+            line-height: 1.9;
+
+            color: #64748b;
+
+            margin-bottom: 24px;
+
+        }
+
+        /* ========================= */
+
+        .feature-list {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+
+        }
+
+        .feature-list div {
+
+            background: #f8fffb;
+
+            padding: 14px 18px;
+
+            border-radius: 16px;
+
+            font-weight: 600;
+
+            border: 1px solid #e8f4ec;
+
+            transition: .25s;
+
+        }
+
+        .feature-list div:hover {
+
+            background: #25D366;
+
+            color: white;
+
+            transform: translateX(6px);
+
+        }
+
+        /* ========================= */
+
+        .feature-banner {
+
+            background:
+
+                linear-gradient(135deg, #25D366, #16a34a);
+
+            border-radius: 34px;
+
+            padding: 45px;
+
+            color: white;
+
+            box-shadow:
+
+                0 30px 60px rgba(37, 211, 102, .25);
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .feature-banner::before {
+
+            content: "💬";
+
+            position: absolute;
+
+            right: 40px;
+            top: 25px;
+
+            font-size: 120px;
+
+            opacity: .08;
+
+        }
+
+        .feature-banner-title {
+
+            font-family: 'Baloo 2', sans-serif;
+
+            font-size: 42px;
+
+            font-weight: 800;
+
+            margin-bottom: 15px;
+
+            line-height: 1.2;
+
+        }
+
+        .feature-banner p {
+
+            font-size: 17px;
+
+            line-height: 1.9;
+
+            opacity: .95;
+
+            max-width: 650px;
+
+            margin-bottom: 0;
+
+        }
+
+        .feature-banner .btn-start {
+
+            font-size: 18px;
+
+            padding: 15px 34px;
+
+            border-radius: 999px;
+
+            background: white;
+
+            color: #16a34a;
+
+            font-weight: 700;
+
+            box-shadow:
+
+                0 15px 30px rgba(255, 255, 255, .25);
+
+            transition: .3s;
+
+        }
+
+        .feature-banner .btn-start:hover {
+
+            transform: translateY(-3px);
+
+            background: #f4fff8;
+
+            color: #128C7E;
+
+        }
+
+        /* ========================= */
+
+        @media(max-width:991px) {
+
+            .feature-banner {
+
+                text-align: center;
+
+                padding: 35px;
+
+            }
+
+            .feature-banner-title {
+
+                font-size: 34px;
+
+            }
+
+            .feature-banner .btn-start {
+
+                margin-top: 25px;
+
+            }
+
+            .feature-premium {
+
+                padding: 28px;
+
+            }
+
+            .feature-premium h4 {
+
+                font-size: 26px;
+
+            }
+
+            .feature-icon {
+
+                width: 64px;
+                height: 64px;
+
+                font-size: 28px;
+
+            }
+
+        }
+
+        @media(max-width:576px) {
+
+            .feature-header {
+
+                flex-direction: column;
+
+                align-items: flex-start;
+
+                gap: 15px;
+
+            }
+
+            .feature-banner-title {
+
+                font-size: 30px;
+
+            }
+
+            .feature-banner p {
+
+                font-size: 15px;
+
+            }
+
+            .feature-list div {
+
+                font-size: 14px;
+
+            }
+
+        }
+    </style>
+
+    <!--==========================================================SECTION 5A HOW IT WORKS - PREMIUM
+        WHATSAPP==========================================================-->
+    <section class="workflow-section py-5" id="how-it-works">
+        <div class="container">
+            <div class="text-center mb-5">
+                <div class="cute-badge">🚀 Cara Kerja ChatSaku </div>
+                <h2 class="section-title mt-4">Mulai Mengelola Keuangan <span>Hanya
+                        Dalam 4 Langkah</span></h2>
+                <p class="section-desc">Tidak perlu install aplikasi tambahan. Cukup
+                    kirim chat WhatsApp,
+                    AI akan langsung memproses transaksi,
+                    menyusun laporan,
+                    hingga membuat dashboard secara otomatis. </p>
+            </div>
+            <!--=======================================-->
+            <div class="row g-4">
+                <!-- STEP 1 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="workflow-card">
+                        <div class="step-badge">01 </div>
+                        <div class="workflow-icon">💬 </div>
+                        <h4>Chat WhatsApp </h4>
+                        <p>Kirim pesan seperti: <b>masuk 5000000
+                                gaji</b>atau <b>keluar 25000
+                                makan</b>seperti chatting biasa. </p>
+                        <div class="workflow-chat">👤 masuk 5000000 gaji
+                        </div>
+                    </div>
+                </div>
+                <!-- STEP 2 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="workflow-card">
+                        <div class="step-badge">02 </div>
+                        <div class="workflow-icon">🤖 </div>
+                        <h4>AI Memahami </h4>
+                        <p>AI otomatis mengenali nominal,
+
+                            kategori,
+
+                            tanggal,
+
+                            dan jenis transaksi tanpa perlu form. </p>
+                        <div class="workflow-chat bot">✅ Transaksi
+                            berhasil disimpan </div>
+                    </div>
+                </div>
+                <!-- STEP 3 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="workflow-card">
+                        <div class="step-badge">03 </div>
+                        <div class="workflow-icon">📊 </div>
+                        <h4>Dashboard Update </h4>
+                        <p>Saldo,
+
+                            cashflow,
+
+                            grafik,
+
+                            budget,
+
+                            dan histori langsung diperbarui secara
+                            realtime. </p>
+                        <div class="mini-dashboard">
+                            <div>💰 Rp12.450.000 </div>
+                            <div>📈+12% </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- STEP 4 -->
+                <div class="col-lg-3 col-md-6">
+                    <div class="workflow-card">
+                        <div class="step-badge">04 </div>
+                        <div class="workflow-icon">🔐 </div>
+                        <h4>Dashboard Pribadi </h4>
+                        <p>Bot mengirimkan dashboard pribadi
+                            yang hanya aktif selama 24 jam dan
+                            aman diakses. </p>
+                        <div class="workflow-chat secure">🔗
+                            chatsaku.com/dashboard/••••• </div>
+                    </div>
+                </div>
+            </div>
+            <!--=======================================-->
+            <div class="workflow-banner mt-5">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <div class="workflow-title">⚡ Semua Proses Berjalan
+                            Otomatis </div>
+                        <p>Mulai dari pencatatan transaksi,
+
+                            pengelompokan kategori,
+
+                            perhitungan saldo,
+
+                            budget,
+
+                            AI Insight,
+
+                            hingga reminder tagihan,
+
+                            semuanya dilakukan otomatis hanya melalui
+                            WhatsApp. </p>
+                    </div>
+                    <div class="col-lg-4 text-center text-lg-end"><a href="#" class="btn btn-start">💬
+                            Coba Sekarang
+                        </a></div>
+                </div>
+            </div>
+            <!--=======================================-->
+            <div class="flow-line mt-5">
+                <div class="flow-box">
+                    <div class="flow-circle">💬 </div>
+                    <div class="flow-text">WhatsApp </div>
+                </div>
+                <div class="flow-arrow"><i class="bi bi-arrow-right-circle-fill"></i>
+                </div>
+                <div class="flow-box">
+                    <div class="flow-circle">🤖 </div>
+                    <div class="flow-text">AI Engine </div>
+                </div>
+                <div class="flow-arrow"><i class="bi bi-arrow-right-circle-fill"></i>
+                </div>
+                <div class="flow-box">
+                    <div class="flow-circle">📊 </div>
+                    <div class="flow-text">Dashboard </div>
+                </div>
+                <div class="flow-arrow"><i class="bi bi-arrow-right-circle-fill"></i>
+                </div>
+                <div class="flow-box">
+                    <div class="flow-circle">💡 </div>
+                    <div class="flow-text">Insight AI </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <style>
+        /* ==========================================================
+    SECTION 5B
+    HOW IT WORKS PREMIUM STYLE
+    ========================================================== */
+
+        .workflow-section {
+
+            padding-top: 90px;
+            padding-bottom: 90px;
+
+            background:
+                linear-gradient(180deg, #ffffff 0%, #f7fffa 100%);
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .workflow-section::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 350px;
+            height: 350px;
+
+            background: rgba(37, 211, 102, .06);
+
+            border-radius: 50%;
+
+            top: -140px;
+            right: -120px;
+
+            filter: blur(35px);
+
+        }
+
+        .workflow-section::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 260px;
+            height: 260px;
+
+            background: rgba(18, 140, 126, .05);
+
+            border-radius: 50%;
+
+            left: -90px;
+            bottom: -80px;
+
+            filter: blur(30px);
+
+        }
+
+        /* ============================= */
+
+        .workflow-card {
+
+            background: white;
+
+            border-radius: 32px;
+
+            padding: 35px;
+
+            height: 100%;
+
+            position: relative;
+
+            overflow: hidden;
+
+            border: 1px solid #e8f4ec;
+
+            transition: .35s;
+
+            box-shadow:
+
+                0 18px 45px rgba(0, 0, 0, .05);
+
+        }
+
+        .workflow-card:hover {
+
+            transform: translateY(-10px);
+
+            box-shadow:
+
+                0 30px 70px rgba(37, 211, 102, .12);
+
+        }
+
+        .workflow-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 170px;
+            height: 170px;
+
+            border-radius: 50%;
+
+            background: rgba(37, 211, 102, .05);
+
+            right: -60px;
+            top: -60px;
+
+        }
+
+        /* ============================= */
+
+        .step-badge {
+
+            position: absolute;
+
+            top: 22px;
+            right: 22px;
+
+            width: 46px;
+            height: 46px;
+
+            border-radius: 50%;
+
+            background: linear-gradient(135deg, #25D366, #16a34a);
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            font-weight: 800;
+
+            font-size: 15px;
+
+            color: white;
+
+            box-shadow:
+
+                0 12px 25px rgba(37, 211, 102, .25);
+
+        }
+
+        .workflow-icon {
+
+            width: 82px;
+            height: 82px;
+
+            border-radius: 24px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            font-size: 38px;
+
+            background:
+
+                linear-gradient(135deg, #25D366, #16a34a);
+
+            color: white;
+
+            box-shadow:
+
+                0 18px 40px rgba(37, 211, 102, .25);
+
+            margin-bottom: 24px;
+
+        }
+
+        .workflow-card h4 {
+
+            font-family: 'Baloo 2', sans-serif;
+
+            font-size: 30px;
+
+            font-weight: 800;
+
+            margin-bottom: 15px;
+
+            color: #17342c;
+
+        }
+
+        .workflow-card p {
+
+            font-size: 15px;
+
+            line-height: 1.9;
+
+            color: #64748b;
+
+            margin-bottom: 22px;
+
+        }
+
+        /* ============================= */
+
+        .workflow-chat {
+
+            background: #DCF8C6;
+
+            padding: 14px 18px;
+
+            border-radius: 18px;
+
+            font-weight: 600;
+
+            display: inline-block;
+
+            box-shadow:
+
+                0 10px 18px rgba(0, 0, 0, .05);
+
+        }
+
+        .workflow-chat.bot {
+
+            background: #f8fffb;
+
+            border: 1px solid #dff3e7;
+
+        }
+
+        .workflow-chat.secure {
+
+            background: #eef9ff;
+
+            color: #0f766e;
+
+            font-size: 13px;
+
+            word-break: break-all;
+
+        }
+
+        /* ============================= */
+
+        .mini-dashboard {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            background: #f8fffb;
+
+            padding: 16px;
+
+            border-radius: 18px;
+
+            border: 1px solid #dff3e7;
+
+            font-weight: 700;
+
+        }
+
+        /* ============================= */
+
+        .workflow-banner {
+
+            background:
+
+                linear-gradient(135deg, #25D366, #16a34a);
+
+            border-radius: 36px;
+
+            padding: 45px;
+
+            color: white;
+
+            position: relative;
+
+            overflow: hidden;
+
+            box-shadow:
+
+                0 30px 70px rgba(37, 211, 102, .25);
+
+        }
+
+        .workflow-banner::before {
+
+            content: "🤖";
+
+            position: absolute;
+
+            right: 30px;
+            top: 10px;
+
+            font-size: 120px;
+
+            opacity: .08;
+
+        }
+
+        .workflow-title {
+
+            font-family: 'Baloo 2', sans-serif;
+
+            font-size: 42px;
+
+            font-weight: 800;
+
+            margin-bottom: 15px;
+
+        }
+
+        .workflow-banner p {
+
+            font-size: 17px;
+
+            line-height: 1.9;
+
+            opacity: .95;
+
+            margin-bottom: 0;
+
+        }
+
+        /* ============================= */
+
+        .flow-line {
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 25px;
+
+            flex-wrap: wrap;
+
+        }
+
+        .flow-box {
+
+            display: flex;
+
+            flex-direction: column;
+
+            align-items: center;
+
+            gap: 14px;
+
+        }
+
+        .flow-circle {
+
+            width: 88px;
+            height: 88px;
+
+            border-radius: 26px;
+
+            display: flex;
+
+            justify-content: center;
+            align-items: center;
+
+            font-size: 38px;
+
+            background:
+
+                linear-gradient(135deg, #25D366, #16a34a);
+
+            color: white;
+
+            box-shadow:
+
+                0 18px 40px rgba(37, 211, 102, .22);
+
+        }
+
+        .flow-text {
+
+            font-weight: 700;
+
+            color: #17342c;
+
+        }
+
+        .flow-arrow {
+
+            font-size: 34px;
+
+            color: #25D366;
+
+        }
+
+        /* ============================= */
+
+        @media(max-width:991px) {
+
+            .workflow-banner {
+
+                padding: 35px;
+
+                text-align: center;
+
+            }
+
+            .workflow-title {
+
+                font-size: 34px;
+
+            }
+
+            .flow-arrow {
+
+                display: none;
+
+            }
+
+            .flow-line {
+
+                gap: 18px;
+
+            }
+
+            .workflow-card {
+
+                padding: 30px;
+
+            }
+
+        }
+
+        @media(max-width:576px) {
+
+            .workflow-icon {
+
+                width: 70px;
+                height: 70px;
+
+                font-size: 30px;
+
+            }
+
+            .workflow-card h4 {
+
+                font-size: 26px;
+
+            }
+
+            .workflow-title {
+
+                font-size: 30px;
+
+            }
+
+            .flow-circle {
+
+                width: 72px;
+                height: 72px;
+
+                font-size: 30px;
+
+            }
+
+            .workflow-banner {
+
+                padding: 28px;
+
+            }
+
+        }
+    </style>
+
+    <!--==========================================================SECTION 6A WHATSAPP COMMANDS
+        PREMIUM==========================================================-->
+    <section class="commands-section py-5" id="commands">
+        <div class="container">
+            <div class="text-center mb-5">
+                <div class="cute-badge">💬 Chat Commands </div>
+                <h2 class="section-title mt-4">Semua Perintah <span>Cukup Lewat
+                        WhatsApp</span></h2>
+                <p class="section-desc">Tidak perlu membuka aplikasi ataupun
+                    dashboard. ChatSaku memahami bahasa
+                    sederhana layaknya Anda sedang mengobrol dengan teman. </p>
+            </div>
+            <div class="row align-items-center g-5">
+                <!--====================================-->
+                <!-- PHONE -->
+                <!--====================================-->
+                <div class="col-lg-6">
+                    <div class="wa-phone">
+                        <div class="wa-top">
+                            <div class="wa-profile">
+                                <div class="wa-avatar">🤖 </div>
+                                <div><b>ChatSaku Finance</b>
+                                    <div class="online"><i class="bi bi-circle-fill"></i>Online
+                                    </div>
+                                </div>
+                            </div>
+                            <div><i class="bi bi-camera-video me-3"></i><i class="bi bi-telephone"></i>
+                            </div>
+                        </div>
+                        <div class="wa-chat-area">
+                            <div class="bubble user">masuk 2500000
+                                gaji <small>09.15</small></div>
+                            <div class="bubble bot">✅ Pemasukan
+                                berhasil disimpan <div class="bubble-card">
+                                    💰
+                                    Rp2.500.000 </div>
+                                <small>09.15</small>
+                            </div>
+                            <div class="bubble user">keluar 25000
+                                makan <small>09.18</small></div>
+                            <div class="bubble bot">🍜 Pengeluaran
+                                berhasil dicatat <div class="bubble-card">
+                                    Kategori :
+                                    <b>Makanan</b>
+                                </div>
+                                <small>09.18</small>
+                            </div>
+                            <div class="bubble user">saldo
+                                <small>09.19</small>
+                            </div>
+                            <div class="bubble bot">💰 Saldo Saat
+                                Ini <h4 class="mt-2 mb-2">
+                                    Rp2.475.000
+                                </h4>
+                                <div class="bubble-card">📊
+                                    Dashboard siap dibuka </div>
+                                <small>09.19</small>
+                            </div>
+                            <div class="typing">
+                                <span></span><span></span><span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--====================================-->
+                <!-- COMMANDS -->
+                <!--====================================-->
+                <div class="col-lg-6">
+                    <div class="command-grid">
+                        <div class="command-card">
+                            <div>
+                                <div class="cmd">saldo
+                                </div><small>Lihat saldo
+                                    terbaru</small>
+                            </div>
+                            <div>💰 </div>
+                        </div>
+                        <div class="command-card">
+                            <div>
+                                <div class="cmd">hariini
+                                </div><small>Ringkasan
+                                    hari
+                                    ini</small>
+                            </div>
+                            <div>📅 </div>
+                        </div>
+                        <div class="command-card">
+                            <div>
+                                <div class="cmd">masuk
+                                    100000 gaji </div>
+                                <small>Tambah
+                                    pemasukan</small>
+                            </div>
+                            <div>📈 </div>
+                        </div>
+                        <div class="command-card">
+                            <div>
+                                <div class="cmd">keluar
+                                    25000 makan </div>
+                                <small>Tambah
+                                    pengeluaran</small>
+                            </div>
+                            <div>🍜 </div>
+                        </div>
+                        <div class="command-card">
+                            <div>
+                                <div class="cmd">budget
+                                    makanan 1500000
+                                </div><small>Set
+                                    budget
+                                    kategori</small>
+                            </div>
+                            <div>🎯 </div>
+                        </div>
+                        <div class="command-card">
+                            <div>
+                                <div class="cmd">budget
+                                </div><small>Lihat
+                                    progress
+                                    budget</small>
+                            </div>
+                            <div>📊 </div>
+                        </div>
+                        <div class="command-card">
+                            <div>
+                                <div class="cmd">
+                                    reminder </div>
+                                <small>Daftar
+                                    tagihan</small>
+                            </div>
+                            <div>🔔 </div>
+                        </div>
+                        <div class="command-card">
+                            <div>
+                                <div class="cmd">insight
+                                </div><small>AI Finance
+                                    Insight</small>
+                            </div>
+                            <div>🤖 </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--====================================-->
+            <div class="command-banner mt-5">
+                <div class="row align-items-center">
+                    <div class="col-lg-8">
+                        <h3>🔐 Dashboard Otomatis </h3>
+                        <p>Setelah menjalankan salah satu perintah di atas,
+
+                            ChatSaku akan mengirimkan dashboard pribadi,
+
+                            AI Insight,
+
+                            laporan transaksi,
+
+                            serta progress budget melalui link aman yang
+                            aktif selama <b>24 jam</b>. </p>
+                    </div>
+                    <div class="col-lg-4 text-lg-end text-center"><a href="#" class="btn btn-start">💬
+                            Mulai
+                            ChatSaku </a></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <style>
+        /* ==========================================================
+    SECTION 6B
+    WHATSAPP COMMAND PREMIUM STYLE
+    ========================================================== */
+
+        .commands-section {
+
+            padding: 90px 0;
+
+            background:
+                linear-gradient(180deg, #f7fffa, #ffffff);
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .commands-section::before {
+
+            content: "";
+
+            position: absolute;
+
+            width: 340px;
+            height: 340px;
+
+            border-radius: 50%;
+
+            background: rgba(37, 211, 102, .06);
+
+            top: -120px;
+            right: -100px;
+
+            filter: blur(35px);
+
+        }
+
+        .commands-section::after {
+
+            content: "";
+
+            position: absolute;
+
+            width: 240px;
+            height: 240px;
+
+            border-radius: 50%;
+
+            background: rgba(18, 140, 126, .05);
+
+            left: -70px;
+            bottom: -60px;
+
+            filter: blur(25px);
+
+        }
+
+        /* ================================= */
+
+        .wa-phone {
+
+            max-width: 430px;
+
+            margin: auto;
+
+            background: #1f2937;
+
+            padding: 12px;
+
+            border-radius: 42px;
+
+            box-shadow:
+
+                0 30px 70px rgba(0, 0, 0, .15);
+
+        }
+
+        .wa-top {
+
+            background: #25D366;
+
+            padding: 18px;
+
+            border-radius: 28px 28px 0 0;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            color: white;
+
+        }
+
+        .wa-profile {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+        }
+
+        .wa-avatar {
+
+            width: 55px;
+            height: 55px;
+
+            border-radius: 50%;
+
+            background: white;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 26px;
+
+        }
+
+        .online {
+
+            font-size: 13px;
+
+            opacity: .9;
+
+        }
+
+        .online i {
+
+            font-size: 8px;
+
+            margin-right: 5px;
+
+        }
+
+        /* ================================= */
+
+        .wa-chat-area {
+
+            background: #ece5dd;
+
+            padding: 22px;
+
+            border-radius: 0 0 28px 28px;
+
+            min-height: 620px;
+
+            background-image:
+
+                radial-gradient(rgba(255, 255, 255, .45) 1px, transparent 1px);
+
+            background-size: 24px 24px;
+
+        }
+
+        /* ================================= */
+
+        .bubble {
+
+            max-width: 82%;
+
+            padding: 14px 18px;
+
+            border-radius: 18px;
+
+            margin-bottom: 18px;
+
+            position: relative;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+            box-shadow:
+
+                0 10px 20px rgba(0, 0, 0, .05);
+
+        }
+
+        .bubble.user {
+
+            margin-left: auto;
+
+            background: #DCF8C6;
+
+            border-bottom-right-radius: 6px;
+
+        }
+
+        .bubble.bot {
+
+            background: white;
+
+            border-bottom-left-radius: 6px;
+
+        }
+
+        .bubble small {
+
+            display: block;
+
+            margin-top: 8px;
+
+            font-size: 11px;
+
+            opacity: .6;
+
+            text-align: right;
+
+        }
+
+        .bubble-card {
+
+            margin-top: 10px;
+
+            padding: 10px 14px;
+
+            background: #f7fffa;
+
+            border-radius: 12px;
+
+            border: 1px solid #dff3e7;
+
+            font-weight: 600;
+
+        }
+
+        /* ================================= */
+
+        .typing {
+
+            display: flex;
+
+            gap: 6px;
+
+            padding: 12px 18px;
+
+            width: 72px;
+
+            background: white;
+
+            border-radius: 18px;
+
+        }
+
+        .typing span {
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: #25D366;
+
+            animation: typing 1s infinite;
+
+        }
+
+        .typing span:nth-child(2) {
+
+            animation-delay: .2s;
+
+        }
+
+        .typing span:nth-child(3) {
+
+            animation-delay: .4s;
+
+        }
+
+        @keyframes typing {
+
+            0%,
+            100% {
+
+                opacity: .3;
+
+                transform: translateY(0);
+
+            }
+
+            50% {
+
+                opacity: 1;
+
+                transform: translateY(-5px);
+
+            }
+
+        }
+
+        /* ================================= */
+
+        .command-grid {
+
+            display: grid;
+
+            grid-template-columns: 1fr;
+
+            gap: 18px;
+
+        }
+
+        .command-card {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            background: white;
+
+            padding: 20px 24px;
+
+            border-radius: 22px;
+
+            border: 1px solid #e8f4ec;
+
+            box-shadow:
+
+                0 12px 30px rgba(0, 0, 0, .05);
+
+            transition: .3s;
+
+        }
+
+        .command-card:hover {
+
+            transform: translateX(8px);
+
+            box-shadow:
+
+                0 20px 45px rgba(37, 211, 102, .12);
+
+        }
+
+        .command-card>div:last-child {
+
+            font-size: 34px;
+
+        }
+
+        .cmd {
+
+            display: inline-block;
+
+            padding: 8px 16px;
+
+            border-radius: 999px;
+
+            background: #ecfff4;
+
+            color: #16a34a;
+
+            font-family: monospace;
+
+            font-weight: 700;
+
+            margin-bottom: 6px;
+
+        }
+
+        .command-card small {
+
+            color: #64748b;
+
+            font-size: 14px;
+
+        }
+
+        /* ================================= */
+
+        .command-banner {
+
+            margin-top: 70px;
+
+            background:
+
+                linear-gradient(135deg, #25D366, #16a34a);
+
+            padding: 45px;
+
+            border-radius: 34px;
+
+            color: white;
+
+            box-shadow:
+
+                0 25px 60px rgba(37, 211, 102, .25);
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .command-banner::before {
+
+            content: "💬";
+
+            position: absolute;
+
+            right: 30px;
+
+            top: 10px;
+
+            font-size: 120px;
+
+            opacity: .08;
+
+        }
+
+        .command-banner h3 {
+
+            font-family: 'Baloo 2', sans-serif;
+
+            font-size: 40px;
+
+            font-weight: 800;
+
+            margin-bottom: 18px;
+
+        }
+
+        .command-banner p {
+
+            font-size: 17px;
+
+            line-height: 1.9;
+
+            margin-bottom: 0;
+
+            opacity: .95;
+
+        }
+
+        /* ================================= */
+
+        @media(max-width:991px) {
+
+            .command-banner {
+
+                text-align: center;
+
+                padding: 35px;
+
+            }
+
+            .command-banner h3 {
+
+                font-size: 32px;
+
+            }
+
+            .wa-phone {
+
+                margin-bottom: 45px;
+
+            }
+
+        }
+
+        @media(max-width:576px) {
+
+            .wa-phone {
+
+                border-radius: 30px;
+
+            }
+
+            .wa-chat-area {
+
+                min-height: auto;
+
+                padding: 18px;
+
+            }
+
+            .command-card {
+
+                padding: 18px;
+
+            }
+
+            .command-card>div:last-child {
+
+                font-size: 28px;
+
+            }
+
+            .command-banner {
+
+                padding: 28px;
+
+            }
+
+            .command-banner h3 {
+
+                font-size: 28px;
+
+            }
+
+            .bubble {
+
+                font-size: 13px;
+
+            }
+
+        }
+    </style>
+    <!-- =====================================================
+SECTION 7A
+AI INSIGHT
+====================================================== -->
+
+    <section id="ai" class="py-5">
+
+        <div class="container">
+
+            <div class="text-center mb-5">
+
+                <div class="cute-badge">
+
+                    🤖 AI Powered Finance
+
+                </div>
+
+                <h2 class="fw-bold mt-4 display-5">
+
+                    AI yang Memahami
+
+                    <span class="text-success">
+
+                        Kebiasaan Keuangan Anda
+
+                    </span>
+
+                </h2>
+
+                <p class="text-secondary mx-auto" style="max-width:760px;">
+
+                    Bukan sekadar pencatat transaksi.
+
+                    ChatSaku mempelajari pola pengeluaran,
+                    memberikan insight otomatis,
+                    hingga membantu Anda mengambil keputusan finansial yang lebih baik.
+
+                </p>
+
+            </div>
+
+            <div class="row align-items-center g-5">
+
+                <!-- PHONE -->
+
+                <div class="col-lg-6">
+
+                    <div class="ai-phone">
+
+                        <div class="phone-notch"></div>
+
+                        <div class="phone-header">
+
+                            <div class="wa-avatar">
+
+                                🤖
+
+                            </div>
+
+                            <div>
+
+                                <div class="fw-bold">
+
+                                    ChatSaku AI
+
+                                </div>
+
+                                <small class="text-success">
+
+                                    ● Online • AI Analyst
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                        <div class="chat-area">
+
+                            <div class="bubble bot">
+
+                                📊
+
+                                <b>Analisis Bulan Ini Selesai</b>
+
+                            </div>
+
+                            <div class="bubble bot">
+
+                                📈 Pengeluaran meningkat
+
+                                <b>18%</b>
+
+                                dibanding bulan lalu.
+
+                            </div>
+
+                            <div class="bubble bot">
+
+                                🍔 Pengeluaran terbesar:
+
+                                <b>Makanan (38%)</b>
+
+                            </div>
+
+                            <div class="bubble bot">
+
+                                💡
+
+                                Jika mengurangi makan di luar
+                                Rp25.000 per hari,
+                                Anda bisa menghemat sekitar
+
+                                <b>Rp750.000 / bulan</b>
+
+                                ✨
+
+                            </div>
+
+                            <div class="bubble success">
+
+                                ✅ Kondisi keuangan masih sehat.
+
+                                Budget tersisa
+
+                                <b>42%</b>
+
+                                dan cashflow tetap positif.
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- CONTENT -->
+
+                <div class="col-lg-6">
+
+                    <div class="section-title-mini">
+
+                        ✨ Yang Dianalisis AI
+
+                    </div>
+
+                    <h3 class="fw-bold mb-4">
+
+                        Lebih dari Sekadar Laporan Keuangan
+
+                    </h3>
+
+                    <p class="text-secondary mb-4">
+
+                        Semakin banyak transaksi yang Anda catat,
+                        semakin pintar AI mengenali pola finansial,
+                        memberikan rekomendasi,
+                        serta membantu menghindari pemborosan.
+
+                    </p>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+
+                            <div class="insight-card cute">
+
+                                <div class="icon-circle green">
+
+                                    <i class="bi bi-graph-up-arrow"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h5>
+                                        Analisis Tren Keuangan
+                                    </h5>
+
+                                    <p>
+
+                                        AI membandingkan pemasukan dan pengeluaran setiap
+                                        bulan untuk mengetahui apakah kondisi finansial Anda
+                                        semakin sehat atau mulai menurun.
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="insight-card cute">
+
+                                <div class="icon-circle orange">
+
+                                    <i class="bi bi-pie-chart-fill"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h5>
+                                        Pengeluaran Terbesar
+                                    </h5>
+
+                                    <p>
+
+                                        AI otomatis menemukan kategori yang paling banyak
+                                        menghabiskan uang sehingga Anda tahu
+                                        bagian mana yang perlu dikontrol.
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="insight-card cute">
+
+                                <div class="icon-circle blue">
+
+                                    <i class="bi bi-lightbulb-fill"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h5>
+                                        Rekomendasi Penghematan
+                                    </h5>
+
+                                    <p>
+
+                                        Berdasarkan kebiasaan transaksi,
+                                        AI memberikan saran realistis
+                                        untuk mengurangi pengeluaran
+                                        tanpa mengganggu aktivitas sehari-hari.
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <div class="insight-card cute">
+
+                                <div class="icon-circle red">
+
+                                    <i class="bi bi-bell-fill"></i>
+
+                                </div>
+
+                                <div>
+
+                                    <h5>
+                                        Early Warning
+                                    </h5>
+
+                                    <p>
+
+                                        Ketika budget hampir habis,
+                                        saldo mulai menipis,
+                                        atau pengeluaran terlalu besar,
+                                        ChatSaku langsung mengirimkan
+                                        notifikasi melalui WhatsApp.
+
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="ai-highlight mt-5">
+
+                        <div class="row align-items-center">
+
+                            <div class="col-lg-8">
+
+                                <div class="cute-badge mb-3">
+
+                                    💚 Smart Financial Assistant
+
+                                </div>
+
+                                <h3 class="fw-bold">
+
+                                    AI Belajar dari Setiap Transaksi Anda
+
+                                </h3>
+
+                                <p class="mb-0">
+
+                                    Semakin sering Anda mencatat pemasukan,
+                                    pengeluaran, budget, dan tagihan,
+                                    semakin akurat AI dalam memberikan
+                                    insight, prediksi cashflow,
+                                    serta rekomendasi keuangan yang personal.
+
+                                </p>
+
+                            </div>
+
+                            <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+
+                                <a href="#commands" class="btn btn-success btn-lg rounded-pill px-5">
+
+                                    <i class="bi bi-whatsapp me-2"></i>
+
+                                    Mulai Chat
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+    </section>
+    <style>
+        #ai {
+
+            background: linear-gradient(180deg, #ffffff, #f7fffb);
+
+            overflow: hidden;
+
+            position: relative;
+
+        }
+
+        #ai::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: -120px;
+
+            right: -120px;
+
+            width: 280px;
+
+            height: 280px;
+
+            background: rgba(37, 211, 102, .08);
+
+            border-radius: 50%;
+
+            filter: blur(40px);
+
+        }
+
+        #ai::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: -120px;
+
+            bottom: -120px;
+
+            width: 250px;
+
+            height: 250px;
+
+            background: rgba(34, 197, 94, .08);
+
+            border-radius: 50%;
+
+            filter: blur(50px);
+
+        }
+
+        /* PHONE */
+
+        .ai-phone {
+
+            background: #fff;
+
+            border-radius: 42px;
+
+            padding: 18px;
+
+            border: 8px solid #1d2329;
+
+            box-shadow: 0 30px 70px rgba(0, 0, 0, .12);
+
+            max-width: 420px;
+
+            margin: auto;
+
+            position: relative;
+
+        }
+
+        .phone-notch {
+
+            width: 120px;
+
+            height: 22px;
+
+            background: #1d2329;
+
+            border-radius: 20px;
+
+            margin: 0 auto 18px;
+
+        }
+
+        .phone-header {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding-bottom: 16px;
+
+            border-bottom: 1px solid #edf2f7;
+
+        }
+
+        .wa-avatar {
+
+            width: 58px;
+
+            height: 58px;
+
+            border-radius: 50%;
+
+            background: linear-gradient(135deg, #25D366, #18b95d);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 28px;
+
+            color: #fff;
+
+            box-shadow: 0 10px 25px rgba(37, 211, 102, .25);
+
+        }
+
+        .chat-area {
+
+            background: url("https://www.transparenttextures.com/patterns/cream-pixels.png");
+
+            border-radius: 24px;
+
+            padding: 22px;
+
+            margin-top: 20px;
+
+        }
+
+        .bubble {
+
+            background: #fff;
+
+            padding: 15px 18px;
+
+            border-radius: 18px;
+
+            margin-bottom: 14px;
+
+            line-height: 1.7;
+
+            font-size: 14px;
+
+            max-width: 88%;
+
+            box-shadow: 0 8px 20px rgba(0, 0, 0, .05);
+
+            position: relative;
+
+            animation: fadeUp .5s ease;
+
+        }
+
+        .bubble.bot {
+
+            border-top-left-radius: 6px;
+
+        }
+
+        .bubble.success {
+
+            background: #dcfce7;
+
+            border-top-left-radius: 6px;
+
+            border-left: 5px solid #22c55e;
+
+            font-weight: 500;
+
+        }
+
+        @keyframes fadeUp {
+
+            from {
+
+                opacity: 0;
+
+                transform: translateY(12px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform: translateY(0);
+
+            }
+
+        }
+
+        /* RIGHT */
+
+        .section-title-mini {
+
+            display: inline-block;
+
+            padding: 8px 18px;
+
+            border-radius: 999px;
+
+            background: #ecfdf5;
+
+            color: #16a34a;
+
+            font-weight: 700;
+
+            font-size: 14px;
+
+            margin-bottom: 15px;
+
+        }
+
+        .insight-card {
+
+            background: #fff;
+
+            padding: 24px;
+
+            border-radius: 24px;
+
+            display: flex;
+
+            gap: 18px;
+
+            align-items: flex-start;
+
+            border: 1px solid #eef2f7;
+
+            transition: .3s;
+
+            height: 100%;
+
+            box-shadow: 0 15px 35px rgba(0, 0, 0, .05);
+
+        }
+
+        .insight-card:hover {
+
+            transform: translateY(-8px);
+
+            box-shadow: 0 25px 50px rgba(37, 211, 102, .12);
+
+        }
+
+        .icon-circle {
+
+            width: 70px;
+
+            height: 70px;
+
+            border-radius: 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 30px;
+
+            flex-shrink: 0;
+
+            color: #fff;
+
+        }
+
+        .green {
+
+            background: linear-gradient(135deg, #25D366, #17b35b);
+
+        }
+
+        .orange {
+
+            background: linear-gradient(135deg, #FDBA2D, #F59E0B);
+
+        }
+
+        .blue {
+
+            background: linear-gradient(135deg, #60A5FA, #2563EB);
+
+        }
+
+        .red {
+
+            background: linear-gradient(135deg, #FB7185, #EF4444);
+
+        }
+
+        .insight-card h5 {
+
+            font-weight: 700;
+
+            margin-bottom: 8px;
+
+        }
+
+        .insight-card p {
+
+            margin: 0;
+
+            line-height: 1.75;
+
+            color: #64748b;
+
+            font-size: 14px;
+
+        }
+
+        /* HIGHLIGHT */
+
+        .ai-highlight {
+
+            margin-top: 70px;
+
+            background: linear-gradient(135deg, #25D366, #18b95d);
+
+            border-radius: 32px;
+
+            padding: 45px;
+
+            color: white;
+
+            position: relative;
+
+            overflow: hidden;
+
+            box-shadow: 0 25px 70px rgba(37, 211, 102, .25);
+
+        }
+
+        .ai-highlight::before {
+
+            content: "🤖";
+
+            position: absolute;
+
+            right: 30px;
+
+            top: -10px;
+
+            font-size: 110px;
+
+            opacity: .08;
+
+        }
+
+        .ai-highlight h3 {
+
+            font-weight: 700;
+
+            margin-bottom: 15px;
+
+        }
+
+        .ai-highlight p {
+
+            color: rgba(255, 255, 255, .95);
+
+            line-height: 1.8;
+
+        }
+
+        .ai-highlight .btn {
+
+            padding: 14px 34px;
+
+            font-weight: 700;
+
+            border-radius: 999px;
+
+            background: #fff;
+
+            color: #16a34a;
+
+            border: none;
+
+            box-shadow: 0 10px 30px rgba(255, 255, 255, .25);
+
+        }
+
+        .ai-highlight .btn:hover {
+
+            transform: translateY(-2px);
+
+        }
+
+        @media(max-width:992px) {
+
+            .ai-phone {
+
+                margin-bottom: 45px;
+
+            }
+
+            .ai-highlight {
+
+                text-align: center;
+
+                padding: 35px;
+
+            }
+
+        }
+
+        @media(max-width:768px) {
+
+            .insight-card {
+
+                flex-direction: column;
+
+                text-align: center;
+
+            }
+
+            .icon-circle {
+
+                margin: auto;
+
+            }
+
+            .ai-highlight::before {
+
+                display: none;
+
+            }
+
+        }
+    </style>
+    <!-- =====================================================
+SECTION 7D
+PREMIUM ANIMATION
+Tambahkan di bawah CSS Section AI
+====================================================== -->
+
+    <style>
+        /* ==========================
+PHONE FLOAT
+========================== */
+
+        .ai-phone {
+
+            animation: phoneFloat 5s ease-in-out infinite;
+
+        }
+
+        @keyframes phoneFloat {
+
+            0% {
+
+                transform: translateY(0px);
+
+            }
+
+            50% {
+
+                transform: translateY(-12px);
+
+            }
+
+            100% {
+
+                transform: translateY(0px);
+
+            }
+
+        }
+
+
+        /* ==========================
+AI AVATAR PULSE
+========================== */
+
+        .wa-avatar {
+
+            position: relative;
+
+            overflow: visible;
+
+        }
+
+        .wa-avatar::after {
+
+            content: "";
+
+            position: absolute;
+
+            inset: -8px;
+
+            border-radius: 50%;
+
+            border: 2px solid rgba(37, 211, 102, .25);
+
+            animation: pulseAI 2.8s infinite;
+
+        }
+
+        @keyframes pulseAI {
+
+            0% {
+
+                transform: scale(.9);
+
+                opacity: 1;
+
+            }
+
+            100% {
+
+                transform: scale(1.7);
+
+                opacity: 0;
+
+            }
+
+        }
+
+
+        /* ==========================
+CHAT DELAY
+========================== */
+
+        .chat-area .bubble:nth-child(1) {
+
+            animation-delay: .1s;
+
+        }
+
+        .chat-area .bubble:nth-child(2) {
+
+            animation-delay: .4s;
+
+        }
+
+        .chat-area .bubble:nth-child(3) {
+
+            animation-delay: .7s;
+
+        }
+
+        .chat-area .bubble:nth-child(4) {
+
+            animation-delay: 1s;
+
+        }
+
+        .chat-area .bubble:nth-child(5) {
+
+            animation-delay: 1.3s;
+
+        }
+
+
+        /* ==========================
+BUBBLE SHADOW
+========================== */
+
+        .bubble {
+
+            transition: .35s;
+
+        }
+
+        .bubble:hover {
+
+            transform: translateY(-3px);
+
+            box-shadow: 0 18px 35px rgba(37, 211, 102, .15);
+
+        }
+
+
+        /* ==========================
+INSIGHT CARD
+========================== */
+
+        .insight-card {
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .insight-card::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: -100%;
+
+            top: 0;
+
+            width: 70%;
+
+            height: 100%;
+
+            background:
+
+                linear-gradient(90deg,
+
+                    transparent,
+
+                    rgba(255, 255, 255, .7),
+
+                    transparent);
+
+            transition: 1s;
+
+        }
+
+        .insight-card:hover::before {
+
+            left: 150%;
+
+        }
+
+        .insight-card:hover .icon-circle {
+
+            transform: rotate(10deg) scale(1.08);
+
+        }
+
+        .icon-circle {
+
+            transition: .35s;
+
+        }
+
+
+        /* ==========================
+BUTTON
+========================== */
+
+        .ai-highlight .btn {
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .ai-highlight .btn::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: -120px;
+
+            top: 0;
+
+            width: 60px;
+
+            height: 100%;
+
+            background:
+
+                rgba(255, 255, 255, .45);
+
+            transform: skewX(-25deg);
+
+            transition: 1s;
+
+        }
+
+        .ai-highlight .btn:hover::before {
+
+            left: 220px;
+
+        }
+
+
+        /* ==========================
+BACKGROUND
+========================== */
+
+        #ai {
+
+            position: relative;
+
+        }
+
+        #ai .container {
+
+            position: relative;
+
+            z-index: 5;
+
+        }
+
+        #ai::before {
+
+            content: "";
+
+            position: absolute;
+
+            left: -120px;
+
+            top: 120px;
+
+            width: 260px;
+
+            height: 260px;
+
+            background: #25D366;
+
+            opacity: .06;
+
+            border-radius: 50%;
+
+            filter: blur(60px);
+
+        }
+
+        #ai::after {
+
+            content: "";
+
+            position: absolute;
+
+            right: -140px;
+
+            bottom: 40px;
+
+            width: 300px;
+
+            height: 300px;
+
+            background: #22c55e;
+
+            opacity: .06;
+
+            border-radius: 50%;
+
+            filter: blur(70px);
+
+        }
+
+
+        /* ==========================
+FLOATING ICONS
+========================== */
+
+        .ai-highlight {
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .ai-highlight::before {
+
+            content: "💬";
+
+            position: absolute;
+
+            left: 40px;
+
+            top: 20px;
+
+            font-size: 60px;
+
+            opacity: .08;
+
+            animation: floatIcon 6s ease-in-out infinite;
+
+        }
+
+        .ai-highlight::after {
+
+            content: "🤖";
+
+            position: absolute;
+
+            right: 40px;
+
+            bottom: 10px;
+
+            font-size: 90px;
+
+            opacity: .08;
+
+            animation: floatIcon2 7s ease-in-out infinite;
+
+        }
+
+        @keyframes floatIcon {
+
+            0% {
+
+                transform: translateY(0);
+
+            }
+
+            50% {
+
+                transform: translateY(-10px);
+
+            }
+
+            100% {
+
+                transform: translateY(0);
+
+            }
+
+        }
+
+        @keyframes floatIcon2 {
+
+            0% {
+
+                transform: translateY(0);
+
+            }
+
+            50% {
+
+                transform: translateY(12px);
+
+            }
+
+            100% {
+
+                transform: translateY(0);
+
+            }
+
+        }
+
+
+        /* ==========================
+GREEN GLOW
+========================== */
+
+        .icon-circle.green {
+
+            box-shadow:
+
+                0 10px 30px rgba(37, 211, 102, .25);
+
+        }
+
+        .icon-circle.orange {
+
+            box-shadow:
+
+                0 10px 30px rgba(251, 191, 36, .25);
+
+        }
+
+        .icon-circle.blue {
+
+            box-shadow:
+
+                0 10px 30px rgba(59, 130, 246, .25);
+
+        }
+
+        .icon-circle.red {
+
+            box-shadow:
+
+                0 10px 30px rgba(239, 68, 68, .25);
+
+        }
+
+
+        /* ==========================
+RESPONSIVE
+========================== */
+
+        @media(max-width:768px) {
+
+            .ai-phone {
+
+                animation: none;
+
+            }
+
+            .wa-avatar::after {
+
+                display: none;
+
+            }
+
+            .ai-highlight::before,
+
+            .ai-highlight::after {
+
+                display: none;
+
+            }
+
+        }
+    </style>
+    <!-- ==========================================================
+SECTION 8A
+CHATSAKU DASHBOARD PREVIEW (REDESIGN)
+========================================================== -->
+
+    <section id="dashboard" class="py-5 chatsaku-dashboard">
+
+        <div class="container">
+
+            <!-- HEADER -->
+            <div class="text-center mb-5">
+
+                <div class="cs-badge">
+                    📊 ChatSaku Dashboard
+                </div>
+
+                <h2 class="fw-bold mt-4 display-5">
+                    Dashboard Keuangan
+                    <span class="text-success">
+                        Real-time & WhatsApp Based
+                    </span>
+                </h2>
+
+                <p class="text-secondary mx-auto" style="max-width:760px;">
+                    Semua transaksi dari WhatsApp langsung masuk ke dashboard
+                    tanpa refresh, tanpa input manual, tanpa ribet.
+                </p>
+
+            </div>
+
+            <!-- WRAPPER -->
+            <div class="cs-dashboard">
+
+                <!-- TOP HEADER -->
+                <div class="cs-topbar">
+
+                    <div>
+                        <h4 class="mb-1 fw-bold text-success">
+                            💚 Ringkasan Keuangan
+                        </h4>
+                        <small class="text-muted">
+                            Auto update setiap transaksi masuk
+                        </small>
+                    </div>
+
+                    <div class="cs-live">
+                        <span class="dot"></span>
+                        LIVE
+                    </div>
+
+                </div>
+
+                <!-- SUMMARY -->
+                <div class="row g-4 mt-2">
+
+                    <div class="col-lg-3 col-6">
+                        <div class="cs-card balance">
+                            <div class="icon">💰</div>
+                            <div class="label">Saldo</div>
+                            <div class="value">Rp12,5 JT</div>
+                            <div class="trend up">▲ 12%</div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-6">
+                        <div class="cs-card income">
+                            <div class="icon">📈</div>
+                            <div class="label">Pemasukan</div>
+                            <div class="value">Rp8,7 JT</div>
+                            <div class="trend up">▲ 18%</div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-6">
+                        <div class="cs-card expense">
+                            <div class="icon">📉</div>
+                            <div class="label">Pengeluaran</div>
+                            <div class="value">Rp4,1 JT</div>
+                            <div class="trend down">▼ 5%</div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-6">
+                        <div class="cs-card budget">
+                            <div class="icon">🎯</div>
+                            <div class="label">Budget</div>
+                            <div class="value">58%</div>
+
+                            <div class="progress mt-2" style="height:8px;border-radius:50px;">
+                                <div class="progress-bar bg-success" style="width:58%"></div>
+                            </div>
+
+                            <small class="text-success d-block mt-2">
+                                Budget masih aman
+                            </small>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- CONTENT -->
+                <div class="row g-4 mt-4">
+
+                    <!-- CHART -->
+                    <div class="col-lg-8">
+
+                        <div class="cs-panel">
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+
+                                <div>
+                                    <h5 class="fw-bold mb-1">
+                                        📊 Cashflow Bulanan
+                                    </h5>
+                                    <small class="text-muted">
+                                        Jan – Jun 2026
+                                    </small>
+                                </div>
+
+                                <span class="cs-pill">AI Insight</span>
+
+                            </div>
+
+                            <div class="cs-chart">
+
+                                <div class="bar" style="height:55%"><span>Jan</span></div>
+                                <div class="bar" style="height:78%"><span>Feb</span></div>
+                                <div class="bar" style="height:66%"><span>Mar</span></div>
+                                <div class="bar" style="height:92%"><span>Apr</span></div>
+                                <div class="bar" style="height:74%"><span>Mei</span></div>
+                                <div class="bar active" style="height:100%"><span>Jun</span></div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- CATEGORY -->
+                    <div class="col-lg-4">
+
+                        <div class="cs-panel h-100">
+
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h5 class="fw-bold mb-0">🍔 Pengeluaran</h5>
+                                <span class="cs-pill">AI</span>
+                            </div>
+
+                            <div class="cat">
+                                <span>🍜 Makanan</span><b>38%</b>
+                            </div>
+                            <div class="cat">
+                                <span>🚗 Transport</span><b>24%</b>
+                            </div>
+                            <div class="cat">
+                                <span>🏠 Rumah</span><b>16%</b>
+                            </div>
+                            <div class="cat">
+                                <span>🎬 Hiburan</span><b>12%</b>
+                            </div>
+                            <div class="cat">
+                                <span>📦 Lainnya</span><b>10%</b>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- FOOTER NOTE -->
+                <div class="cs-footer mt-5">
+
+                    <div class="row align-items-center">
+
+                        <div class="col-lg-8">
+
+                            <div class="cs-badge mb-3">
+                                🔐 Private Dashboard
+                            </div>
+
+                            <h4 class="fw-bold">
+                                Hanya Bisa Diakses oleh Anda
+                            </h4>
+
+                            <p class="text-muted mb-0">
+                                Dashboard dibuat otomatis dari WhatsApp dan hanya aktif
+                                melalui link unik selama 24 jam untuk keamanan data.
+                            </p>
+
+                        </div>
+
+                        <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+
+                            <a href="#" class="btn btn-success btn-lg rounded-pill px-4">
+                                Coba Sekarang
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <style>
+        .chatsaku-dashboard {
+            background: #f7faf8;
+        }
+
+        /* badge */
+        .cs-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 999px;
+            background: #eafff1;
+            color: #16a34a;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        /* wrapper */
+        .cs-dashboard {
+            background: #fff;
+            border-radius: 28px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, .06);
+            border: 1px solid #edf2f7;
+        }
+
+        /* topbar */
+        .cs-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .cs-live {
+            background: #dcfce7;
+            color: #16a34a;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .cs-live .dot {
+            width: 8px;
+            height: 8px;
+            background: #16a34a;
+            display: inline-block;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+
+        /* cards */
+        .cs-card {
+            background: #f8fafc;
+            border-radius: 20px;
+            padding: 22px;
+            height: 100%;
+            transition: .2s;
+            border: 1px solid #eef2f7;
+        }
+
+        .cs-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .cs-card .icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .cs-card .label {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .cs-card .value {
+            font-size: 20px;
+            font-weight: 800;
+            margin-top: 5px;
+        }
+
+        .trend {
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 6px;
+        }
+
+        .trend.up {
+            color: #16a34a;
+        }
+
+        .trend.down {
+            color: #dc2626;
+        }
+
+        /* panel */
+        .cs-panel {
+            background: #fff;
+            border: 1px solid #edf2f7;
+            border-radius: 22px;
+            padding: 24px;
+            height: 100%;
+        }
+
+        /* chart */
+        .cs-chart {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            height: 220px;
+            gap: 10px;
+        }
+
+        .cs-chart .bar {
+            flex: 1;
+            background: #d1fae5;
+            border-radius: 12px 12px 0 0;
+            position: relative;
+        }
+
+        .cs-chart .bar.active {
+            background: #22c55e;
+        }
+
+        .cs-chart .bar span {
+            position: absolute;
+            bottom: -22px;
+            font-size: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #94a3b8;
+        }
+
+        /* category */
+        .cat {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+            font-size: 14px;
+        }
+
+        /* footer */
+        .cs-footer {
+            background: #f0fdf4;
+            padding: 28px;
+            border-radius: 24px;
+        }
+
+        .cs-pill {
+            background: #ecfff4;
+            color: #16a34a;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        @media(max-width:768px) {
+            .cs-topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+
+
+    <!-- ===========================================
+SECTION 8F
+FINAL JAVASCRIPT
+=========================================== -->
+
+    <script>
+
+        /* ===========================================
+        NAVBAR SHADOW
+        =========================================== */
+
+        const navbar = document.querySelector(".navbar");
+
+        window.addEventListener("scroll", () => {
+
+            if (window.scrollY > 40) {
+
+                navbar.style.boxShadow = "0 15px 40px rgba(0,0,0,.08)";
+                navbar.style.background = "rgba(255,255,255,.95)";
+
+            } else {
+
+                navbar.style.boxShadow = "none";
+                navbar.style.background = "rgba(255,255,255,.82)";
+
+            }
+
+        });
+
+
+        /* ===========================================
+        SCROLL REVEAL
+        =========================================== */
+
+        const reveals = document.querySelectorAll(
+
+            "section,.feature-card,.about-card,.step-card,.choose-card,.command-item,.dashboard-card,.stat-card,.insight-card,.cta-box,.accordion-item"
+
+        );
+
+        function revealElements() {
+
+            reveals.forEach(el => {
+
+                const top = el.getBoundingClientRect().top;
+
+                if (top < window.innerHeight - 80) {
+
+                    el.style.opacity = "1";
+                    el.style.transform = "translateY(0)";
+
+                }
+
+            });
+
+        }
+
+        reveals.forEach(el => {
+
+            el.style.opacity = "0";
+            el.style.transform = "translateY(40px)";
+            el.style.transition = ".8s ease";
+
+        });
+
+        window.addEventListener("scroll", revealElements);
+
+        window.addEventListener("load", revealElements);
+
+
+        /* ===========================================
+        ACTIVE MENU
+        =========================================== */
+
+        const sections = document.querySelectorAll("section[id]");
+        const navLinks = document.querySelectorAll(".navbar .nav-link");
+
+        window.addEventListener("scroll", () => {
+
+            let current = "";
+
+            sections.forEach(section => {
+
+                const top = section.offsetTop - 140;
+
+                if (scrollY >= top) {
+
+                    current = section.getAttribute("id");
+
+                }
+
+            });
+
+            navLinks.forEach(link => {
+
+                link.classList.remove("active");
+
+                if (link.getAttribute("href") === "#" + current) {
+
+                    link.classList.add("active");
+
+                }
+
+            });
+
+        });
+
+
+        /* ===========================================
+        SMOOTH SCROLL
+        =========================================== */
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+
+            anchor.addEventListener("click", function (e) {
+
+                const target = document.querySelector(this.getAttribute("href"));
+
+                if (target) {
+
+                    e.preventDefault();
+
+                    target.scrollIntoView({
+
+                        behavior: "smooth"
+
+                    });
+
+                }
+
+            });
+
+        });
+
+
+        /* ===========================================
+        COUNTER
+        =========================================== */
+
+        const counters = document.querySelectorAll(".stat-item h2");
+
+        const speed = 35;
+
+        const animateCounter = () => {
+
+            counters.forEach(counter => {
+
+                const text = counter.innerText;
+
+                const number = parseInt(text.replace(/\D/g, ""));
+
+                if (!number) return;
+
+                let value = 0;
+
+                const update = () => {
+
+                    value += Math.ceil(number / speed);
+
+                    if (value > number) value = number;
+
+                    counter.innerHTML = text.replace(number, value);
+
+                    if (value < number) {
+
+                        requestAnimationFrame(update);
+
+                    }
+
+                };
+
+                update();
+
+            });
+
+        };
+
+        let started = false;
+
+        window.addEventListener("scroll", () => {
+
+            const stat = document.querySelector(".stat-wrapper");
+
+            if (!stat) return;
+
+            if (!started && stat.getBoundingClientRect().top < window.innerHeight) {
+
+                started = true;
+
+                animateCounter();
+
+            }
+
+        });
+
+
+        /* ===========================================
+        BUTTON RIPPLE
+        =========================================== */
+
+        document.querySelectorAll(".btn").forEach(btn => {
+
+            btn.addEventListener("click", function (e) {
+
+                const circle = document.createElement("span");
+
+                const d = Math.max(this.clientWidth, this.clientHeight);
+
+                circle.style.width = d + "px";
+                circle.style.height = d + "px";
+
+                circle.style.left = e.offsetX - d / 2 + "px";
+                circle.style.top = e.offsetY - d / 2 + "px";
+
+                circle.classList.add("ripple");
+
+                this.appendChild(circle);
+
+                setTimeout(() => {
+
+                    circle.remove();
+
+                }, 600);
+
+            });
+
+        });
+
+    </script>
+
+    <style>
+        /* ===========================================
+ACTIVE NAV
+=========================================== */
+
+        .nav-link.active {
+
+            color: #25D366 !important;
+
+            font-weight: 700;
+
+        }
+
+        /* ===========================================
+BUTTON RIPPLE
+=========================================== */
+
+        .btn {
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .ripple {
+
+            position: absolute;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, .45);
+
+            transform: scale(0);
+
+            animation: ripple .6s linear;
+
+            pointer-events: none;
+
+        }
+
+        @keyframes ripple {
+
+            to {
+
+                transform: scale(4);
+
+                opacity: 0;
+
+            }
+
+        }
+
+        /* ===========================================
+SCROLLBAR
+=========================================== */
+
+        ::-webkit-scrollbar {
+
+            width: 10px;
+
+        }
+
+        ::-webkit-scrollbar-track {
+
+            background: #eef5ef;
+
+        }
+
+        ::-webkit-scrollbar-thumb {
+
+            background: #25D366;
+
+            border-radius: 20px;
+
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+
+            background: #17b857;
+
+        }
+
+        /* ===========================================
+TEXT SELECTION
+=========================================== */
+
+        ::selection {
+
+            background: #25D366;
+
+            color: #fff;
+
+        }
+
+        /* ===========================================
+IMAGE ANIMATION
+=========================================== */
+
+        .phone,
+        .phone-preview,
+        .ai-phone {
+
+            animation: phoneFloat 5s ease-in-out infinite;
+
+        }
+
+        @keyframes phoneFloat {
+
+            0% {
+
+                transform: translateY(0);
+
+            }
+
+            50% {
+
+                transform: translateY(-8px);
+
+            }
+
+            100% {
+
+                transform: translateY(0);
+
+            }
+
+        }
+    </style>
+    <!-- ===========================================
+SECTION 9A
+PREMIUM LOADING SCREEN
+=========================================== -->
+
+    <div id="loader">
+
+        <div class="loader-card">
+
+            <div class="loader-logo">
+
+                <div class="loader-icon">
+
+                    <i class="bi bi-chat-dots-fill"></i>
+
+                </div>
+
+                <h2>
+
+                    Chat<span>Saku</span>
+
+                </h2>
+
+                <p>
+
+                    WhatsApp Finance Assistant
+
+                </p>
+
+            </div>
+
+            <div class="loader-phone">
+
+                <div class="loader-chat left">
+
+                    <i class="bi bi-cash-stack text-success"></i>
+
+                    Pemasukan dicatat...
+
+                </div>
+
+                <div class="loader-chat right">
+
+                    💰 Saldo diperbarui
+
+                </div>
+
+                <div class="loader-chat left">
+
+                    🤖 AI sedang menganalisis...
+
+                </div>
+
+            </div>
+
+            <div class="loader-progress">
+
+                <div class="loader-bar"></div>
+
+            </div>
+
+            <small>
+
+                Menyiapkan Dashboard...
+
+            </small>
+
+        </div>
+
+    </div>
+
+    <style>
+        /* =====================================
+LOADER
+===================================== */
+
+        #loader {
+
+            position: fixed;
+
+            inset: 0;
+
+            background: linear-gradient(180deg, #f6fff8, #ecfff4);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            z-index: 999999;
+
+            transition: .6s;
+
+        }
+
+        /* CARD */
+
+        .loader-card {
+
+            width: 360px;
+
+            max-width: 92%;
+
+            background: white;
+
+            border-radius: 32px;
+
+            padding: 40px 30px;
+
+            text-align: center;
+
+            box-shadow:
+
+                0 25px 70px rgba(37, 211, 102, .12);
+
+            border: 1px solid #eef3f0;
+
+        }
+
+        /* LOGO */
+
+        .loader-icon {
+
+            width: 82px;
+
+            height: 82px;
+
+            margin: auto;
+
+            border-radius: 26px;
+
+            background: linear-gradient(135deg, #25D366, #17b857);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 38px;
+
+            color: white;
+
+            box-shadow: 0 20px 45px rgba(37, 211, 102, .35);
+
+            animation: pulseLogo 1.5s infinite;
+
+        }
+
+        .loader-logo h2 {
+
+            margin-top: 20px;
+
+            font-size: 34px;
+
+            font-weight: 800;
+
+            margin-bottom: 5px;
+
+            color: #0f172a;
+
+        }
+
+        .loader-logo span {
+
+            color: #25D366;
+
+        }
+
+        .loader-logo p {
+
+            color: #64748b;
+
+            font-size: 15px;
+
+            margin-bottom: 30px;
+
+        }
+
+        /* CHAT */
+
+        .loader-phone {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+
+            margin-bottom: 28px;
+
+        }
+
+        .loader-chat {
+
+            padding: 12px 16px;
+
+            border-radius: 18px;
+
+            font-size: 14px;
+
+            max-width: 85%;
+
+            animation: fadeChat 1.2s infinite alternate;
+
+        }
+
+        .loader-chat.left {
+
+            background: #ecfff4;
+
+            margin-right: auto;
+
+        }
+
+        .loader-chat.right {
+
+            background: #25D366;
+
+            color: #fff;
+
+            margin-left: auto;
+
+        }
+
+        /* PROGRESS */
+
+        .loader-progress {
+
+            width: 100%;
+
+            height: 8px;
+
+            border-radius: 50px;
+
+            background: #edf2f7;
+
+            overflow: hidden;
+
+            margin-bottom: 14px;
+
+        }
+
+        .loader-bar {
+
+            height: 100%;
+
+            width: 0;
+
+            background: linear-gradient(90deg, #25D366, #18b95a);
+
+            animation: loadingBar 2.2s linear forwards;
+
+        }
+
+        .loader-card small {
+
+            color: #64748b;
+
+            font-weight: 500;
+
+        }
+
+        /* ANIMATION */
+
+        @keyframes loadingBar {
+
+            0% {
+
+                width: 0;
+
+            }
+
+            100% {
+
+                width: 100%;
+
+            }
+
+        }
+
+        @keyframes pulseLogo {
+
+            0% {
+
+                transform: scale(1);
+
+            }
+
+            50% {
+
+                transform: scale(1.08);
+
+            }
+
+            100% {
+
+                transform: scale(1);
+
+            }
+
+        }
+
+        @keyframes fadeChat {
+
+            0% {
+
+                transform: translateY(0);
+
+                opacity: .75;
+
+            }
+
+            100% {
+
+                transform: translateY(-3px);
+
+                opacity: 1;
+
+            }
+
+        }
+
+        /* HIDE */
+
+        body.loaded #loader {
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            pointer-events: none;
+
+        }
+    </style>
+
+    <script>
+
+        /* =====================================
+        LOADING SCREEN
+        ===================================== */
+
+        window.addEventListener("load", function () {
+
+            setTimeout(function () {
+
+                document.body.classList.add("loaded");
+
+            }, 1800);
+
+        });
+
+    </script>
+    <!-- ===========================================
+SECTION 9A
+PREMIUM LOADING SCREEN
+=========================================== -->
+
+    <div id="loader">
+
+        <div class="loader-card">
+
+            <div class="loader-logo">
+
+                <div class="loader-icon">
+
+                    <i class="bi bi-chat-dots-fill"></i>
+
+                </div>
+
+                <h2>
+
+                    Chat<span>Saku</span>
+
+                </h2>
+
+                <p>
+
+                    WhatsApp Finance Assistant
+
+                </p>
+
+            </div>
+
+            <div class="loader-phone">
+
+                <div class="loader-chat left">
+
+                    <i class="bi bi-cash-stack text-success"></i>
+
+                    Pemasukan dicatat...
+
+                </div>
+
+                <div class="loader-chat right">
+
+                    💰 Saldo diperbarui
+
+                </div>
+
+                <div class="loader-chat left">
+
+                    🤖 AI sedang menganalisis...
+
+                </div>
+
+            </div>
+
+            <div class="loader-progress">
+
+                <div class="loader-bar"></div>
+
+            </div>
+
+            <small>
+
+                Menyiapkan Dashboard...
+
+            </small>
+
+        </div>
+
+    </div>
+
+    <style>
+        /* =====================================
+LOADER
+===================================== */
+
+        #loader {
+
+            position: fixed;
+
+            inset: 0;
+
+            background: linear-gradient(180deg, #f6fff8, #ecfff4);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            z-index: 999999;
+
+            transition: .6s;
+
+        }
+
+        /* CARD */
+
+        .loader-card {
+
+            width: 360px;
+
+            max-width: 92%;
+
+            background: white;
+
+            border-radius: 32px;
+
+            padding: 40px 30px;
+
+            text-align: center;
+
+            box-shadow:
+
+                0 25px 70px rgba(37, 211, 102, .12);
+
+            border: 1px solid #eef3f0;
+
+        }
+
+        /* LOGO */
+
+        .loader-icon {
+
+            width: 82px;
+
+            height: 82px;
+
+            margin: auto;
+
+            border-radius: 26px;
+
+            background: linear-gradient(135deg, #25D366, #17b857);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 38px;
+
+            color: white;
+
+            box-shadow: 0 20px 45px rgba(37, 211, 102, .35);
+
+            animation: pulseLogo 1.5s infinite;
+
+        }
+
+        .loader-logo h2 {
+
+            margin-top: 20px;
+
+            font-size: 34px;
+
+            font-weight: 800;
+
+            margin-bottom: 5px;
+
+            color: #0f172a;
+
+        }
+
+        .loader-logo span {
+
+            color: #25D366;
+
+        }
+
+        .loader-logo p {
+
+            color: #64748b;
+
+            font-size: 15px;
+
+            margin-bottom: 30px;
+
+        }
+
+        /* CHAT */
+
+        .loader-phone {
+
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+
+            margin-bottom: 28px;
+
+        }
+
+        .loader-chat {
+
+            padding: 12px 16px;
+
+            border-radius: 18px;
+
+            font-size: 14px;
+
+            max-width: 85%;
+
+            animation: fadeChat 1.2s infinite alternate;
+
+        }
+
+        .loader-chat.left {
+
+            background: #ecfff4;
+
+            margin-right: auto;
+
+        }
+
+        .loader-chat.right {
+
+            background: #25D366;
+
+            color: #fff;
+
+            margin-left: auto;
+
+        }
+
+        /* PROGRESS */
+
+        .loader-progress {
+
+            width: 100%;
+
+            height: 8px;
+
+            border-radius: 50px;
+
+            background: #edf2f7;
+
+            overflow: hidden;
+
+            margin-bottom: 14px;
+
+        }
+
+        .loader-bar {
+
+            height: 100%;
+
+            width: 0;
+
+            background: linear-gradient(90deg, #25D366, #18b95a);
+
+            animation: loadingBar 2.2s linear forwards;
+
+        }
+
+        .loader-card small {
+
+            color: #64748b;
+
+            font-weight: 500;
+
+        }
+
+        /* ANIMATION */
+
+        @keyframes loadingBar {
+
+            0% {
+
+                width: 0;
+
+            }
+
+            100% {
+
+                width: 100%;
+
+            }
+
+        }
+
+        @keyframes pulseLogo {
+
+            0% {
+
+                transform: scale(1);
+
+            }
+
+            50% {
+
+                transform: scale(1.08);
+
+            }
+
+            100% {
+
+                transform: scale(1);
+
+            }
+
+        }
+
+        @keyframes fadeChat {
+
+            0% {
+
+                transform: translateY(0);
+
+                opacity: .75;
+
+            }
+
+            100% {
+
+                transform: translateY(-3px);
+
+                opacity: 1;
+
+            }
+
+        }
+
+        /* HIDE */
+
+        body.loaded #loader {
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            pointer-events: none;
+
+        }
+    </style>
+
+    <script>
+
+        /* =====================================
+        LOADING SCREEN
+        ===================================== */
+
+        window.addEventListener("load", function () {
+
+            setTimeout(function () {
+
+                document.body.classList.add("loaded");
+
+            }, 1800);
+
+        });
+
+    </script>
+    <!-- ===========================================
+SECTION 9C
+LIVE WHATSAPP NOTIFICATION
+=========================================== -->
+
+    <div id="liveNotify" class="live-notify">
+
+        <div class="notify-top">
+
+            <div class="notify-left">
+
+                <div class="notify-avatar">
+
+                    <i class="bi bi-whatsapp"></i>
+
+                    <span class="online-dot"></span>
+
+                </div>
+
+                <div>
+
+                    <div class="notify-title">
+
+                        ChatSaku Assistant
+
+                    </div>
+
+                    <small>
+
+                        baru saja
+
+                    </small>
+
+                </div>
+
+            </div>
+
+            <button class="notify-close" onclick="hideNotify()">
+
+                <i class="bi bi-x-lg"></i>
+
+            </button>
+
+        </div>
+
+        <div class="notify-body" id="notifyText">
+
+            💰 Pemasukan berhasil dicatat
+
+        </div>
+
+        <div class="notify-progress">
+
+            <div class="notify-progress-bar"></div>
+
+        </div>
+
+    </div>
+
+    <style>
+        /* =====================================
+LIVE NOTIFICATION
+===================================== */
+
+        .live-notify {
+
+            position: fixed;
+
+            left: 28px;
+
+            bottom: 28px;
+
+            width: 360px;
+
+            max-width: calc(100% - 40px);
+
+            background: rgba(255, 255, 255, .92);
+
+            backdrop-filter: blur(18px);
+
+            border-radius: 28px;
+
+            padding: 18px;
+
+            border: 1px solid rgba(255, 255, 255, .6);
+
+            box-shadow:
+
+                0 20px 50px rgba(0, 0, 0, .12);
+
+            z-index: 9999;
+
+            transform: translateY(180px);
+
+            opacity: 0;
+
+            transition: .45s;
+
+            overflow: hidden;
+
+        }
+
+        .live-notify.show {
+
+            transform: translateY(0);
+
+            opacity: 1;
+
+        }
+
+        .notify-top {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 14px;
+
+        }
+
+        .notify-left {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 14px;
+
+        }
+
+        .notify-avatar {
+
+            width: 58px;
+
+            height: 58px;
+
+            border-radius: 18px;
+
+            background: linear-gradient(135deg, #25D366, #18b956);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            color: #fff;
+
+            font-size: 28px;
+
+            position: relative;
+
+            box-shadow: 0 12px 28px rgba(37, 211, 102, .35);
+
+        }
+
+        .online-dot {
+
+            position: absolute;
+
+            right: 2px;
+
+            bottom: 2px;
+
+            width: 14px;
+
+            height: 14px;
+
+            background: #4ade80;
+
+            border: 3px solid white;
+
+            border-radius: 50%;
+
+        }
+
+        .notify-title {
+
+            font-weight: 700;
+
+            font-size: 16px;
+
+            color: #16332b;
+
+        }
+
+        .notify-top small {
+
+            color: #94a3b8;
+
+        }
+
+        .notify-close {
+
+            border: none;
+
+            background: #f8fafc;
+
+            width: 36px;
+
+            height: 36px;
+
+            border-radius: 50%;
+
+            cursor: pointer;
+
+            transition: .2s;
+
+        }
+
+        .notify-close:hover {
+
+            background: #eef2f7;
+
+            transform: rotate(90deg);
+
+        }
+
+        .notify-body {
+
+            background: #f4fff7;
+
+            border: 1px solid #dcfce7;
+
+            padding: 16px;
+
+            border-radius: 18px;
+
+            font-size: 15px;
+
+            line-height: 1.7;
+
+            color: #334155;
+
+        }
+
+        .notify-progress {
+
+            height: 5px;
+
+            background: #edf2f7;
+
+            border-radius: 50px;
+
+            overflow: hidden;
+
+            margin-top: 16px;
+
+        }
+
+        .notify-progress-bar {
+
+            height: 100%;
+
+            width: 100%;
+
+            background: linear-gradient(90deg, #25D366, #16a34a);
+
+            animation: progressBar 4.8s linear forwards;
+
+        }
+
+        @keyframes progressBar {
+
+            from {
+
+                width: 100%;
+
+            }
+
+            to {
+
+                width: 0%;
+
+            }
+
+        }
+
+        @media(max-width:768px) {
+
+            .live-notify {
+
+                left: 15px;
+
+                right: 15px;
+
+                bottom: 18px;
+
+                width: auto;
+
+                padding: 16px;
+
+            }
+
+            .notify-avatar {
+
+                width: 52px;
+
+                height: 52px;
+
+                font-size: 24px;
+
+            }
+
+            .notify-body {
+
+                font-size: 14px;
+
+            }
+
+        }
+    </style>
+
+    <script>
+
+        /* =====================================
+        LIVE NOTIFICATION
+        ===================================== */
+
+        const notify = document.getElementById("liveNotify");
+        const notifyText = document.getElementById("notifyText");
+
+        const messages = [
+
+            "💰 Pemasukan <b>Rp2.500.000</b> berhasil dicatat.",
+
+            "🍜 Pengeluaran Makanan <b>Rp35.000</b> tersimpan.",
+
+            "📊 Dashboard berhasil diperbarui secara realtime.",
+
+            "🤖 AI Insight bulan ini telah selesai dibuat.",
+
+            "🎯 Budget kategori Makanan telah mencapai <b>72%</b>.",
+
+            "🔔 Reminder pembayaran Internet besok pukul 08.00.",
+
+            "💳 Saldo berhasil diperbarui menjadi <b>Rp12.450.000</b>.",
+
+            "📈 Cashflow bulan ini meningkat <b>12%</b> dibanding bulan lalu.",
+
+            "🔐 Dashboard pribadi aktif selama <b>24 jam</b>."
+
+        ];
+
+        let current = 0;
+
+        function resetProgress() {
+
+            const bar = document.querySelector(".notify-progress-bar");
+
+            bar.style.animation = "none";
+
+            bar.offsetHeight;
+
+            bar.style.animation = "progressBar 4.8s linear forwards";
+
+        }
+
+        function showNotification() {
+
+            notifyText.innerHTML = messages[current];
+
+            notify.classList.add("show");
+
+            resetProgress();
+
+            setTimeout(() => {
+
+                notify.classList.remove("show");
+
+            }, 5000);
+
+            current++;
+
+            if (current >= messages.length) {
+
+                current = 0;
+
+            }
+
+        }
+
+        function hideNotify() {
+
+            notify.classList.remove("show");
+
+        }
+
+        setTimeout(showNotification, 2500);
+
+        setInterval(showNotification, 7000);
+
+    </script>
+
+    <!-- ===========================================
+SECTION 9D
+FOOTER
+=========================================== -->
+
+    <footer class="footer-chatsaku">
+
+        <div class="container">
+
+            <div class="row g-5">
+
+                <!-- BRAND -->
+
+                <div class="col-lg-5">
+
+                    <div class="footer-logo">
+
+                        <div class="footer-logo-icon">
+
+                            <i class="bi bi-chat-dots-fill"></i>
+
+                        </div>
+
+                        <div>
+
+                            <h3>
+
+                                Chat<span>Saku</span>
+
+                            </h3>
+
+                            <small>
+
+                                WhatsApp Finance Assistant
+
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                    <p class="footer-desc">
+
+                        Kelola pemasukan, pengeluaran, budget,
+                        reminder tagihan, laporan keuangan,
+                        hingga AI Insight hanya melalui WhatsApp.
+
+                        Tidak perlu install aplikasi.
+
+                    </p>
+
+                    <div class="footer-badges">
+
+                        <span>
+
+                            💚 100% WhatsApp
+
+                        </span>
+
+                        <span>
+
+                            🤖 AI Powered
+
+                        </span>
+
+                        <span>
+
+                            🔒 Secure
+
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <!-- MENU -->
+
+                <div class="col-lg-2 col-6">
+
+                    <h6>
+
+                        Menu
+
+                    </h6>
+
+                    <ul>
+
+                        <li><a href="#">Home</a></li>
+
+                        <li><a href="#features">Features</a></li>
+
+                        <li><a href="#dashboard">Dashboard</a></li>
+
+                        <li><a href="#commands">Commands</a></li>
+
+                    </ul>
+
+                </div>
+
+                <!-- PRODUCT -->
+
+                <div class="col-lg-2 col-6">
+
+                    <h6>
+
+                        Product
+
+                    </h6>
+
+                    <ul>
+
+                        <li><a href="#">Budget</a></li>
+
+                        <li><a href="#">Reminder</a></li>
+
+                        <li><a href="#">AI Insight</a></li>
+
+                        <li><a href="#">Analytics</a></li>
+
+                    </ul>
+
+                </div>
+
+                <!-- SOCIAL -->
+
+                <div class="col-lg-3">
+
+                    <h6>
+
+                        Connect
+
+                    </h6>
+
+                    <div class="footer-social">
+
+                        <a href="#">
+
+                            <i class="bi bi-whatsapp"></i>
+
+                        </a>
+
+                        <a href="#">
+
+                            <i class="bi bi-instagram"></i>
+
+                        </a>
+
+                        <a href="#">
+
+                            <i class="bi bi-facebook"></i>
+
+                        </a>
+
+                        <a href="#">
+
+                            <i class="bi bi-envelope-fill"></i>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <div class="footer-bottom">
+
+                <div>
+
+                    © 2026 ChatSaku.com
+
+                    All Rights Reserved.
+
+                </div>
+
+                <div>
+
+                    Made with 💚 in Indonesia
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+    <style>
+        /* =====================================
+FOOTER
+===================================== */
+
+        .footer-chatsaku {
+
+            background: linear-gradient(180deg, #18b85b, #119b49);
+
+            color: #fff;
+
+            padding: 80px 0 35px;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .footer-chatsaku::before {
+
+            content: "";
+
+            position: absolute;
+
+            top: -120px;
+
+            right: -120px;
+
+            width: 300px;
+
+            height: 300px;
+
+            background: rgba(255, 255, 255, .08);
+
+            border-radius: 50%;
+
+        }
+
+        .footer-chatsaku::after {
+
+            content: "";
+
+            position: absolute;
+
+            left: -140px;
+
+            bottom: -140px;
+
+            width: 340px;
+
+            height: 340px;
+
+            background: rgba(255, 255, 255, .05);
+
+            border-radius: 50%;
+
+        }
+
+        .footer-logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 18px;
+
+            margin-bottom: 25px;
+
+            position: relative;
+
+            z-index: 2;
+
+        }
+
+        .footer-logo-icon {
+
+            width: 72px;
+
+            height: 72px;
+
+            border-radius: 24px;
+
+            background: rgba(255, 255, 255, .18);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 34px;
+
+            backdrop-filter: blur(10px);
+
+        }
+
+        .footer-logo h3 {
+
+            font-weight: 800;
+
+            margin: 0;
+
+        }
+
+        .footer-logo span {
+
+            color: #d9ffe6;
+
+        }
+
+        .footer-logo small {
+
+            opacity: .9;
+
+        }
+
+        .footer-desc {
+
+            margin-top: 18px;
+
+            line-height: 1.9;
+
+            opacity: .92;
+
+            max-width: 430px;
+
+        }
+
+        .footer-badges {
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            margin-top: 28px;
+
+        }
+
+        .footer-badges span {
+
+            background: rgba(255, 255, 255, .15);
+
+            padding: 10px 18px;
+
+            border-radius: 50px;
+
+            font-size: 14px;
+
+            backdrop-filter: blur(10px);
+
+        }
+
+        .footer-chatsaku h6 {
+
+            font-weight: 700;
+
+            margin-bottom: 20px;
+
+        }
+
+        .footer-chatsaku ul {
+
+            list-style: none;
+
+            padding: 0;
+
+            margin: 0;
+
+        }
+
+        .footer-chatsaku li {
+
+            margin-bottom: 12px;
+
+        }
+
+        .footer-chatsaku a {
+
+            text-decoration: none;
+
+            color: rgba(255, 255, 255, .9);
+
+            transition: .25s;
+
+        }
+
+        .footer-chatsaku a:hover {
+
+            padding-left: 6px;
+
+            color: #fff;
+
+        }
+
+        .footer-social {
+
+            display: flex;
+
+            gap: 15px;
+
+            margin-top: 10px;
+
+        }
+
+        .footer-social a {
+
+            width: 52px;
+
+            height: 52px;
+
+            border-radius: 16px;
+
+            background: rgba(255, 255, 255, .15);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 22px;
+
+            transition: .3s;
+
+            backdrop-filter: blur(10px);
+
+        }
+
+        .footer-social a:hover {
+
+            transform: translateY(-6px);
+
+            background: #fff;
+
+            color: #18b85b;
+
+        }
+
+        .footer-chatsaku hr {
+
+            margin: 45px 0 25px;
+
+            border-color: rgba(255, 255, 255, .18);
+
+        }
+
+        .footer-bottom {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            flex-wrap: wrap;
+
+            gap: 12px;
+
+            font-size: 14px;
+
+            opacity: .9;
+
+        }
+
+        @media(max-width:768px) {
+
+            .footer-chatsaku {
+
+                text-align: center;
+
+            }
+
+            .footer-logo {
+
+                justify-content: center;
+
+            }
+
+            .footer-desc {
+
+                margin: auto;
+
+                margin-top: 20px;
+
+            }
+
+            .footer-badges {
+
+                justify-content: center;
+
+            }
+
+            .footer-social {
+
+                justify-content: center;
+
+            }
+
+            .footer-bottom {
+
+                justify-content: center;
+
+            }
+
+        }
+    </style>
+    <!-- ===========================================
+SECTION 9F
+PREMIUM EFFECTS
+=========================================== -->
+
+    <!-- LOADER -->
+
+    <div id="loader">
+
+        <div class="loader-box">
+
+            <div class="loader-logo">
+
+                <i class="bi bi-whatsapp"></i>
+
+            </div>
+
+            <h3>
+
+                Chat<span>Saku</span>
+
+            </h3>
+
+            <div class="loader-bar">
+
+                <div class="loader-fill"></div>
+
+            </div>
+
+            <small>
+
+                Menyiapkan Dashboard...
+
+            </small>
+
+        </div>
+
+    </div>
+
+    <!-- CURSOR GLOW -->
+
+    <div id="cursorGlow"></div>
+
+    <style>
+        /* =====================================
+LOADER
+===================================== */
+
+        #loader {
+
+            position: fixed;
+
+            inset: 0;
+
+            background: #ffffff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            z-index: 999999;
+
+            transition: .6s;
+
+        }
+
+        #loader.hide {
+
+            opacity: 0;
+
+            visibility: hidden;
+
+        }
+
+        .loader-box {
+
+            text-align: center;
+
+        }
+
+        .loader-logo {
+
+            width: 90px;
+
+            height: 90px;
+
+            margin: auto;
+
+            border-radius: 30px;
+
+            background: linear-gradient(135deg, #25D366, #18b95b);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 42px;
+
+            color: #fff;
+
+            box-shadow: 0 25px 60px rgba(37, 211, 102, .35);
+
+            animation: bounce 1.2s infinite;
+
+        }
+
+        .loader-box h3 {
+
+            margin-top: 25px;
+
+            font-weight: 800;
+
+        }
+
+        .loader-box span {
+
+            color: #25D366;
+
+        }
+
+        .loader-bar {
+
+            width: 260px;
+
+            height: 8px;
+
+            background: #eef2f5;
+
+            border-radius: 30px;
+
+            margin: 30px auto 15px;
+
+            overflow: hidden;
+
+        }
+
+        .loader-fill {
+
+            height: 100%;
+
+            width: 0;
+
+            background: linear-gradient(90deg, #25D366, #16a34a);
+
+            animation: loading 2s linear forwards;
+
+        }
+
+        @keyframes loading {
+
+            100% {
+
+                width: 100%;
+
+            }
+
+        }
+
+        @keyframes bounce {
+
+            50% {
+
+                transform: translateY(-10px);
+
+            }
+
+        }
+
+        /* =====================================
+CURSOR GLOW
+===================================== */
+
+        #cursorGlow {
+
+            position: fixed;
+
+            width: 22px;
+
+            height: 22px;
+
+            border-radius: 50%;
+
+            background: rgba(37, 211, 102, .25);
+
+            pointer-events: none;
+
+            transform: translate(-50%, -50%);
+
+            z-index: 99999;
+
+            backdrop-filter: blur(5px);
+
+            transition: .08s linear;
+
+        }
+
+        /* =====================================
+REVEAL
+===================================== */
+
+        .reveal {
+
+            opacity: 0;
+
+            transform: translateY(50px);
+
+            transition: 1s;
+
+        }
+
+        .reveal.active {
+
+            opacity: 1;
+
+            transform: none;
+
+        }
+
+        /* =====================================
+HOVER BUTTON
+===================================== */
+
+        .btn {
+
+            overflow: hidden;
+
+            position: relative;
+
+        }
+
+        .btn::after {
+
+            content: "";
+
+            position: absolute;
+
+            top: 50%;
+
+            left: 50%;
+
+            width: 0;
+
+            height: 0;
+
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, .25);
+
+            transform: translate(-50%, -50%);
+
+            transition: .5s;
+
+        }
+
+        .btn:hover::after {
+
+            width: 300px;
+
+            height: 300px;
+
+        }
+
+        /* =====================================
+FLOATING SHAPES
+===================================== */
+
+        .shape {
+
+            position: fixed;
+
+            border-radius: 50%;
+
+            background: rgba(37, 211, 102, .05);
+
+            pointer-events: none;
+
+            z-index: -1;
+
+            animation: floatShape 15s linear infinite;
+
+        }
+
+        .shape.one {
+
+            width: 260px;
+
+            height: 260px;
+
+            top: 5%;
+
+            left: -100px;
+
+        }
+
+        .shape.two {
+
+            width: 200px;
+
+            height: 200px;
+
+            bottom: 10%;
+
+            right: -80px;
+
+            animation-duration: 18s;
+
+        }
+
+        @keyframes floatShape {
+
+            50% {
+
+                transform: translateY(-40px);
+
+            }
+
+        }
+    </style>
+
+    <div class="shape one"></div>
+    <div class="shape two"></div>
+
+    <script>
+
+        /* =====================================
+        LOADER
+        ===================================== */
+
+        window.addEventListener("load", () => {
+
+            setTimeout(() => {
+
+                document.getElementById("loader").classList.add("hide");
+
+            }, 1800);
+
+        });
+
+        /* =====================================
+        CURSOR
+        ===================================== */
+
+        const glow = document.getElementById("cursorGlow");
+
+        document.addEventListener("mousemove", (e) => {
+
+            glow.style.left = e.clientX + "px";
+
+            glow.style.top = e.clientY + "px";
+
+        });
+
+        /* =====================================
+        REVEAL
+        ===================================== */
+
+        const reveal = document.querySelectorAll("section");
+
+        function revealSection() {
+
+            const trigger = window.innerHeight - 120;
+
+            reveal.forEach(sec => {
+
+                if (sec.getBoundingClientRect().top < trigger) {
+
+                    sec.classList.add("reveal");
+
+                    sec.classList.add("active");
+
+                }
+
+            });
+
+        }
+
+        window.addEventListener("scroll", revealSection);
+
+        revealSection();
+
+        /* =====================================
+        COUNTER
+        ===================================== */
+
+        document.querySelectorAll("h2,h3").forEach(el => {
+
+            const txt = el.innerText;
+
+            const num = parseInt(txt);
+
+            if (!isNaN(num)) {
+
+                let current = 0;
+
+                const timer = setInterval(() => {
+
+                    current++;
+
+                    el.innerText = current;
+
+                    if (current >= num) {
+
+                        el.innerText = txt;
+
+                        clearInterval(timer);
+
+                    }
+
+                }, 15);
+
+            }
+
+        });
+
+        /* =====================================
+        PARALLAX
+        ===================================== */
+
+        window.addEventListener("scroll", () => {
+
+            const y = window.scrollY;
+
+            document.querySelectorAll(".shape").forEach((e, i) => {
+
+                e.style.transform = `translateY(${y * (0.05 + i * 0.02)}px)`;
+
+            });
+
+        });
+
+    </script>
+
+
+    <!-- ===========================================
+SECTION 9
+FINAL CTA + TRUST
+=========================================== -->
+
+    <section class="py-5 bg-success text-white position-relative overflow-hidden">
+
+        <!-- Background -->
+        <div class="position-absolute top-0 start-0 w-100 h-100" style="
+            background:
+            radial-gradient(circle at top right,rgba(255,255,255,.18),transparent 35%),
+            radial-gradient(circle at bottom left,rgba(255,255,255,.12),transparent 40%);
+            opacity:.9;
+        ">
+        </div>
+
+        <div class="container position-relative">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-7">
+
+                    <span class="badge bg-white text-success rounded-pill px-3 py-2 mb-3">
+
+                        🚀 Siap Memulai?
+
+                    </span>
+
+                    <h2 class="display-5 fw-bold mb-4">
+
+                        Mulai Kelola Keuangan Langsung dari WhatsApp
+
+                    </h2>
+
+                    <p class="lead opacity-75 mb-4">
+
+                        Tidak perlu aplikasi tambahan.
+                        Tidak perlu belajar software akuntansi.
+                        Cukup kirim chat, seluruh transaksi akan dicatat otomatis
+                        dan dashboard pribadi langsung dibuat.
+
+                    </p>
+
+                    <div class="d-flex flex-wrap gap-3">
+
+                        <a href="#" class="btn btn-light btn-lg rounded-pill px-4 fw-semibold">
+
+                            <i class="bi bi-whatsapp me-2"></i>
+
+                            Coba Gratis Sekarang
+
+                        </a>
+
+                        <a href="#pricing" class="btn btn-outline-light btn-lg rounded-pill px-4">
+
+                            Lihat Paket
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-5 mt-5 mt-lg-0">
+
+                    <div class="trust-card">
+
+                        <div class="row g-3 text-center">
+
+                            <div class="col-6">
+
+                                <h2 class="fw-bold mb-1">
+
+                                    24/7
+
+                                </h2>
+
+                                <small>
+
+                                    WhatsApp Bot
+
+                                </small>
+
+                            </div>
+
+                            <div class="col-6">
+
+                                <h2 class="fw-bold mb-1">
+
+                                    AI
+
+                                </h2>
+
+                                <small>
+
+                                    Financial Insight
+
+                                </small>
+
+                            </div>
+
+                            <div class="col-6">
+
+                                <h2 class="fw-bold mb-1">
+
+                                    100%
+
+                                </h2>
+
+                                <small>
+
+                                    WhatsApp Based
+
+                                </small>
+
+                            </div>
+
+                            <div class="col-6">
+
+                                <h2 class="fw-bold mb-1">
+
+                                    24 Jam
+
+                                </h2>
+
+                                <small>
+
+                                    Dashboard Link
+
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="text-center">
+
+                            <div class="fw-semibold mb-2">
+
+                                Cocok Untuk
+
+                            </div>
+
+                            <div class="d-flex flex-wrap justify-content-center gap-2">
+
+                                <span class="badge bg-success-subtle text-success px-3 py-2">
+
+                                    UMKM
+
+                                </span>
+
+                                <span class="badge bg-success-subtle text-success px-3 py-2">
+
+                                    Freelancer
+
+                                </span>
+
+                                <span class="badge bg-success-subtle text-success px-3 py-2">
+
+                                    Online Shop
+
+                                </span>
+
+                                <span class="badge bg-success-subtle text-success px-3 py-2">
+
+                                    Karyawan
+
+                                </span>
+
+                                <span class="badge bg-success-subtle text-success px-3 py-2">
+
+                                    Komunitas
+
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <style>
+        .trust-card {
+
+            background: rgba(255, 255, 255, .15);
+
+            backdrop-filter: blur(20px);
+
+            border: 1px solid rgba(255, 255, 255, .25);
+
+            border-radius: 28px;
+
+            padding: 35px;
+
+            box-shadow: 0 20px 50px rgba(0, 0, 0, .15);
+
+        }
+
+        .trust-card h2 {
+
+            font-size: 34px;
+
+            margin-bottom: 0;
+
+            color: white;
+
+        }
+
+        .trust-card small {
+
+            color: rgba(255, 255, 255, .85);
+
+            font-size: 13px;
+
+        }
+
+        .trust-card .badge {
+
+            font-size: 12px;
+
+            border-radius: 999px;
+
+        }
+    </style>
+</body>
+
+</html>

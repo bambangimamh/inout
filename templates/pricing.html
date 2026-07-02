@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ChatSaku Pricing</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --green: #25D366;
+            --dark: #128C7E;
+            --soft: #EAFBF3;
+        }
+
+        body {
+            background: #f6f8f7;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, var(--green), var(--dark));
+            color: white;
+            padding: 90px 20px;
+            border-radius: 0 0 40px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -80px;
+            right: -80px;
+        }
+
+        /* PRICING CARD */
+        .pricing-card {
+            border: 0;
+            border-radius: 20px;
+            transition: 0.25s;
+            background: white;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .price {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--dark);
+        }
+
+        .badge-pop {
+            background: var(--green);
+            color: white;
+            font-size: 12px;
+            border-radius: 20px;
+            padding: 6px 12px;
+        }
+
+        ul li {
+            margin-bottom: 8px;
+        }
+
+        /* FAQ */
+        .faq-box {
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        .accordion-button {
+            background: white;
+            font-weight: 500;
+        }
+
+        /* CTA */
+        .cta {
+            background: linear-gradient(135deg, var(--dark), var(--green));
+            color: white;
+            border-radius: 25px;
+            padding: 60px 25px;
+        }
+
+        .btn-wa {
+            background: white;
+            color: var(--dark);
+            font-weight: 600;
+            border-radius: 12px;
+            padding: 10px 20px;
+        }
+
+        .btn-wa:hover {
+            background: #f2fff7;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ================= HERO ================= -->
+    <section class="hero text-center">
+        <div class="container">
+            <h1 class="fw-bold">Paket ChatSaku</h1>
+            <p class="mt-3">
+                Kelola keuangan langsung dari WhatsApp dengan cara paling simple, cepat, dan otomatis.
+            </p>
+            <a href="#pricing" class="btn btn-light mt-3 fw-semibold rounded-pill px-4">
+                Lihat Harga
+            </a>
+        </div>
+    </section>
+
+    <!-- ================= PRICING ================= -->
+    <section id="pricing" class="py-5">
+        <div class="container">
+
+            <div class="text-center mb-5">
+                <h2 class="fw-bold">Pilih Paket Terbaik</h2>
+                <p class="text-muted">Semua paket sudah termasuk AI WhatsApp Finance Assistant</p>
+            </div>
+
+            <div class="row g-4 justify-content-center">
+
+                <!-- 20K -->
+                <div class="col-md-4">
+                    <div class="card pricing-card text-center p-4 h-100">
+
+                        <h5 class="text-muted">Starter</h5>
+                        <div class="price">Rp 20.000</div>
+
+                        <p class="text-muted small mt-2">
+                            Cocok untuk pengguna baru yang ingin coba catat keuangan otomatis.
+                        </p>
+
+                        <ul class="list-unstyled text-start mt-4 small">
+                            <li>✔ Catat pemasukan & pengeluaran</li>
+                            <li>✔ Laporan WhatsApp sederhana</li>
+                            <li>✔ 1 nomor WhatsApp</li>
+                            <li>✔ Riwayat 30 hari</li>
+                        </ul>
+
+                        <a href="#" class="btn btn-outline-success w-100 mt-3 rounded-pill">
+                            Pilih Starter
+                        </a>
+
+                    </div>
+                </div>
+
+                <!-- 49K -->
+                <div class="col-md-4">
+                    <div class="card pricing-card text-center p-4 h-100 position-relative">
+
+                        <span class="badge-pop position-absolute top-0 start-50 translate-middle">
+                            Paling Favorit
+                        </span>
+
+                        <h5 class="text-muted">Pro</h5>
+                        <div class="price text-success">Rp 49.000</div>
+
+                        <p class="text-muted small mt-2">
+                            Untuk UMKM yang ingin kontrol keuangan lebih rapi & otomatis.
+                        </p>
+
+                        <ul class="list-unstyled text-start mt-4 small">
+                            <li>✔ Semua fitur Starter</li>
+                            <li>✔ Laporan bulanan otomatis</li>
+                            <li>✔ Kategori custom</li>
+                            <li>✔ Reminder tagihan</li>
+                            <li>✔ Backup data cloud</li>
+                        </ul>
+
+                        <a href="#" class="btn btn-success w-100 mt-3 rounded-pill">
+                            Pilih Pro
+                        </a>
+
+                    </div>
+                </div>
+
+                <!-- 75K -->
+                <div class="col-md-4">
+                    <div class="card pricing-card text-center p-4 h-100">
+
+                        <h5 class="text-muted">Business</h5>
+                        <div class="price text-dark">Rp 75.000</div>
+
+                        <p class="text-muted small mt-2">
+                            Untuk bisnis yang butuh analisis keuangan & multi user.
+                        </p>
+
+                        <ul class="list-unstyled text-start mt-4 small">
+                            <li>✔ Semua fitur Pro</li>
+                            <li>✔ Multi user akses</li>
+                            <li>✔ AI insight keuangan</li>
+                            <li>✔ Export PDF & Excel</li>
+                            <li>✔ Support prioritas</li>
+                        </ul>
+
+                        <a href="#" class="btn btn-dark w-100 mt-3 rounded-pill">
+                            Pilih Business
+                        </a>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= FAQ ================= -->
+    <section class="py-5">
+        <div class="container">
+
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">FAQ</h2>
+                <p class="text-muted">Pertanyaan yang sering ditanyakan</p>
+            </div>
+
+            <div class="accordion faq-box" id="faq">
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" data-bs-toggle="collapse" data-bs-target="#q1">
+                            Apakah harus install aplikasi?
+                        </button>
+                    </h2>
+                    <div id="q1" class="accordion-collapse collapse show" data-bs-parent="#faq">
+                        <div class="accordion-body">
+                            Tidak. Semua berjalan langsung dari WhatsApp.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#q2">
+                            Apakah data aman?
+                        </button>
+                    </h2>
+                    <div id="q2" class="accordion-collapse collapse" data-bs-parent="#faq">
+                        <div class="accordion-body">
+                            Ya, data disimpan dengan aman dan terenkripsi.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#q3">
+                            Bisa upgrade paket?
+                        </button>
+                    </h2>
+                    <div id="q3" class="accordion-collapse collapse" data-bs-parent="#faq">
+                        <div class="accordion-body">
+                            Bisa kapan saja tanpa kehilangan data.
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= CTA ================= -->
+    <section class="py-5">
+        <div class="container">
+
+            <div class="cta text-center shadow">
+
+                <h2 class="fw-bold">Mulai Kelola Keuangan Lebih Mudah</h2>
+                <p class="mt-2">
+                    ChatSaku membantu kamu mencatat semua transaksi langsung dari WhatsApp secara otomatis.
+                </p>
+
+                <a href="#" class="btn btn-wa mt-3 rounded-pill px-4">
+                    Mulai Sekarang di WhatsApp
+                </a>
+
+            </div>
+
+        </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
